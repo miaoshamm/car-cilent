@@ -5369,14 +5369,14 @@ function findComponentPublicInstance(mpComponents, id) {
   }
   return null;
 }
-function setTemplateRef({ r, f }, refValue, setupState) {
+function setTemplateRef({ r, f: f2 }, refValue, setupState) {
   if (isFunction(r)) {
     r(refValue, {});
   } else {
     const _isString = isString(r);
     const _isRef = isRef(r);
     if (_isString || _isRef) {
-      if (f) {
+      if (f2) {
         if (!_isRef) {
           return;
         }
@@ -5950,6 +5950,38 @@ function patchStopImmediatePropagation(e2, value) {
     return value;
   }
 }
+function vFor(source, renderItem) {
+  let ret;
+  if (isArray$1(source) || isString(source)) {
+    ret = new Array(source.length);
+    for (let i = 0, l = source.length; i < l; i++) {
+      ret[i] = renderItem(source[i], i, i);
+    }
+  } else if (typeof source === "number") {
+    if (!Number.isInteger(source)) {
+      warn(`The v-for range expect an integer value but got ${source}.`);
+      return [];
+    }
+    ret = new Array(source);
+    for (let i = 0; i < source; i++) {
+      ret[i] = renderItem(i + 1, i, i);
+    }
+  } else if (isObject$1(source)) {
+    if (source[Symbol.iterator]) {
+      ret = Array.from(source, (item, i) => renderItem(item, i, i));
+    } else {
+      const keys = Object.keys(source);
+      ret = new Array(keys.length);
+      for (let i = 0, l = keys.length; i < l; i++) {
+        const key = keys[i];
+        ret[i] = renderItem(source[key], key, i);
+      }
+    }
+  } else {
+    ret = [];
+  }
+  return ret;
+}
 function stringifyStyle(value) {
   if (isString(value)) {
     return value;
@@ -5967,6 +5999,7 @@ function stringify(styles) {
   return ret;
 }
 const o = (value, key) => vOn(value, key);
+const f = (source, renderItem) => vFor(source, renderItem);
 const s = (value) => stringifyStyle(value);
 const e = (target, ...sources) => extend(target, ...sources);
 const n = (value) => normalizeClass(value);
@@ -7407,8 +7440,8 @@ class Request {
   * @Function
   * @param {Request~setConfigCallback} f - 设置全局默认配置
   */
-  setConfig(f) {
-    this.config = f(this.config);
+  setConfig(f2) {
+    this.config = f2(this.config);
   }
   middleware(config2) {
     config2 = mergeConfig(this.config, config2);
@@ -10055,81 +10088,198 @@ const install = (Vue) => {
 const uviewPlus = {
   install
 };
-const props$4 = {
+const props$f = {
   props: {
-    // item标签的名称，作为与u-tabbar的value参数匹配的标识符
-    name: {
-      type: [String, Number, null],
-      default: defprops.tabbarItem.name
-    },
-    // uView内置图标或者绝对路径的图片
-    icon: {
-      icon: String,
-      default: defprops.tabbarItem.icon
-    },
-    // 右上角的角标提示信息
-    badge: {
-      type: [String, Number, null],
-      default: defprops.tabbarItem.badge
-    },
-    // 是否显示圆点，将会覆盖badge参数
-    dot: {
-      type: Boolean,
-      default: defprops.tabbarItem.dot
-    },
-    // 描述文本
+    // 显示的内容，数组
     text: {
-      type: String,
-      default: defprops.tabbarItem.text
+      type: [Array, String],
+      default: defprops.noticeBar.text
     },
-    // 控制徽标的位置，对象或者字符串形式，可以设置top和right属性
-    badgeStyle: {
-      type: [Object, String],
-      default: defprops.tabbarItem.badgeStyle
+    // 通告滚动模式，row-横向滚动，column-竖向滚动
+    direction: {
+      type: String,
+      default: defprops.noticeBar.direction
+    },
+    // direction = row时，是否使用步进形式滚动
+    step: {
+      type: Boolean,
+      default: defprops.noticeBar.step
+    },
+    // 是否显示左侧的音量图标
+    icon: {
+      type: String,
+      default: defprops.noticeBar.icon
+    },
+    // 通告模式，link-显示右箭头，closable-显示右侧关闭图标
+    mode: {
+      type: String,
+      default: defprops.noticeBar.mode
+    },
+    // 文字颜色，各图标也会使用文字颜色
+    color: {
+      type: String,
+      default: defprops.noticeBar.color
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.noticeBar.bgColor
+    },
+    // 水平滚动时的滚动速度，即每秒滚动多少px(px)，这有利于控制文字无论多少时，都能有一个恒定的速度
+    speed: {
+      type: [String, Number],
+      default: defprops.noticeBar.speed
+    },
+    // 字体大小
+    fontSize: {
+      type: [String, Number],
+      default: defprops.noticeBar.fontSize
+    },
+    // 滚动一个周期的时间长，单位ms
+    duration: {
+      type: [String, Number],
+      default: defprops.noticeBar.duration
+    },
+    // 是否禁止用手滑动切换
+    // 目前HX2.6.11，只支持App 2.5.5+、H5 2.5.5+、支付宝小程序、字节跳动小程序
+    disableTouch: {
+      type: Boolean,
+      default: defprops.noticeBar.disableTouch
+    },
+    // 跳转的页面路径
+    url: {
+      type: String,
+      default: defprops.noticeBar.url
+    },
+    // 页面跳转的类型
+    linkType: {
+      type: String,
+      default: defprops.noticeBar.linkType
     }
   }
 };
-const props$3 = {
+const props$e = {
   props: {
-    // 当前匹配项的name
-    value: {
-      type: [String, Number, null],
-      default: defprops.tabbar.value
+    // 列表数组，元素可为字符串，如为对象可通过keyName指定目标属性名
+    list: {
+      type: Array,
+      default: defprops.swiper.list
     },
-    // 是否为iPhoneX留出底部安全距离
-    safeAreaInsetBottom: {
+    // 是否显示面板指示器
+    indicator: {
       type: Boolean,
-      default: defprops.tabbar.safeAreaInsetBottom
+      default: defprops.swiper.indicator
     },
-    // 是否显示上方边框
-    border: {
+    // 指示器非激活颜色
+    indicatorActiveColor: {
+      type: String,
+      default: defprops.swiper.indicatorActiveColor
+    },
+    // 指示器的激活颜色
+    indicatorInactiveColor: {
+      type: String,
+      default: defprops.swiper.indicatorInactiveColor
+    },
+    // 指示器样式，可通过bottom，left，right进行定位
+    indicatorStyle: {
+      type: [String, Object],
+      default: defprops.swiper.indicatorStyle
+    },
+    // 指示器模式，line-线型，dot-点型
+    indicatorMode: {
+      type: String,
+      default: defprops.swiper.indicatorMode
+    },
+    // 是否自动切换
+    autoplay: {
       type: Boolean,
-      default: defprops.tabbar.border
+      default: defprops.swiper.autoplay
     },
-    // 元素层级z-index
-    zIndex: {
+    // 当前所在滑块的 index
+    current: {
       type: [String, Number],
-      default: defprops.tabbar.zIndex
+      default: defprops.swiper.current
     },
-    // 选中标签的颜色
-    activeColor: {
+    // 当前所在滑块的 item-id ，不能与 current 被同时指定
+    currentItemId: {
       type: String,
-      default: defprops.tabbar.activeColor
+      default: defprops.swiper.currentItemId
     },
-    // 未选中标签的颜色
-    inactiveColor: {
+    // 滑块自动切换时间间隔
+    interval: {
+      type: [String, Number],
+      default: defprops.swiper.interval
+    },
+    // 滑块切换过程所需时间
+    duration: {
+      type: [String, Number],
+      default: defprops.swiper.duration
+    },
+    // 播放到末尾后是否重新回到开头
+    circular: {
+      type: Boolean,
+      default: defprops.swiper.circular
+    },
+    // 前边距，可用于露出前一项的一小部分，nvue和支付宝不支持
+    previousMargin: {
+      type: [String, Number],
+      default: defprops.swiper.previousMargin
+    },
+    // 后边距，可用于露出后一项的一小部分，nvue和支付宝不支持
+    nextMargin: {
+      type: [String, Number],
+      default: defprops.swiper.nextMargin
+    },
+    // 当开启时，会根据滑动速度，连续滑动多屏，支付宝不支持
+    acceleration: {
+      type: Boolean,
+      default: defprops.swiper.acceleration
+    },
+    // 同时显示的滑块数量，nvue、支付宝小程序不支持
+    displayMultipleItems: {
+      type: Number,
+      default: defprops.swiper.displayMultipleItems
+    },
+    // 指定swiper切换缓动动画类型，有效值：default、linear、easeInCubic、easeOutCubic、easeInOutCubic
+    // 只对微信小程序有效
+    easingFunction: {
       type: String,
-      default: defprops.tabbar.inactiveColor
+      default: defprops.swiper.easingFunction
     },
-    // 是否固定在底部
-    fixed: {
-      type: Boolean,
-      default: defprops.tabbar.fixed
+    // list数组中指定对象的目标属性名
+    keyName: {
+      type: String,
+      default: defprops.swiper.keyName
     },
-    // fixed定位固定在底部时，是否生成一个等高元素防止塌陷
-    placeholder: {
+    // 图片的裁剪模式
+    imgMode: {
+      type: String,
+      default: defprops.swiper.imgMode
+    },
+    // 组件高度
+    height: {
+      type: [String, Number],
+      default: defprops.swiper.height
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.swiper.bgColor
+    },
+    // 组件圆角，数值或带单位的字符串
+    radius: {
+      type: [String, Number],
+      default: defprops.swiper.radius
+    },
+    // 是否加载中
+    loading: {
       type: Boolean,
-      default: defprops.tabbar.placeholder
+      default: defprops.swiper.loading
+    },
+    // 是否显示标题，要求数组对象中有title属性
+    showTitle: {
+      type: Boolean,
+      default: defprops.swiper.showTitle
     }
   }
 };
@@ -10347,7 +10497,7 @@ const icons = {
   "uicon-zh": "",
   "uicon-en": ""
 };
-const props$2 = {
+const props$d = {
   props: {
     // 图标类名
     name: {
@@ -10436,6 +10586,632 @@ const props$2 = {
     }
   }
 };
+const props$c = {
+  props: {
+    // 宫格的name
+    name: {
+      type: [String, Number, null],
+      default: defprops.gridItem.name
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.gridItem.bgColor
+    }
+  }
+};
+const props$b = {
+  props: {
+    // 分成几列
+    col: {
+      type: [String, Number],
+      default: defprops.grid.col
+    },
+    // 是否显示边框
+    border: {
+      type: Boolean,
+      default: defprops.grid.border
+    },
+    // 宫格对齐方式，表现为数量少的时候，靠左，居中，还是靠右
+    align: {
+      type: String,
+      default: defprops.grid.align
+    }
+  }
+};
+const button = {
+  props: {
+    lang: String,
+    sessionFrom: String,
+    sendMessageTitle: String,
+    sendMessagePath: String,
+    sendMessageImg: String,
+    showMessageCard: Boolean,
+    appParameter: String,
+    formType: String,
+    openType: String
+  }
+};
+const openType = {
+  props: {
+    openType: String
+  },
+  methods: {
+    onGetUserInfo(event) {
+      this.$emit("getuserinfo", event.detail);
+    },
+    onContact(event) {
+      this.$emit("contact", event.detail);
+    },
+    onGetPhoneNumber(event) {
+      this.$emit("getphonenumber", event.detail);
+    },
+    onError(event) {
+      this.$emit("error", event.detail);
+    },
+    onLaunchApp(event) {
+      this.$emit("launchapp", event.detail);
+    },
+    onOpenSetting(event) {
+      this.$emit("opensetting", event.detail);
+    }
+  }
+};
+const props$a = {
+  props: {
+    // 是否细边框
+    hairline: {
+      type: Boolean,
+      default: defprops.button.hairline
+    },
+    // 按钮的预置样式，info，primary，error，warning，success
+    type: {
+      type: String,
+      default: defprops.button.type
+    },
+    // 按钮尺寸，large，normal，small，mini
+    size: {
+      type: String,
+      default: defprops.button.size
+    },
+    // 按钮形状，circle（两边为半圆），square（带圆角）
+    shape: {
+      type: String,
+      default: defprops.button.shape
+    },
+    // 按钮是否镂空
+    plain: {
+      type: Boolean,
+      default: defprops.button.plain
+    },
+    // 是否禁止状态
+    disabled: {
+      type: Boolean,
+      default: defprops.button.disabled
+    },
+    // 是否加载中
+    loading: {
+      type: Boolean,
+      default: defprops.button.loading
+    },
+    // 加载中提示文字
+    loadingText: {
+      type: [String, Number],
+      default: defprops.button.loadingText
+    },
+    // 加载状态图标类型
+    loadingMode: {
+      type: String,
+      default: defprops.button.loadingMode
+    },
+    // 加载图标大小
+    loadingSize: {
+      type: [String, Number],
+      default: defprops.button.loadingSize
+    },
+    // 开放能力，具体请看uniapp稳定关于button组件部分说明
+    // https://uniapp.dcloud.io/component/button
+    openType: {
+      type: String,
+      default: defprops.button.openType
+    },
+    // 用于 <form> 组件，点击分别会触发 <form> 组件的 submit/reset 事件
+    // 取值为submit（提交表单），reset（重置表单）
+    formType: {
+      type: String,
+      default: defprops.button.formType
+    },
+    // 打开 APP 时，向 APP 传递的参数，open-type=launchApp时有效
+    // 只微信小程序、QQ小程序有效
+    appParameter: {
+      type: String,
+      default: defprops.button.appParameter
+    },
+    // 指定是否阻止本节点的祖先节点出现点击态，微信小程序有效
+    hoverStopPropagation: {
+      type: Boolean,
+      default: defprops.button.hoverStopPropagation
+    },
+    // 指定返回用户信息的语言，zh_CN 简体中文，zh_TW 繁体中文，en 英文。只微信小程序有效
+    lang: {
+      type: String,
+      default: defprops.button.lang
+    },
+    // 会话来源，open-type="contact"时有效。只微信小程序有效
+    sessionFrom: {
+      type: String,
+      default: defprops.button.sessionFrom
+    },
+    // 会话内消息卡片标题，open-type="contact"时有效
+    // 默认当前标题，只微信小程序有效
+    sendMessageTitle: {
+      type: String,
+      default: defprops.button.sendMessageTitle
+    },
+    // 会话内消息卡片点击跳转小程序路径，open-type="contact"时有效
+    // 默认当前分享路径，只微信小程序有效
+    sendMessagePath: {
+      type: String,
+      default: defprops.button.sendMessagePath
+    },
+    // 会话内消息卡片图片，open-type="contact"时有效
+    // 默认当前页面截图，只微信小程序有效
+    sendMessageImg: {
+      type: String,
+      default: defprops.button.sendMessageImg
+    },
+    // 是否显示会话内消息卡片，设置此参数为 true，用户进入客服会话会在右下角显示"可能要发送的小程序"提示，
+    // 用户点击后可以快速发送小程序消息，open-type="contact"时有效
+    showMessageCard: {
+      type: Boolean,
+      default: defprops.button.showMessageCard
+    },
+    // 额外传参参数，用于小程序的data-xxx属性，通过target.dataset.name获取
+    dataName: {
+      type: String,
+      default: defprops.button.dataName
+    },
+    // 节流，一定时间内只能触发一次
+    throttleTime: {
+      type: [String, Number],
+      default: defprops.button.throttleTime
+    },
+    // 按住后多久出现点击态，单位毫秒
+    hoverStartTime: {
+      type: [String, Number],
+      default: defprops.button.hoverStartTime
+    },
+    // 手指松开后点击态保留时间，单位毫秒
+    hoverStayTime: {
+      type: [String, Number],
+      default: defprops.button.hoverStayTime
+    },
+    // 按钮文字，之所以通过props传入，是因为slot传入的话
+    // nvue中无法控制文字的样式
+    text: {
+      type: [String, Number],
+      default: defprops.button.text
+    },
+    // 按钮图标
+    icon: {
+      type: String,
+      default: defprops.button.icon
+    },
+    // 按钮图标
+    iconColor: {
+      type: String,
+      default: defprops.button.icon
+    },
+    // 按钮颜色，支持传入linear-gradient渐变色
+    color: {
+      type: String,
+      default: defprops.button.color
+    }
+  }
+};
+const props$9 = {
+  props: {
+    // 标题
+    title: {
+      type: [String, Number],
+      default: defprops.cell.title
+    },
+    // 标题下方的描述信息
+    label: {
+      type: [String, Number],
+      default: defprops.cell.label
+    },
+    // 右侧的内容
+    value: {
+      type: [String, Number],
+      default: defprops.cell.value
+    },
+    // 左侧图标名称，或者图片链接(本地文件建议使用绝对地址)
+    icon: {
+      type: String,
+      default: defprops.cell.icon
+    },
+    // 是否禁用cell
+    disabled: {
+      type: Boolean,
+      default: defprops.cell.disabled
+    },
+    // 是否显示下边框
+    border: {
+      type: Boolean,
+      default: defprops.cell.border
+    },
+    // 内容是否垂直居中(主要是针对右侧的value部分)
+    center: {
+      type: Boolean,
+      default: defprops.cell.center
+    },
+    // 点击后跳转的URL地址
+    url: {
+      type: String,
+      default: defprops.cell.url
+    },
+    // 链接跳转的方式，内部使用的是uView封装的route方法，可能会进行拦截操作
+    linkType: {
+      type: String,
+      default: defprops.cell.linkType
+    },
+    // 是否开启点击反馈(表现为点击时加上灰色背景)
+    clickable: {
+      type: Boolean,
+      default: defprops.cell.clickable
+    },
+    // 是否展示右侧箭头并开启点击反馈
+    isLink: {
+      type: Boolean,
+      default: defprops.cell.isLink
+    },
+    // 是否显示表单状态下的必填星号(此组件可能会内嵌入input组件)
+    required: {
+      type: Boolean,
+      default: defprops.cell.required
+    },
+    // 右侧的图标箭头
+    rightIcon: {
+      type: String,
+      default: defprops.cell.rightIcon
+    },
+    // 右侧箭头的方向，可选值为：left，up，down
+    arrowDirection: {
+      type: String,
+      default: defprops.cell.arrowDirection
+    },
+    // 左侧图标样式
+    iconStyle: {
+      type: [Object, String],
+      default: () => {
+        return index$1.$u.props.cell.iconStyle;
+      }
+    },
+    // 右侧箭头图标的样式
+    rightIconStyle: {
+      type: [Object, String],
+      default: () => {
+        return index$1.$u.props.cell.rightIconStyle;
+      }
+    },
+    // 标题的样式
+    titleStyle: {
+      type: [Object, String],
+      default: () => {
+        return index$1.$u.props.cell.titleStyle;
+      }
+    },
+    // 单位元的大小，可选值为large
+    size: {
+      type: String,
+      default: defprops.cell.size
+    },
+    // 点击cell是否阻止事件传播
+    stop: {
+      type: Boolean,
+      default: defprops.cell.stop
+    },
+    // 标识符，cell被点击时返回
+    name: {
+      type: [Number, String],
+      default: defprops.cell.name
+    }
+  }
+};
+const props$8 = {
+  props: {
+    // item标签的名称，作为与u-tabbar的value参数匹配的标识符
+    name: {
+      type: [String, Number, null],
+      default: defprops.tabbarItem.name
+    },
+    // uView内置图标或者绝对路径的图片
+    icon: {
+      icon: String,
+      default: defprops.tabbarItem.icon
+    },
+    // 右上角的角标提示信息
+    badge: {
+      type: [String, Number, null],
+      default: defprops.tabbarItem.badge
+    },
+    // 是否显示圆点，将会覆盖badge参数
+    dot: {
+      type: Boolean,
+      default: defprops.tabbarItem.dot
+    },
+    // 描述文本
+    text: {
+      type: String,
+      default: defprops.tabbarItem.text
+    },
+    // 控制徽标的位置，对象或者字符串形式，可以设置top和right属性
+    badgeStyle: {
+      type: [Object, String],
+      default: defprops.tabbarItem.badgeStyle
+    }
+  }
+};
+const props$7 = {
+  props: {
+    // 当前匹配项的name
+    value: {
+      type: [String, Number, null],
+      default: defprops.tabbar.value
+    },
+    // 是否为iPhoneX留出底部安全距离
+    safeAreaInsetBottom: {
+      type: Boolean,
+      default: defprops.tabbar.safeAreaInsetBottom
+    },
+    // 是否显示上方边框
+    border: {
+      type: Boolean,
+      default: defprops.tabbar.border
+    },
+    // 元素层级z-index
+    zIndex: {
+      type: [String, Number],
+      default: defprops.tabbar.zIndex
+    },
+    // 选中标签的颜色
+    activeColor: {
+      type: String,
+      default: defprops.tabbar.activeColor
+    },
+    // 未选中标签的颜色
+    inactiveColor: {
+      type: String,
+      default: defprops.tabbar.inactiveColor
+    },
+    // 是否固定在底部
+    fixed: {
+      type: Boolean,
+      default: defprops.tabbar.fixed
+    },
+    // fixed定位固定在底部时，是否生成一个等高元素防止塌陷
+    placeholder: {
+      type: Boolean,
+      default: defprops.tabbar.placeholder
+    }
+  }
+};
+const props$6 = {
+  props: {
+    // 显示的内容，字符串
+    text: {
+      type: [Array],
+      default: defprops.columnNotice.text
+    },
+    // 是否显示左侧的音量图标
+    icon: {
+      type: String,
+      default: defprops.columnNotice.icon
+    },
+    // 通告模式，link-显示右箭头，closable-显示右侧关闭图标
+    mode: {
+      type: String,
+      default: defprops.columnNotice.mode
+    },
+    // 文字颜色，各图标也会使用文字颜色
+    color: {
+      type: String,
+      default: defprops.columnNotice.color
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.columnNotice.bgColor
+    },
+    // 字体大小，单位px
+    fontSize: {
+      type: [String, Number],
+      default: defprops.columnNotice.fontSize
+    },
+    // 水平滚动时的滚动速度，即每秒滚动多少px(px)，这有利于控制文字无论多少时，都能有一个恒定的速度
+    speed: {
+      type: [String, Number],
+      default: defprops.columnNotice.speed
+    },
+    // direction = row时，是否使用步进形式滚动
+    step: {
+      type: Boolean,
+      default: defprops.columnNotice.step
+    },
+    // 滚动一个周期的时间长，单位ms
+    duration: {
+      type: [String, Number],
+      default: defprops.columnNotice.duration
+    },
+    // 是否禁止用手滑动切换
+    // 目前HX2.6.11，只支持App 2.5.5+、H5 2.5.5+、支付宝小程序、字节跳动小程序
+    disableTouch: {
+      type: Boolean,
+      default: defprops.columnNotice.disableTouch
+    }
+  }
+};
+const props$5 = {
+  props: {
+    // 显示的内容，字符串
+    text: {
+      type: String,
+      default: defprops.rowNotice.text
+    },
+    // 是否显示左侧的音量图标
+    icon: {
+      type: String,
+      default: defprops.rowNotice.icon
+    },
+    // 通告模式，link-显示右箭头，closable-显示右侧关闭图标
+    mode: {
+      type: String,
+      default: defprops.rowNotice.mode
+    },
+    // 文字颜色，各图标也会使用文字颜色
+    color: {
+      type: String,
+      default: defprops.rowNotice.color
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.rowNotice.bgColor
+    },
+    // 字体大小，单位px
+    fontSize: {
+      type: [String, Number],
+      default: defprops.rowNotice.fontSize
+    },
+    // 水平滚动时的滚动速度，即每秒滚动多少px(rpx)，这有利于控制文字无论多少时，都能有一个恒定的速度
+    speed: {
+      type: [String, Number],
+      default: defprops.rowNotice.speed
+    }
+  }
+};
+const props$4 = {
+  props: {
+    // 是否显示组件
+    show: {
+      type: Boolean,
+      default: defprops.loadingIcon.show
+    },
+    // 颜色
+    color: {
+      type: String,
+      default: defprops.loadingIcon.color
+    },
+    // 提示文字颜色
+    textColor: {
+      type: String,
+      default: defprops.loadingIcon.textColor
+    },
+    // 文字和图标是否垂直排列
+    vertical: {
+      type: Boolean,
+      default: defprops.loadingIcon.vertical
+    },
+    // 模式选择，circle-圆形，spinner-花朵形，semicircle-半圆形
+    mode: {
+      type: String,
+      default: defprops.loadingIcon.mode
+    },
+    // 图标大小，单位默认px
+    size: {
+      type: [String, Number],
+      default: defprops.loadingIcon.size
+    },
+    // 文字大小
+    textSize: {
+      type: [String, Number],
+      default: defprops.loadingIcon.textSize
+    },
+    // 文字内容
+    text: {
+      type: [String, Number],
+      default: defprops.loadingIcon.text
+    },
+    // 动画模式
+    timingFunction: {
+      type: String,
+      default: defprops.loadingIcon.timingFunction
+    },
+    // 动画执行周期时间
+    duration: {
+      type: [String, Number],
+      default: defprops.loadingIcon.duration
+    },
+    // mode=circle时的暗边颜色
+    inactiveColor: {
+      type: String,
+      default: defprops.loadingIcon.inactiveColor
+    }
+  }
+};
+const props$3 = {
+  props: {
+    // 轮播的长度
+    length: {
+      type: [String, Number],
+      default: defprops.swiperIndicator.length
+    },
+    // 当前处于活动状态的轮播的索引
+    current: {
+      type: [String, Number],
+      default: defprops.swiperIndicator.current
+    },
+    // 指示器非激活颜色
+    indicatorActiveColor: {
+      type: String,
+      default: defprops.swiperIndicator.indicatorActiveColor
+    },
+    // 指示器的激活颜色
+    indicatorInactiveColor: {
+      type: String,
+      default: defprops.swiperIndicator.indicatorInactiveColor
+    },
+    // 指示器模式，line-线型，dot-点型
+    indicatorMode: {
+      type: String,
+      default: defprops.swiperIndicator.indicatorMode
+    }
+  }
+};
+const props$2 = {
+  props: {
+    color: {
+      type: String,
+      default: defprops.line.color
+    },
+    // 长度，竖向时表现为高度，横向时表现为长度，可以为百分比，带px单位的值等
+    length: {
+      type: [String, Number],
+      default: defprops.line.length
+    },
+    // 线条方向，col-竖向，row-横向
+    direction: {
+      type: String,
+      default: defprops.line.direction
+    },
+    // 是否显示细边框
+    hairline: {
+      type: Boolean,
+      default: defprops.line.hairline
+    },
+    // 线条与上下左右元素的间距，字符串形式，如"30px"、"20px 30px"
+    margin: {
+      type: [String, Number],
+      default: defprops.line.margin
+    },
+    // 是否虚线，true-虚线，false-实线
+    dashed: {
+      type: Boolean,
+      default: defprops.line.dashed
+    }
+  }
+};
 const props$1 = {
   props: {
     // 是否显示圆点
@@ -10517,20 +11293,34 @@ const props = {
   props: {}
 };
 exports._export_sfc = _export_sfc;
+exports.button = button;
 exports.createSSRApp = createSSRApp;
 exports.e = e;
+exports.f = f;
 exports.icons = icons;
 exports.index = index$1;
 exports.mixin = mixin;
 exports.mpMixin = mpMixin;
 exports.n = n;
 exports.o = o;
+exports.openType = openType;
 exports.p = p;
-exports.props = props$4;
-exports.props$1 = props$3;
-exports.props$2 = props$2;
-exports.props$3 = props$1;
-exports.props$4 = props;
+exports.props = props$f;
+exports.props$1 = props$e;
+exports.props$10 = props$5;
+exports.props$11 = props$4;
+exports.props$12 = props$3;
+exports.props$13 = props$2;
+exports.props$14 = props$1;
+exports.props$15 = props;
+exports.props$2 = props$d;
+exports.props$3 = props$c;
+exports.props$4 = props$b;
+exports.props$5 = props$a;
+exports.props$6 = props$9;
+exports.props$7 = props$8;
+exports.props$8 = props$7;
+exports.props$9 = props$6;
 exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s;

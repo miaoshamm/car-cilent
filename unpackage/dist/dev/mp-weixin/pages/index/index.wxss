@@ -28,3 +28,101 @@
 	border-top: 4rpx solid #eee;
 	box-shadow: 0px -8px 20px 0px rgba(0, 0, 0, 0.06);
 }
+.nav.data-v-1cf27b2a {
+  height: 208rpx;
+  background: #DFA0B1;
+  display: flex;
+  align-items: center;
+}
+.nav .nav-title.data-v-1cf27b2a {
+  font-size: 32rpx;
+  font-weight: 500;
+  color: #fff;
+  margin: 48rpx 0 0 60rpx;
+}
+.main.data-v-1cf27b2a {
+  background: #F6F7F8;
+  border-top-left-radius: 32rpx;
+  border-top-right-radius: 32rpx;
+  position: relative;
+  top: -30rpx;
+  overflow: hidden;
+  padding: 0 32rpx;
+}
+.main .swiper.data-v-1cf27b2a {
+  margin: 24rpx auto;
+  border-radius: 32rpx;
+  overflow: hidden;
+}
+.main .grid .grid-text.data-v-1cf27b2a {
+  font-size: 28rpx;
+  margin: 8rpx 0 0;
+}
+.main .grid .grid-text-small.data-v-1cf27b2a {
+  font-size: 20rpx;
+  margin: 10rpx 0 0;
+}
+.main .subscribe.data-v-1cf27b2a {
+  display: flex;
+  height: 128rpx;
+  border-radius: 24rpx;
+  background: #fff;
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.03);
+  justify-content: space-between;
+  padding: 0 28rpx;
+  margin: 24rpx 0 0;
+}
+.main .subscribe .sub-le.data-v-1cf27b2a {
+  display: flex;
+  flex-direction: column;
+}
+.main .subscribe .sub-le .sub-le-title.data-v-1cf27b2a {
+  font-size: 28rpx;
+  margin: 24rpx 0 0;
+}
+.main .subscribe .sub-le .sub-le-small.data-v-1cf27b2a {
+  font-size: 24rpx;
+  margin: 10rpx 0 0;
+}
+.main .subscribe .sub-detail.data-v-1cf27b2a {
+  font-size: 24rpx;
+  margin: 24rpx 0 0;
+  color: #DFA0B1;
+}
+.main .supermarket.data-v-1cf27b2a {
+  padding: 30rpx 24rpx 24rpx;
+  background-color: #fff;
+  border-radius: 24rpx;
+  margin: 18rpx 0 0;
+}
+.main .supermarket .super-title.data-v-1cf27b2a {
+  font-size: 30rpx;
+  color: #DFA0B1;
+  margin: 0 0 34rpx;
+}
+.main .supermarket .super-content.data-v-1cf27b2a {
+  display: flex;
+  justify-content: flex-start;
+}
+.main .supermarket .super-content .super-content-le.data-v-1cf27b2a {
+  width: 208rpx;
+}
+.main .supermarket .super-content .super-content-le image.data-v-1cf27b2a {
+  width: 100%;
+  height: 256rpx;
+}
+.main .supermarket .super-content .super-content-ri.data-v-1cf27b2a {
+  margin: 0 0 0 24rpx;
+}
+.main .supermarket .super-content .super-content-ri .super-cotent-title.data-v-1cf27b2a {
+  font-size: 28rpx;
+  margin: 8rpx 0;
+}
+.main .supermarket .super-content .super-content-ri .super-cotent-small.data-v-1cf27b2a {
+  font-size: 26rpx;
+  margin: 0 0 76rpx;
+  color: rgba(0, 0, 0, 0.5);
+}
+.main .driver .driver-title.data-v-1cf27b2a {
+  margin: 46rpx 0 24rpx;
+}

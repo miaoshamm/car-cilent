@@ -35,9 +35,7 @@
 </template>
 
 <script setup>
-	import {
-		ref
-	} from 'vue';
+	import { ref } from 'vue';
 	const value1 = ref(1)
 	const click1 = (index) => {
 		let url = ""
