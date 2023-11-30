@@ -2,7 +2,7 @@
 const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
   name: "u-line",
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$12],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$13],
   computed: {
     lineStyle() {
       const style = {};
@@ -30,5 +30,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     a: common_vendor.s($options.lineStyle)
   };
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-bbd9963c"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-line/u-line.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-bbd9963c"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-line/u-line.vue"]]);
 wx.createComponent(Component);

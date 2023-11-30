@@ -20,6 +20,7 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "我的订单",
+				
 				"enablePullDownRefresh" : false
 			}
 		},
@@ -28,6 +29,15 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "个人中心",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/invoice_list/invoice_list",
+			"style" : 
+			{
+				"navigationBarTitleText" : "查看发票",
 				"enablePullDownRefresh" : false
 			}
 		}

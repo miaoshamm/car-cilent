@@ -1,0 +1,8 @@
+
+.menu{
+			display: flex;
+			height: 104rpx;
+			padding: 32rpx;
+			justify-content: space-between;
+			box-sizing: border-box;
+}

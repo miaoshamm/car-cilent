@@ -2,7 +2,7 @@
 const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
   name: "u-swiper-indicator",
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$17],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$18],
   data() {
     return {
       lineWidth: 22
@@ -47,5 +47,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   } : {});
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-23112adb"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-swiper-indicator/u-swiper-indicator.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-23112adb"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-swiper-indicator/u-swiper-indicator.vue"]]);
 wx.createComponent(Component);
