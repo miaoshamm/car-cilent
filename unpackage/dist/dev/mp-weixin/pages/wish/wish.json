@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "预约车辆维保",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-button": "../../node-modules/uview-plus/components/u-button/u-button"
+  }
+}

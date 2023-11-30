@@ -53,7 +53,8 @@ const _sfc_main = {
       {
         name: "/static/images/index/grid3.png",
         title: "洗车服务",
-        small: "洗车服务"
+        small: "洗车服务",
+        url: "/pages/wish/wish"
       },
       {
         name: "/static/images/index/grid4.png",
@@ -108,6 +109,11 @@ const _sfc_main = {
 		最后，本人郑重声明以上内容属实，并愿意承担因违反本声明所产生的一切后果。
 		`
     });
+    const goService = (url) => {
+      common_vendor.index.navigateTo({
+        url
+      });
+    };
     const closeModel = () => {
       model.value.show = false;
     };
@@ -158,7 +164,8 @@ const _sfc_main = {
             d: common_vendor.t(listItem.small),
             e: listItem.small != "洗车服务" ? 1 : 0,
             f: listIndex,
-            g: "1cf27b2a-4-" + i0 + ",1cf27b2a-3"
+            g: common_vendor.o(($event) => goService(listItem.url), listIndex),
+            h: "1cf27b2a-4-" + i0 + ",1cf27b2a-3"
           };
         }),
         g: common_vendor.p({

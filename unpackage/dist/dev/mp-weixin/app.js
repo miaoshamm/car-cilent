@@ -5,6 +5,7 @@ if (!Math) {
   "./pages/index/index.js";
   "./pages/orders/orders.js";
   "./pages/account/account.js";
+  "./pages/wish/wish.js";
 }
 const _sfc_main = {};
 function _sfc_render(_ctx, _cache) {

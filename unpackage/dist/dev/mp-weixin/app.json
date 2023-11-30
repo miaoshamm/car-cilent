@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/orders/orders",
-    "pages/account/account"
+    "pages/account/account",
+    "pages/wish/wish"
   ],
   "window": {
     "navigationBarTextStyle": "black",

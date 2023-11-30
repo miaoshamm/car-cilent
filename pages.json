@@ -30,6 +30,14 @@
 				"navigationBarTitleText" : "个人中心",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/wish/wish",
+			"style" : 
+			{
+				"navigationBarTitleText" : "预约车辆维保",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"globalStyle": {

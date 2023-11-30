@@ -13,7 +13,7 @@
 			</view>
 			<view class="grid">
 				<u-grid :border="false" col="5">
-					<u-grid-item v-for="(listItem,listIndex) in list" :key="listIndex">
+					<u-grid-item v-for="(listItem,listIndex) in list" :key="listIndex" @click="goService(listItem.url)">
 						<u-icon :name="listItem.name" :size="48"></u-icon>
 						<text class="grid-text">{{listItem.title}}</text>
 						<text class="grid-text-small" :style="{opacity: listItem.small != '洗车服务' ? 1 : 0}">{{listItem.small}}</text>
@@ -140,7 +140,7 @@
 	const list = ref([{
 			name: '/static/images/index/grid1.png',
 			title: '代客泊车',
-			small: "中山六院"
+			small: "中山六院",
 		},
 		{
 			name: '/static/images/index/grid2.png',
@@ -150,7 +150,8 @@
 		{
 			name: '/static/images/index/grid3.png',
 			title: '洗车服务',
-			small: "洗车服务"
+			small: "洗车服务",
+			url:"/pages/wish/wish"
 		},
 		{
 			name: '/static/images/index/grid4.png',
@@ -205,6 +206,11 @@
 		`
 	})
 	
+	const goService = (url) => {
+		uni.navigateTo({
+			url
+		})
+	}
 	const closeModel = () => {
 		model.value.show = false
 	}
