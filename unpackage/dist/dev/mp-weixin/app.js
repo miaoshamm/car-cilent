@@ -5,6 +5,7 @@ if (!Math) {
   "./pages/index/index.js";
   "./pages/orders/orders.js";
   "./pages/account/account.js";
+  "./pages/invoice_list/invoice_list.js";
   "./pages/wish/wish.js";
 }
 const _sfc_main = {};

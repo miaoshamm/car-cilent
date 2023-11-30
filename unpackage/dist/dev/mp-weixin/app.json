@@ -3,6 +3,7 @@
     "pages/index/index",
     "pages/orders/orders",
     "pages/account/account",
+    "pages/invoice_list/invoice_list",
     "pages/wish/wish"
   ],
   "window": {

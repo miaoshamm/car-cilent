@@ -10088,7 +10088,7 @@ const install = (Vue) => {
 const uviewPlus = {
   install
 };
-const props$n = {
+const props$o = {
   props: {
     // 是否展示modal
     show: {
@@ -10172,7 +10172,7 @@ const props$n = {
     }
   }
 };
-const props$m = {
+const props$n = {
   props: {
     // 显示的内容，数组
     text: {
@@ -10242,7 +10242,7 @@ const props$m = {
     }
   }
 };
-const props$l = {
+const props$m = {
   props: {
     // 列表数组，元素可为字符串，如为对象可通过keyName指定目标属性名
     list: {
@@ -10581,7 +10581,7 @@ const icons = {
   "uicon-zh": "",
   "uicon-en": ""
 };
-const props$k = {
+const props$l = {
   props: {
     // 图标类名
     name: {
@@ -10670,7 +10670,7 @@ const props$k = {
     }
   }
 };
-const props$j = {
+const props$k = {
   props: {
     // 宫格的name
     name: {
@@ -10684,7 +10684,7 @@ const props$j = {
     }
   }
 };
-const props$i = {
+const props$j = {
   props: {
     // 分成几列
     col: {
@@ -10741,7 +10741,7 @@ const openType = {
     }
   }
 };
-const props$h = {
+const props$i = {
   props: {
     // 是否细边框
     hairline: {
@@ -10893,7 +10893,7 @@ const props$h = {
     }
   }
 };
-const props$g = {
+const props$h = {
   props: {
     // 标题
     title: {
@@ -11003,7 +11003,7 @@ const props$g = {
     }
   }
 };
-const props$f = {
+const props$g = {
   props: {
     // 头像图片路径(不能为相对路径)
     src: {
@@ -11155,7 +11155,7 @@ const value = {
     }
   }
 };
-const props$e = {
+const props$f = {
   props: {
     // 主题颜色
     type: {
@@ -11265,7 +11265,7 @@ const props$e = {
     }
   }
 };
-const props$d = {
+const props$e = {
   props: {
     // item标签的名称，作为与u-tabbar的value参数匹配的标识符
     name: {
@@ -11299,7 +11299,7 @@ const props$d = {
     }
   }
 };
-const props$c = {
+const props$d = {
   props: {
     // 当前匹配项的name
     value: {
@@ -11340,6 +11340,90 @@ const props$c = {
     placeholder: {
       type: Boolean,
       default: defprops.tabbar.placeholder
+    }
+  }
+};
+const props$c = {
+  props: {
+    // 图片地址
+    src: {
+      type: String,
+      default: defprops.image.src
+    },
+    // 裁剪模式
+    mode: {
+      type: String,
+      default: defprops.image.mode
+    },
+    // 宽度，单位任意
+    width: {
+      type: [String, Number],
+      default: defprops.image.width
+    },
+    // 高度，单位任意
+    height: {
+      type: [String, Number],
+      default: defprops.image.height
+    },
+    // 图片形状，circle-圆形，square-方形
+    shape: {
+      type: String,
+      default: defprops.image.shape
+    },
+    // 圆角，单位任意
+    radius: {
+      type: [String, Number],
+      default: defprops.image.radius
+    },
+    // 是否懒加载，微信小程序、App、百度小程序、字节跳动小程序
+    lazyLoad: {
+      type: Boolean,
+      default: defprops.image.lazyLoad
+    },
+    // 开启长按图片显示识别微信小程序码菜单
+    showMenuByLongpress: {
+      type: Boolean,
+      default: defprops.image.showMenuByLongpress
+    },
+    // 加载中的图标，或者小图片
+    loadingIcon: {
+      type: String,
+      default: defprops.image.loadingIcon
+    },
+    // 加载失败的图标，或者小图片
+    errorIcon: {
+      type: String,
+      default: defprops.image.errorIcon
+    },
+    // 是否显示加载中的图标或者自定义的slot
+    showLoading: {
+      type: Boolean,
+      default: defprops.image.showLoading
+    },
+    // 是否显示加载错误的图标或者自定义的slot
+    showError: {
+      type: Boolean,
+      default: defprops.image.showError
+    },
+    // 是否需要淡入效果
+    fade: {
+      type: Boolean,
+      default: defprops.image.fade
+    },
+    // 只支持网络资源，只对微信小程序有效
+    webp: {
+      type: Boolean,
+      default: defprops.image.webp
+    },
+    // 过渡时间，单位ms
+    duration: {
+      type: [String, Number],
+      default: defprops.image.duration
+    },
+    // 背景颜色，用于深色页面加载图片时，为了和背景色融合
+    bgColor: {
+      type: String,
+      default: defprops.image.bgColor
     }
   }
 };
@@ -11758,38 +11842,6 @@ const props$3 = {
 };
 const props$2 = {
   props: {
-    // 是否显示遮罩
-    show: {
-      type: Boolean,
-      default: defprops.overlay.show
-    },
-    // 层级z-index
-    zIndex: {
-      type: [String, Number],
-      default: defprops.overlay.zIndex
-    },
-    // 遮罩的过渡时间，单位为ms
-    duration: {
-      type: [String, Number],
-      default: defprops.overlay.duration
-    },
-    // 不透明度值，当做rgba的第四个参数
-    opacity: {
-      type: [String, Number],
-      default: defprops.overlay.opacity
-    }
-  }
-};
-const props$1 = {
-  props: {
-    bgColor: {
-      type: String,
-      default: defprops.statusBar.bgColor
-    }
-  }
-};
-const props = {
-  props: {
     // 是否展示组件
     show: {
       type: Boolean,
@@ -11869,6 +11921,38 @@ const transition = {
     }
   }
 };
+const props$1 = {
+  props: {
+    // 是否显示遮罩
+    show: {
+      type: Boolean,
+      default: defprops.overlay.show
+    },
+    // 层级z-index
+    zIndex: {
+      type: [String, Number],
+      default: defprops.overlay.zIndex
+    },
+    // 遮罩的过渡时间，单位为ms
+    duration: {
+      type: [String, Number],
+      default: defprops.overlay.duration
+    },
+    // 不透明度值，当做rgba的第四个参数
+    opacity: {
+      type: [String, Number],
+      default: defprops.overlay.opacity
+    }
+  }
+};
+const props = {
+  props: {
+    bgColor: {
+      type: String,
+      default: defprops.statusBar.bgColor
+    }
+  }
+};
 exports._export_sfc = _export_sfc;
 exports.button = button;
 exports.createSSRApp = createSSRApp;
@@ -11882,30 +11966,31 @@ exports.n = n;
 exports.o = o;
 exports.openType = openType;
 exports.p = p;
-exports.props = props$n;
-exports.props$1 = props$m;
-exports.props$10 = props$d;
-exports.props$11 = props$c;
-exports.props$12 = props$b;
-exports.props$13 = props$a;
-exports.props$14 = props$9;
-exports.props$15 = props$8;
-exports.props$16 = props$7;
-exports.props$17 = props$6;
-exports.props$18 = props$5;
-exports.props$19 = props$4;
-exports.props$2 = props$l;
-exports.props$20 = props$3;
-exports.props$21 = props$2;
-exports.props$22 = props$1;
-exports.props$23 = props;
-exports.props$3 = props$k;
-exports.props$4 = props$j;
-exports.props$5 = props$i;
-exports.props$6 = props$h;
-exports.props$7 = props$g;
-exports.props$8 = props$f;
-exports.props$9 = props$e;
+exports.props = props$o;
+exports.props$1 = props$n;
+exports.props$10 = props$e;
+exports.props$11 = props$d;
+exports.props$12 = props$c;
+exports.props$13 = props$b;
+exports.props$14 = props$a;
+exports.props$15 = props$9;
+exports.props$16 = props$8;
+exports.props$17 = props$7;
+exports.props$18 = props$6;
+exports.props$19 = props$5;
+exports.props$2 = props$m;
+exports.props$20 = props$4;
+exports.props$21 = props$3;
+exports.props$22 = props$2;
+exports.props$23 = props$1;
+exports.props$24 = props;
+exports.props$3 = props$l;
+exports.props$4 = props$k;
+exports.props$5 = props$j;
+exports.props$6 = props$i;
+exports.props$7 = props$h;
+exports.props$8 = props$g;
+exports.props$9 = props$f;
 exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s;
