@@ -28,6 +28,10 @@
 	border-top: 4rpx solid #eee;
 	box-shadow: 0px -8px 20px 0px rgba(0, 0, 0, 0.06);
 }
+.data-v-1cf27b2a .u-cell__title-text.data-v-b4243719 {
+  font-size: 36rpx;
+  font-weight: bold;
+}
 .nav.data-v-1cf27b2a {
   height: 208rpx;
   background: #DFA0B1;
@@ -41,13 +45,13 @@
   margin: 48rpx 0 0 60rpx;
 }
 .main.data-v-1cf27b2a {
-  background: #F6F7F8;
   border-top-left-radius: 32rpx;
   border-top-right-radius: 32rpx;
   position: relative;
   top: -30rpx;
   overflow: hidden;
   padding: 0 32rpx;
+  background: #F6F7F8;
 }
 .main .swiper.data-v-1cf27b2a {
   margin: 24rpx auto;
@@ -123,6 +127,56 @@
   margin: 0 0 76rpx;
   color: rgba(0, 0, 0, 0.5);
 }
-.main .driver .driver-title.data-v-1cf27b2a {
-  margin: 46rpx 0 24rpx;
+.main .driver .grid .grid-text.data-v-1cf27b2a {
+  margin: -20rpx 0 0;
+}
+.main .review.data-v-1cf27b2a {
+  margin: 82rpx 0 0;
+  padding: 30rpx 24rpx;
+  background: #fff;
+  border-radius: 32rpx;
+}
+.main .review .review-title.data-v-1cf27b2a {
+  display: flex;
+  align-items: center;
+}
+.main .review .review-title text.data-v-1cf27b2a {
+  font-size: 26rpx;
+  margin: 0 0 0 24rpx;
+}
+.main .review .review-content.data-v-1cf27b2a {
+  font-size: 26rpx;
+  margin: 12rpx 0 0;
+}
+.main .maintenance .maintenance-box.data-v-1cf27b2a {
+  display: flex;
+  padding: 24rpx;
+  box-sizing: border-box;
+  border-radius: 24rpx;
+  background: #fff;
+  box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.06);
+  margin: 0 0 24rpx;
+}
+.main .maintenance .maintenance-box image.data-v-1cf27b2a {
+  width: 208rpx;
+  height: 256rpx;
+}
+.main .maintenance .maintenance-box .tenance-box-ri.data-v-1cf27b2a {
+  flex: 1;
+  margin: 0 0 0 24rpx;
+}
+.main .maintenance .maintenance-box .tenance-box-ri .title.data-v-1cf27b2a {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin: 0 0 16rpx;
+  display: block;
+}
+.main .maintenance .maintenance-box .tenance-box-ri .price.data-v-1cf27b2a {
+  font-size: 44rpx;
+  font-weight: bold;
+  margin: 36rpx 0 0;
+  display: block;
+}
+.main .cell-title.data-v-1cf27b2a {
+  margin: 46rpx 0 0;
 }

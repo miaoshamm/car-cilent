@@ -2,7 +2,7 @@
 const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
   name: "u-tabbar-item",
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$7],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$10],
   data() {
     return {
       isActive: false,
