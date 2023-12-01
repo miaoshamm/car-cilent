@@ -1,6 +1,6 @@
 <template>
 	<view class="wrapper">
-		<view class="">
+		<view class="text-lg">
 			<text class="text-lg text-red-600">54564</text>
 		</view>
 	</view>
