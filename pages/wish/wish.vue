@@ -1,7 +1,7 @@
 <template>
 	<view class="wrapper">
-		<view class="text-lg">
-			<text class="text-lg">54564</text>
+		<view class="">
+			<text class="text-lg text-red-600">54564</text>
 		</view>
 	</view>
 	<view class="pay-box">

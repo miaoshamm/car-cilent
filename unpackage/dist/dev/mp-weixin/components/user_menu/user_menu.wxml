@@ -1,1 +1,1 @@
-<view class="menu" bindtap="{{c}}"><text style="font-size:36rpx"><slot></slot>{{a}}</text><view><u-icon wx:if="{{b}}" u-i="1e0acb42-0" bind:__l="__l" u-p="{{b}}"></u-icon></view></view>
+<view class="menu" bindtap="{{c}}"><text style="font-size:36rpx"><slot></slot>{{a}}</text><view><u-icon wx:if="{{b}}" class="color-_wn_C0C3CD" u-i="1e0acb42-0" bind:__l="__l" u-p="{{b}}"></u-icon></view></view>
