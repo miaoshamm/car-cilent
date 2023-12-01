@@ -6,9 +6,6 @@
   },
   "devDependencies": {
     "sass": "^1.69.5",
-    "sass-loader": "^10.4.1",
-    "unocss": "^0.57.7",
-    "unocss-preset-weapp": "^0.57.1",
-    "vite": "^5.0.4"
+    "sass-loader": "^10.4.1"
   }
 }

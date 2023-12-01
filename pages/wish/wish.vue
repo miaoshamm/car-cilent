@@ -1,8 +1,5 @@
 <template>
 	<view class="wrapper">
-		<view class="text-lg">
-			<text class="text-lg text-red-600">54564</text>
-		</view>
 	</view>
 	<view class="pay-box">
 		<text class="price">￥45.00</text>
@@ -11,7 +8,6 @@
 </template>
 
 <script setup>
-
 </script>
 
 <style lang="scss">
