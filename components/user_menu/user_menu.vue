@@ -8,7 +8,10 @@
 </template>
 
 <script setup>
-	const props = defineProps(['title','pageUrl']);
+	const props = defineProps({
+		title:String,
+		pageUrl:String
+	});
 	const menuClick=()=>{
 		uni.navigateTo({
 			url:props.pageUrl

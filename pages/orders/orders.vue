@@ -1,6 +1,9 @@
 <template>
-	<view>
-		我的订单
+	<view style="min-height: 100vh; background: #F6F7F8;padding: 0 16rpx; padding-top: 32rpx;">
+		<OrderCard />
+		<OrderCard />
+		<OrderCard />
+		<OrderCard />
 		<u-tabbar style="height: 128rpx;border-top: 4px solid #eee;" :border="false" activeColor="#DFA0B1" :value="value1"
 			:fixed="true" :placeholder="true" :safeAreaInsetBottom="false">
 			<u-tabbar-item text="首页" @click="click1">
@@ -36,6 +39,7 @@
 
 <script setup>
 	import { ref } from 'vue';
+	import OrderCard from '../../components/order_card/order_card.vue';
 	const value1 = ref(1)
 	const click1 = (index) => {
 		let url = ""

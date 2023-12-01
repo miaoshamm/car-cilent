@@ -43,5 +43,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   };
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-35f7c3e5"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-overlay/u-overlay.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-35f7c3e5"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-overlay/u-overlay.vue"]]);
 wx.createComponent(Component);

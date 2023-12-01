@@ -8,8 +8,9 @@ if (!Array) {
 const _easycom_u_tabbar_item = () => "../../node-modules/uview-plus/components/u-tabbar-item/u-tabbar-item.js";
 const _easycom_u_tabbar = () => "../../node-modules/uview-plus/components/u-tabbar/u-tabbar.js";
 if (!Math) {
-  (_easycom_u_tabbar_item + _easycom_u_tabbar)();
+  (OrderCard + _easycom_u_tabbar_item + _easycom_u_tabbar)();
 }
+const OrderCard = () => "../../components/order_card/order_card.js";
 const _sfc_main = {
   __name: "orders",
   setup(__props) {
@@ -53,5 +54,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1acc51a1"], ["__file", "D:/parking-client/pages/orders/orders.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1acc51a1"], ["__file", "/Users/zikn/Project/parking-client/pages/orders/orders.vue"]]);
 wx.createPage(MiniProgramPage);

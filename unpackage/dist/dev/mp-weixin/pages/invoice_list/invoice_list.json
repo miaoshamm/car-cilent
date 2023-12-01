@@ -2,6 +2,6 @@
   "navigationBarTitleText": "查看发票",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "invoice-card": "../../components/invoice_card/invoice_card"
+    "order-card": "../../components/order_card/order_card"
   }
 }

@@ -14,10 +14,10 @@
 				</view>
 			</view>
 			<view class="size_box"></view>
-			<UserMenu>我的评价</UserMenu>
+			<UserMenu pageUrl='/pages/evaluate_list/evaluate_list'>我的评价</UserMenu>
 			<UserMenu pageUrl='/pages/invoice_list/invoice_list'>查看发票</UserMenu>
-			<UserMenu>隐私政策</UserMenu>
-			<UserMenu>服务条款</UserMenu>
+			<UserMenu pageUrl='/pages/privacy_policy/privacy_policy'>隐私政策</UserMenu>
+			<UserMenu pageUrl='/pages/terms_of_service/terms_of_service'>服务条款</UserMenu>
 			<UserMenu>在线客服</UserMenu>
 			<UserMenu>切换角色</UserMenu>			
 		</view>
