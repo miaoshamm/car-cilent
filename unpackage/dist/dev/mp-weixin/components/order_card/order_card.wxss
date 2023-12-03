@@ -23,8 +23,8 @@
 /* 垂直间距 */
 /* 透明度 */
 /* 文章场景相关 */
-.invoice_card.data-v-3f711375 {
-  height: 328rpx;
+.card.data-v-5634394a {
+  min-height: 328rpx;
   background-color: white;
   border-radius: 16rpx;
   box-sizing: border-box;
@@ -33,44 +33,49 @@
   flex-direction: column;
   margin-bottom: 16rpx;
 }
-.invoice_card .top.data-v-3f711375 {
+.card .top.data-v-5634394a {
   display: flex;
   margin-bottom: 16rpx;
   justify-content: space-between;
   align-items: center;
   font-size: 32rpx;
 }
-.invoice_card .top .invoice_type.data-v-3f711375 {
+.card .top .card_type.data-v-5634394a {
   display: flex;
   align-items: center;
 }
-.invoice_card .top .invoice_type .invoice_type_img.data-v-3f711375 {
+.card .top .card_type .card_type_img.data-v-5634394a {
   margin-right: 16rpx;
 }
-.invoice_card .size_box.data-v-3f711375 {
+.card .size_box.data-v-5634394a {
   height: 1rpx;
   background-color: #E7E7E7;
 }
-.invoice_card .invoice_main.data-v-3f711375 {
+.card .card_main.data-v-5634394a {
   flex: 1;
   padding-top: 32rpx;
 }
-.invoice_card .invoice_main .invoice_time.data-v-3f711375 {
+.card .card_main .card_time.data-v-5634394a {
   display: flex;
   flex-direction: column;
 }
-.invoice_card .invoice_main .invoice_title.data-v-3f711375 {
+.card .card_main .card_evaluate_content.data-v-5634394a {
+  display: flex;
+  flex-direction: column;
+  margin: 16rpx 0;
+}
+.card .card_main .card_hint_text.data-v-5634394a {
   font-size: 28rpx;
   color: rgba(0, 0, 0, 0.6);
 }
-.invoice_card .invoice_main .invoice_content.data-v-3f711375 {
+.card .card_main .card_primary_text.data-v-5634394a {
   font-size: 32rpx;
 }
-.invoice_card .invoice_main .invoice_service_info.data-v-3f711375 {
-  display: flex;
-  justify-content: space-around;
+.card .card_main .card_info.data-v-5634394a {
+  display: grid;
+  grid-template-columns: repeat(3, 33.33%);
 }
-.invoice_card .invoice_main .invoice_service_info view.data-v-3f711375 {
+.card .card_main .card_info view.data-v-5634394a {
   display: flex;
   flex-direction: column;
 }

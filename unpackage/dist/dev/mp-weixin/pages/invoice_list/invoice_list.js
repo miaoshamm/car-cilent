@@ -1,16 +1,29 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 if (!Math) {
-  InvoiceCard();
+  OrderCard();
 }
-const InvoiceCard = () => "../../components/invoice_card/invoice_card.js";
+const OrderCard = () => "../../components/order_card/order_card.js";
 const _sfc_main = {
   __name: "invoice_list",
   setup(__props) {
     return (_ctx, _cache) => {
-      return {};
+      return {
+        a: common_vendor.p({
+          type: "invoice"
+        }),
+        b: common_vendor.p({
+          type: "invoice"
+        }),
+        c: common_vendor.p({
+          type: "invoice"
+        }),
+        d: common_vendor.p({
+          type: "invoice"
+        })
+      };
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-2c57b8ef"], ["__file", "D:/parking-client/pages/invoice_list/invoice_list.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zikn/Project/parking-client/pages/invoice_list/invoice_list.vue"]]);
 wx.createPage(MiniProgramPage);

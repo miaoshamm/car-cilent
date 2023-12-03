@@ -1,0 +1,1 @@
+<view style="min-height:100vh;background:#F6F7F8;padding:0 16rpx;padding-top:32rpx"><license-plate-selection wx:if="{{a}}" u-i="7845a2a0-0" bind:__l="__l" u-p="{{a}}"/></view>

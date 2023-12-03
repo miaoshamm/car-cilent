@@ -1,0 +1,1 @@
+<view style="min-height:100vh;background:#F6F7F8;padding:32rpx"><rich-text nodes="{{a}}"/></view>

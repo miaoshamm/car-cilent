@@ -39,21 +39,30 @@ const _sfc_main = {
           shape: "circle"
         }),
         b: common_vendor.p({
+          pageUrl: "/pages/evaluate_list/evaluate_list"
+        }),
+        c: common_vendor.p({
           pageUrl: "/pages/invoice_list/invoice_list"
         }),
-        c: common_vendor.o(click1),
         d: common_vendor.p({
+          pageUrl: "/pages/privacy_policy/privacy_policy"
+        }),
+        e: common_vendor.p({
+          pageUrl: "/pages/terms_of_service/terms_of_service"
+        }),
+        f: common_vendor.o(click1),
+        g: common_vendor.p({
           text: "首页"
         }),
-        e: common_vendor.o(click1),
-        f: common_vendor.p({
+        h: common_vendor.o(click1),
+        i: common_vendor.p({
           text: "我的订单"
         }),
-        g: common_vendor.o(click1),
-        h: common_vendor.p({
+        j: common_vendor.o(click1),
+        k: common_vendor.p({
           text: "个人中心"
         }),
-        i: common_vendor.p({
+        l: common_vendor.p({
           border: false,
           activeColor: "#DFA0B1",
           value: value1.value,
@@ -65,5 +74,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-8cce343a"], ["__file", "D:/parking-client/pages/account/account.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-8cce343a"], ["__file", "/Users/zikn/Project/parking-client/pages/account/account.vue"]]);
 wx.createPage(MiniProgramPage);

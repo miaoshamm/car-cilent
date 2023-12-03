@@ -10,7 +10,10 @@ if (!Math) {
 }
 const _sfc_main = {
   __name: "user_menu",
-  props: ["title", "pageUrl"],
+  props: {
+    title: String,
+    pageUrl: String
+  },
   setup(__props) {
     const props = __props;
     const menuClick = () => {
@@ -31,5 +34,5 @@ const _sfc_main = {
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/parking-client/components/user_menu/user_menu.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zikn/Project/parking-client/components/user_menu/user_menu.vue"]]);
 wx.createComponent(Component);

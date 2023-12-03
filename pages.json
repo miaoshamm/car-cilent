@@ -48,6 +48,38 @@
 				"navigationBarTitleText" : "预约车辆维保",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/evaluate_list/evaluate_list",
+			"style" : 
+			{
+				"navigationBarTitleText" : "我的评价",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/privacy_policy/privacy_policy",
+			"style" : 
+			{
+				"navigationBarTitleText" : "隐私政策",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/terms_of_service/terms_of_service",
+			"style" : 
+			{
+				"navigationBarTitleText" : "服务条款",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/order_detail/order_detail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "订单详情",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"globalStyle": {

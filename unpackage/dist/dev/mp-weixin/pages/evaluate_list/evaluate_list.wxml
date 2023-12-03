@@ -1,0 +1,1 @@
+<view style="min-height:100vh;background:#F6F7F8;padding:0 16rpx;padding-top:32rpx"><order-card wx:if="{{a}}" u-i="55977eac-0" bind:__l="__l" u-p="{{a}}"/><order-card wx:if="{{b}}" u-i="55977eac-1" bind:__l="__l" u-p="{{b}}"/><order-card wx:if="{{c}}" u-i="55977eac-2" bind:__l="__l" u-p="{{c}}"/></view>

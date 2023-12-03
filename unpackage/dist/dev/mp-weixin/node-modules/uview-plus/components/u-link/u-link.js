@@ -39,5 +39,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     d: common_vendor.s(_ctx.$u.addStyle(_ctx.customStyle))
   };
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-dedad317"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-link/u-link.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-dedad317"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-link/u-link.vue"]]);
 wx.createComponent(Component);

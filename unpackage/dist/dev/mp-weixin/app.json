@@ -4,7 +4,11 @@
     "pages/orders/orders",
     "pages/account/account",
     "pages/invoice_list/invoice_list",
-    "pages/wish/wish"
+    "pages/wish/wish",
+    "pages/evaluate_list/evaluate_list",
+    "pages/privacy_policy/privacy_policy",
+    "pages/terms_of_service/terms_of_service",
+    "pages/order_detail/order_detail"
   ],
   "window": {
     "navigationBarTextStyle": "black",

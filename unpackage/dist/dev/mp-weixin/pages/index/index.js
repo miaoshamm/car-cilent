@@ -216,15 +216,15 @@ const _sfc_main = {
           lines: 2,
           size: "13",
           color: "#666",
-          text: "为您的爱车提供最佳的外观和内部清洁效果\r\n						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
+          text: "为您的爱车提供最佳的外观和内部清洁效果\n						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
         }),
         o: common_vendor.p({
           lines: 2,
-          text: "为您的爱车提供最佳的外观和内部清洁效果\r\n						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
+          text: "为您的爱车提供最佳的外观和内部清洁效果\n						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
         }),
         p: common_vendor.p({
           lines: 2,
-          text: "为您的爱车提供最佳的外观和内部清洁效果\r\n						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
+          text: "为您的爱车提供最佳的外观和内部清洁效果\n						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
         }),
         q: common_vendor.o(click1),
         r: common_vendor.p({
@@ -250,5 +250,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "D:/parking-client/pages/index/index.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-1cf27b2a"], ["__file", "/Users/zikn/Project/parking-client/pages/index/index.vue"]]);
 wx.createPage(MiniProgramPage);

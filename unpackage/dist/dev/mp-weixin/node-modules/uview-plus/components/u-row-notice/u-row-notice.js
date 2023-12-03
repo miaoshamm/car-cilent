@@ -145,5 +145,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     l: common_vendor.o((...args) => $options.clickHandler && $options.clickHandler(...args))
   });
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-462e724c"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-row-notice/u-row-notice.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-462e724c"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-row-notice/u-row-notice.vue"]]);
 wx.createComponent(Component);
