@@ -2,7 +2,7 @@
 const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
   name: "u-link",
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$19],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$22],
   computed: {
     linkStyle() {
       const style = {

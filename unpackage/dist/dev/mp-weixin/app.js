@@ -15,6 +15,8 @@ function _sfc_render(_ctx, _cache) {
 const App = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "D:/parking-client/App.vue"]]);
 function createApp() {
   const app = common_vendor.createSSRApp(App);
+  const pinia = common_vendor.createPinia();
+  app.use(pinia);
   app.use(common_vendor.uviewPlus);
   return {
     app
