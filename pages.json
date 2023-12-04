@@ -80,6 +80,22 @@
 				"navigationBarTitleText" : "订单详情",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/bill_rule/bill_rule",
+			"style" : 
+			{
+				"navigationBarTitleText" : "计费规则",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/pick_up/pick_up",
+			"style" : 
+			{
+				"navigationBarTitleText" : "预约接送服务",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"globalStyle": {

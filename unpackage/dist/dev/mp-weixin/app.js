@@ -11,6 +11,8 @@ if (!Math) {
   "./pages/privacy_policy/privacy_policy.js";
   "./pages/terms_of_service/terms_of_service.js";
   "./pages/order_detail/order_detail.js";
+  "./pages/bill_rule/bill_rule.js";
+  "./pages/pick_up/pick_up.js";
 }
 const _sfc_main = {};
 function _sfc_render(_ctx, _cache) {

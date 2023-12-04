@@ -156,7 +156,8 @@
 		{
 			name: '/static/images/index/grid4.png',
 			title: '患者接送',
-			small: "中山六院"
+			small: "中山六院",
+			url:"/pages/pick_up/pick_up"
 		},
 		{
 			name: '/static/images/index/grid5.png',

@@ -12,27 +12,33 @@ const _sfc_main = {
   __name: "user_menu",
   props: {
     title: String,
-    pageUrl: String
+    pageUrl: String,
+    description: String
   },
   setup(__props) {
     const props = __props;
     const menuClick = () => {
-      common_vendor.index.navigateTo({
-        url: props.pageUrl
-      });
+      if (props.pageUrl) {
+        common_vendor.index.navigateTo({
+          url: props.pageUrl
+        });
+      } else {
+        props.onClick();
+      }
     };
     return (_ctx, _cache) => {
       return {
         a: common_vendor.t(props.title),
-        b: common_vendor.p({
+        b: common_vendor.t(props.description),
+        c: common_vendor.p({
           name: "arrow-right",
           color: "#C0C3CD",
           size: "28"
         }),
-        c: common_vendor.o(menuClick)
+        d: common_vendor.o(menuClick)
       };
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zikn/Project/parking-client/components/user_menu/user_menu.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-d559bba5"], ["__file", "/Users/zikn/Project/parking-client/components/user_menu/user_menu.vue"]]);
 wx.createComponent(Component);

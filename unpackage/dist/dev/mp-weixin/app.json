@@ -8,7 +8,9 @@
     "pages/evaluate_list/evaluate_list",
     "pages/privacy_policy/privacy_policy",
     "pages/terms_of_service/terms_of_service",
-    "pages/order_detail/order_detail"
+    "pages/order_detail/order_detail",
+    "pages/bill_rule/bill_rule",
+    "pages/pick_up/pick_up"
   ],
   "window": {
     "navigationBarTextStyle": "black",

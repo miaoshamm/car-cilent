@@ -1,1 +1,1 @@
-<view class="wrapper"><view class=""><text class="text-lg text-red-600">54564</text></view></view><view class="pay-box"><text class="price">￥45.00</text><u-button wx:if="{{a}}" u-i="1528e4c0-0" bind:__l="__l" u-p="{{a}}"></u-button></view>
+<view class="wrapper"></view><view class="pay-box"><text class="price">￥45.00</text><u-button wx:if="{{a}}" u-i="1528e4c0-0" bind:__l="__l" u-p="{{a}}"></u-button></view>
