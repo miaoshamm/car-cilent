@@ -9,6 +9,7 @@
 	background: #F6F7F8;
 	padding: 32rpx;
 	position: relative;
+	box-sizing: border-box;
 }
 
 .wrapper-p{
@@ -36,4 +37,47 @@
 		width: 250rpx;
 		margin: 0;
 	}
+}
+
+.car-info{
+	background: #fff;
+	border-radius: 16rpx;
+	padding: 0 32rpx;
+	box-sizing: border-box;
+	margin: 16rpx 0 0;
+	.u-form-item__body.data-v-b4fd400b:not(:last-child){
+		padding: 28rpx 0;
+	}
+}
+
+.service{
+	display: flex;
+	image{
+		width: 96rpx;
+		height: 96rpx;
+		margin: 0 16rpx 0 0;
+	}
+	.text{
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		.name{
+			font-size: 32rpx;
+		}
+		.price{
+			font-size: 28rpx;
+			font-weight: 700;
+			color: #E34D59;
+		}
+	}
+}
+
+.check-btn {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	padding: 20rpx 32rpx;
+	box-sizing: border-box;
+	background: #fff;
+	box-shadow: 0px 6px 30px 5px rgba(0, 0, 0, 0.05), 0px 16px 24px 2px rgba(0, 0, 0, 0.04), 0px 8px 10px -5px rgba(0, 0, 0, 0.08);
 }

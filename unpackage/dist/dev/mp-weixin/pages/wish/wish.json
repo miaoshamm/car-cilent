@@ -7,10 +7,10 @@
     "u-icon": "../../node-modules/uview-plus/components/u-icon/u-icon",
     "up-button": "../../node-modules/uview-plus/components/u-button/u-button",
     "u--form": "../../node-modules/uview-plus/components/u-form/u-form",
-    "up-text": "../../node-modules/uview-plus/components/u-text/u-text",
     "u-button": "../../node-modules/uview-plus/components/u-button/u-button",
     "u-datetime-picker": "../../node-modules/uview-plus/components/u-datetime-picker/u-datetime-picker",
     "u-picker": "../../node-modules/uview-plus/components/u-picker/u-picker",
-    "license": "../../components/license_plate_selection/license_plate_selection"
+    "license": "../../components/license_plate_selection/license_plate_selection",
+    "insurance": "../../components/insurance_tips/insurance_tips"
   }
 }

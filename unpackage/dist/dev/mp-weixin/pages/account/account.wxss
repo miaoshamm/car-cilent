@@ -8,6 +8,7 @@
   background: #F6F7F8;
   padding: 32rpx;
   position: relative;
+  box-sizing: border-box;
 }
 .wrapper-p.data-v-8cce343a {
   padding-bottom: 140rpx;
@@ -31,6 +32,46 @@
 .pay-box .u-button.data-v-461e713c.data-v-8cce343a {
   width: 250rpx;
   margin: 0;
+}
+.car-info.data-v-8cce343a {
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 0 32rpx;
+  box-sizing: border-box;
+  margin: 16rpx 0 0;
+}
+.car-info .u-form-item__body.data-v-b4fd400b.data-v-8cce343a:not(:last-child) {
+  padding: 28rpx 0;
+}
+.service.data-v-8cce343a {
+  display: flex;
+}
+.service image.data-v-8cce343a {
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 16rpx 0 0;
+}
+.service .text.data-v-8cce343a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.service .text .name.data-v-8cce343a {
+  font-size: 32rpx;
+}
+.service .text .price.data-v-8cce343a {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #E34D59;
+}
+.check-btn.data-v-8cce343a {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding: 20rpx 32rpx;
+  box-sizing: border-box;
+  background: #fff;
+  box-shadow: 0px 6px 30px 5px rgba(0, 0, 0, 0.05), 0px 16px 24px 2px rgba(0, 0, 0, 0.04), 0px 8px 10px -5px rgba(0, 0, 0, 0.08);
 }
 .nav.data-v-8cce343a {
   height: 208rpx;

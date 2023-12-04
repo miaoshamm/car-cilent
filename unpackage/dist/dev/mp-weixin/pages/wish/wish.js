@@ -6,25 +6,24 @@ if (!Array) {
   const _easycom_u_icon2 = common_vendor.resolveComponent("u-icon");
   const _easycom_up_button2 = common_vendor.resolveComponent("up-button");
   const _easycom_u__form2 = common_vendor.resolveComponent("u--form");
-  const _easycom_up_text2 = common_vendor.resolveComponent("up-text");
   const _easycom_u_button2 = common_vendor.resolveComponent("u-button");
   const _easycom_u_datetime_picker2 = common_vendor.resolveComponent("u-datetime-picker");
   const _easycom_u_picker2 = common_vendor.resolveComponent("u-picker");
-  (_easycom_u__input2 + _easycom_u_form_item2 + _easycom_u_icon2 + _easycom_up_button2 + _easycom_u__form2 + _easycom_up_text2 + _easycom_u_button2 + _easycom_u_datetime_picker2 + _easycom_u_picker2)();
+  (_easycom_u__input2 + _easycom_u_form_item2 + _easycom_u_icon2 + _easycom_up_button2 + _easycom_u__form2 + _easycom_u_button2 + _easycom_u_datetime_picker2 + _easycom_u_picker2)();
 }
 const _easycom_u__input = () => "../../node-modules/uview-plus/components/u-input/u-input.js";
 const _easycom_u_form_item = () => "../../node-modules/uview-plus/components/u-form-item/u-form-item.js";
 const _easycom_u_icon = () => "../../node-modules/uview-plus/components/u-icon/u-icon.js";
 const _easycom_up_button = () => "../../node-modules/uview-plus/components/u-button/u-button.js";
 const _easycom_u__form = () => "../../node-modules/uview-plus/components/u-form/u-form.js";
-const _easycom_up_text = () => "../../node-modules/uview-plus/components/u-text/u-text.js";
 const _easycom_u_button = () => "../../node-modules/uview-plus/components/u-button/u-button.js";
 const _easycom_u_datetime_picker = () => "../../node-modules/uview-plus/components/u-datetime-picker/u-datetime-picker.js";
 const _easycom_u_picker = () => "../../node-modules/uview-plus/components/u-picker/u-picker.js";
 if (!Math) {
-  (License + _easycom_u__input + _easycom_u_form_item + _easycom_u_icon + _easycom_up_button + _easycom_u__form + _easycom_up_text + _easycom_u_button + _easycom_u_datetime_picker + _easycom_u_picker)();
+  (License + _easycom_u__input + _easycom_u_form_item + _easycom_u_icon + _easycom_up_button + _easycom_u__form + Insurance + _easycom_u_button + _easycom_u_datetime_picker + _easycom_u_picker)();
 }
 const License = () => "../../components/license_plate_selection/license_plate_selection.js";
+const Insurance = () => "../../components/insurance_tips/insurance_tips.js";
 const _sfc_main = {
   __name: "wish",
   setup(__props) {
@@ -193,35 +192,24 @@ const _sfc_main = {
           labelWidth: "120"
         }),
         y: common_vendor.p({
-          iconStyle: "width:18rpx;margin:0 10rpx 0 0;",
-          size: "24rpx",
-          prefixIcon: "/static/images/wish/clause.svg",
-          text: "车辆维保条款",
-          color: "#F2995F"
+          type: "wish"
         }),
-        z: common_vendor.p({
-          size: "24rpx",
-          text: "查看计费规则",
-          decoration: "underline",
-          color: "#DFA0B1",
-          align: "right"
-        }),
-        A: common_vendor.o(goPay),
-        B: common_vendor.p({
+        z: common_vendor.o(goPay),
+        A: common_vendor.p({
           text: "立即支付",
           color: "#DFA0B1"
         }),
-        C: common_vendor.o(($event) => info.value.timeShow = false),
-        D: common_vendor.o(checkTime),
-        E: common_vendor.p({
+        B: common_vendor.o(($event) => info.value.timeShow = false),
+        C: common_vendor.o(checkTime),
+        D: common_vendor.p({
           formatter,
           minDate: common_vendor.unref(nowTime),
           show: info.value.timeShow,
           mode: "datetime"
         }),
-        F: common_vendor.o(($event) => info.value.modelShow = false),
-        G: common_vendor.o(checkModel),
-        H: common_vendor.p({
+        E: common_vendor.o(($event) => info.value.modelShow = false),
+        F: common_vendor.o(checkModel),
+        G: common_vendor.p({
           show: info.value.modelShow,
           columns: modelColumns.value,
           keyName: "label"

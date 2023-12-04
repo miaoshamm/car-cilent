@@ -38,33 +38,34 @@
 				</u-form-item>
 				<u-form-item>
 					<view class="add-service">
-						<up-button @click="goService" customStyle="border:none;" color="#DFA0B1" iconColor="#DFA0B1" :plain="true" :hairline="false"
-							icon="plus" text="增添服务"></up-button>
+						<up-button @click="goService" customStyle="border:none;" color="#DFA0B1" iconColor="#DFA0B1" :plain="true"
+							:hairline="false" icon="plus" text="增添服务"></up-button>
 					</view>
 				</u-form-item>
 			</u--form>
 		</view>
-		<view class="clause">
-			<up-text iconStyle="width:18rpx;margin:0 10rpx 0 0;" size="24rpx" prefixIcon="/static/images/wish/clause.svg"
-				text="车辆维保条款" color="#F2995F"></up-text>
-			<up-text size="24rpx" text="查看计费规则" decoration="underline" color="#DFA0B1" align="right"></up-text>
-		</view>
+		<Insurance type="wish" />
 	</view>
 	<view class="pay-box">
 		<text class="price">￥45.00</text>
 		<u-button text="立即支付" color="#DFA0B1" @click="goPay"></u-button>
 	</view>
-	<u-datetime-picker :formatter="formatter" :minDate="nowTime" @cancel="info.timeShow = false" @confirm="checkTime" :show="info.timeShow"
-		mode="datetime"></u-datetime-picker>
+	<u-datetime-picker :formatter="formatter" :minDate="nowTime" @cancel="info.timeShow = false" @confirm="checkTime"
+		:show="info.timeShow" mode="datetime"></u-datetime-picker>
 	<u-picker @cancel="info.modelShow = false" @confirm="checkModel" :show="info.modelShow" :columns="modelColumns"
 		keyName="label"></u-picker>
 </template>
 
 <script setup>
-	import { ref } from 'vue';
+	import {
+		ref
+	} from 'vue';
 	import License from "@/components/license_plate_selection/license_plate_selection.vue"
+	import Insurance from "@/components/insurance_tips/insurance_tips.vue"
 	import dayjs from 'dayjs';
-	import {onReady} from "@dcloudio/uni-app"
+	import {
+		onReady
+	} from "@dcloudio/uni-app"
 
 	// 车牌号
 	let licensePlate = ref("皖GHHHHHN")
@@ -74,7 +75,7 @@
 		phone: "",
 		time: "",
 		model: "",
-		modelId:0,
+		modelId: 0,
 		timeShow: false,
 		modelShow: false
 	})
@@ -109,32 +110,32 @@
 		info.value.modelId = item.value[0].id
 		info.value.modelShow = false
 	}
-	
+
 	// 跳转
 	const goService = () => {
 		uni.navigateTo({
-			url:"/pages/service/service?type=wish",
+			url: "/pages/service/service?type=wish",
 		})
 	}
-	
+
 	// 格式化
 	const formatter = (type, value) => {
-	  if (type === 'year') {
-	    return `${value}年`;
-	  }
-	  if (type === 'month') {
-	    return `${value}月`;
-	  }
-	  if (type === 'day') {
-	    return `${value}日`;
-	  }
-		if (type === 'hour') {
-	    return `${value}时`;
-	  }
-		if (type === 'minute') {
-		  return `${value}分`;
+		if (type === 'year') {
+			return `${value}年`;
 		}
-	  return value;
+		if (type === 'month') {
+			return `${value}月`;
+		}
+		if (type === 'day') {
+			return `${value}日`;
+		}
+		if (type === 'hour') {
+			return `${value}时`;
+		}
+		if (type === 'minute') {
+			return `${value}分`;
+		}
+		return value;
 	};
 
 	const check = () => {
@@ -144,26 +145,20 @@
 			}
 		})
 	}
-	
+
 	// 支付
 	const goPay = () => {
 		uni.navigateTo({
-			url:"/pages/wish/wish_pay/wish_pay"
+			url: "/pages/wish/wish_pay/wish_pay"
 		})
 	}
-	
+
 	onReady(() => {
-	  // 微信小程序需要用此写法
-	  datetimePickerRef.value.setFormatter(formatter);
+		// 微信小程序需要用此写法
+		datetimePickerRef.value.setFormatter(formatter);
 	});
 </script>
 
 <style lang="less">
 	@import url("../../static/css/index.less");
-	// 服务条款
-	.clause {
-		display: flex;
-		margin: 16rpx 0 0;
-	}
-
 </style>

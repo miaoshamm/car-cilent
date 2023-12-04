@@ -10501,8 +10501,9 @@ const dayjs$1 = dayjs_minExports;
 const createHook = (lifecycle) => (hook, target = getCurrentInstance()) => {
   !isInSSRComponentSetup && injectHook(lifecycle, hook, target);
 };
+const onLoad = /* @__PURE__ */ createHook(ON_LOAD);
 const onReady = /* @__PURE__ */ createHook(ON_READY);
-const props$v = {
+const props$z = {
   props: {
     // 是否展示modal
     show: {
@@ -10586,7 +10587,7 @@ const props$v = {
     }
   }
 };
-const props$u = {
+const props$y = {
   props: {
     // 显示的内容，数组
     text: {
@@ -10656,7 +10657,7 @@ const props$u = {
     }
   }
 };
-const props$t = {
+const props$x = {
   props: {
     // 列表数组，元素可为字符串，如为对象可通过keyName指定目标属性名
     list: {
@@ -10995,7 +10996,7 @@ const icons = {
   "uicon-zh": "",
   "uicon-en": ""
 };
-const props$s = {
+const props$w = {
   props: {
     // 图标类名
     name: {
@@ -11084,7 +11085,7 @@ const props$s = {
     }
   }
 };
-const props$r = {
+const props$v = {
   props: {
     // 宫格的name
     name: {
@@ -11098,7 +11099,7 @@ const props$r = {
     }
   }
 };
-const props$q = {
+const props$u = {
   props: {
     // 分成几列
     col: {
@@ -11155,7 +11156,7 @@ const openType = {
     }
   }
 };
-const props$p = {
+const props$t = {
   props: {
     // 是否细边框
     hairline: {
@@ -11307,7 +11308,7 @@ const props$p = {
     }
   }
 };
-const props$o = {
+const props$s = {
   props: {
     // 标题
     title: {
@@ -11417,7 +11418,7 @@ const props$o = {
     }
   }
 };
-const props$n = {
+const props$r = {
   props: {
     // 头像图片路径(不能为相对路径)
     src: {
@@ -11569,7 +11570,7 @@ const value = {
     }
   }
 };
-const props$m = {
+const props$q = {
   props: {
     // 主题颜色
     type: {
@@ -11679,7 +11680,7 @@ const props$m = {
     }
   }
 };
-const props$l = {
+const props$p = {
   props: {
     // item标签的名称，作为与u-tabbar的value参数匹配的标识符
     name: {
@@ -11713,7 +11714,7 @@ const props$l = {
     }
   }
 };
-const props$k = {
+const props$o = {
   props: {
     // 当前匹配项的name
     value: {
@@ -11757,7 +11758,7 @@ const props$k = {
     }
   }
 };
-const props$j = {
+const props$n = {
   props: {
     // 图片地址
     src: {
@@ -11841,7 +11842,7 @@ const props$j = {
     }
   }
 };
-const props$i = {
+const props$m = {
   props: {
     // 绑定的值
     modelValue: {
@@ -12027,7 +12028,7 @@ const props$i = {
     }
   }
 };
-const props$h = {
+const props$l = {
   props: {
     // input的label提示语
     label: {
@@ -12070,7 +12071,7 @@ const props$h = {
     }
   }
 };
-const props$g = {
+const props$k = {
   props: {
     // 当前form的需要验证字段的集合
     model: {
@@ -13006,7 +13007,7 @@ Schema.register = function register(type2, validator) {
 };
 Schema.warning = warning;
 Schema.messages = messages;
-const props$f = {
+const props$j = {
   props: {
     // 是否打开组件
     show: {
@@ -13605,7 +13606,7 @@ dayjs.unix = function(timestamp) {
 dayjs.en = Ls[L];
 dayjs.Ls = Ls;
 dayjs.p = {};
-const props$e = {
+const props$i = {
   props: {
     // 是否展示picker弹窗
     show: {
@@ -13689,7 +13690,7 @@ const props$e = {
     }
   }
 };
-const props$d = {
+const props$h = {
   props: {
     // 输入框的内容
     value: {
@@ -13813,7 +13814,7 @@ const props$d = {
     }
   }
 };
-const props$c = {
+const props$g = {
   props: {
     // 是否展示弹窗
     show: {
@@ -13889,6 +13890,307 @@ const props$c = {
     overlayOpacity: {
       type: [Number, String],
       default: defprops.popup.overlayOpacity
+    }
+  }
+};
+const props$f = {
+  props: {
+    // 是否开启顶部安全区适配
+    safeAreaInsetTop: {
+      type: Boolean,
+      default: defprops.navbar.safeAreaInsetTop
+    },
+    // 固定在顶部时，是否生成一个等高元素，以防止塌陷
+    placeholder: {
+      type: Boolean,
+      default: defprops.navbar.placeholder
+    },
+    // 是否固定在顶部
+    fixed: {
+      type: Boolean,
+      default: defprops.navbar.fixed
+    },
+    // 是否显示下边框
+    border: {
+      type: Boolean,
+      default: defprops.navbar.border
+    },
+    // 左边的图标
+    leftIcon: {
+      type: String,
+      default: defprops.navbar.leftIcon
+    },
+    // 左边的提示文字
+    leftText: {
+      type: String,
+      default: defprops.navbar.leftText
+    },
+    // 左右的提示文字
+    rightText: {
+      type: String,
+      default: defprops.navbar.rightText
+    },
+    // 右边的图标
+    rightIcon: {
+      type: String,
+      default: defprops.navbar.rightIcon
+    },
+    // 标题
+    title: {
+      type: [String, Number],
+      default: defprops.navbar.title
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.navbar.bgColor
+    },
+    // 标题的宽度
+    titleWidth: {
+      type: [String, Number],
+      default: defprops.navbar.titleWidth
+    },
+    // 导航栏高度
+    height: {
+      type: [String, Number],
+      default: defprops.navbar.height
+    },
+    // 左侧返回图标的大小
+    leftIconSize: {
+      type: [String, Number],
+      default: defprops.navbar.leftIconSize
+    },
+    // 左侧返回图标的颜色
+    leftIconColor: {
+      type: String,
+      default: defprops.navbar.leftIconColor
+    },
+    // 点击左侧区域(返回图标)，是否自动返回上一页
+    autoBack: {
+      type: Boolean,
+      default: defprops.navbar.autoBack
+    },
+    // 标题的样式，对象或字符串
+    titleStyle: {
+      type: [String, Object],
+      default: defprops.navbar.titleStyle
+    }
+  }
+};
+const props$e = {
+  props: {
+    // checkbox的名称
+    name: {
+      type: [String, Number, Boolean],
+      default: defprops.checkbox.name
+    },
+    // 形状，square为方形，circle为圆型
+    shape: {
+      type: String,
+      default: defprops.checkbox.shape
+    },
+    // 整体的大小
+    size: {
+      type: [String, Number],
+      default: defprops.checkbox.size
+    },
+    // 是否默认选中
+    checked: {
+      type: Boolean,
+      default: defprops.checkbox.checked
+    },
+    // 是否禁用
+    disabled: {
+      type: [String, Boolean],
+      default: defprops.checkbox.disabled
+    },
+    // 选中状态下的颜色，如设置此值，将会覆盖parent的activeColor值
+    activeColor: {
+      type: String,
+      default: defprops.checkbox.activeColor
+    },
+    // 未选中的颜色
+    inactiveColor: {
+      type: String,
+      default: defprops.checkbox.inactiveColor
+    },
+    // 图标的大小，单位px
+    iconSize: {
+      type: [String, Number],
+      default: defprops.checkbox.iconSize
+    },
+    // 图标颜色
+    iconColor: {
+      type: String,
+      default: defprops.checkbox.iconColor
+    },
+    // label提示文字，因为nvue下，直接slot进来的文字，由于特殊的结构，无法修改样式
+    label: {
+      type: [String, Number],
+      default: defprops.checkbox.label
+    },
+    // label的字体大小，px单位
+    labelSize: {
+      type: [String, Number],
+      default: defprops.checkbox.labelSize
+    },
+    // label的颜色
+    labelColor: {
+      type: String,
+      default: defprops.checkbox.labelColor
+    },
+    // 是否禁止点击提示语选中复选框
+    labelDisabled: {
+      type: [String, Boolean],
+      default: defprops.checkbox.labelDisabled
+    }
+  }
+};
+const props$d = {
+  props: {
+    // radio的名称
+    name: {
+      type: [String, Number, Boolean],
+      default: defprops.radio.name
+    },
+    // 形状，square为方形，circle为圆型
+    shape: {
+      type: String,
+      default: defprops.radio.shape
+    },
+    // 是否禁用
+    disabled: {
+      type: [String, Boolean],
+      default: defprops.radio.disabled
+    },
+    // 是否禁止点击提示语选中单选框
+    labelDisabled: {
+      type: [String, Boolean],
+      default: defprops.radio.labelDisabled
+    },
+    // 选中状态下的颜色，如设置此值，将会覆盖parent的activeColor值
+    activeColor: {
+      type: String,
+      default: defprops.radio.activeColor
+    },
+    // 未选中的颜色
+    inactiveColor: {
+      type: String,
+      default: defprops.radio.inactiveColor
+    },
+    // 图标的大小，单位px
+    iconSize: {
+      type: [String, Number],
+      default: defprops.radio.iconSize
+    },
+    // label的字体大小，px单位
+    labelSize: {
+      type: [String, Number],
+      default: defprops.radio.labelSize
+    },
+    // label提示文字，因为nvue下，直接slot进来的文字，由于特殊的结构，无法修改样式
+    label: {
+      type: [String, Number],
+      default: defprops.radio.label
+    },
+    // 整体的大小
+    size: {
+      type: [String, Number],
+      default: defprops.radio.size
+    },
+    // 图标颜色
+    color: {
+      type: String,
+      default: defprops.radio.color
+    },
+    // label的颜色
+    labelColor: {
+      type: String,
+      default: defprops.radio.labelColor
+    },
+    // 图标颜色
+    iconColor: {
+      type: String,
+      default: defprops.radio.iconColor
+    }
+  }
+};
+const props$c = {
+  props: {
+    // 标识符
+    name: {
+      type: String,
+      default: defprops.checkboxGroup.name
+    },
+    // 绑定的值
+    modelValue: {
+      type: Array,
+      default: defprops.checkboxGroup.value
+    },
+    // 形状，circle-圆形，square-方形
+    shape: {
+      type: String,
+      default: defprops.checkboxGroup.shape
+    },
+    // 是否禁用全部checkbox
+    disabled: {
+      type: Boolean,
+      default: defprops.checkboxGroup.disabled
+    },
+    // 选中状态下的颜色，如设置此值，将会覆盖parent的activeColor值
+    activeColor: {
+      type: String,
+      default: defprops.checkboxGroup.activeColor
+    },
+    // 未选中的颜色
+    inactiveColor: {
+      type: String,
+      default: defprops.checkboxGroup.inactiveColor
+    },
+    // 整个组件的尺寸，默认px
+    size: {
+      type: [String, Number],
+      default: defprops.checkboxGroup.size
+    },
+    // 布局方式，row-横向，column-纵向
+    placement: {
+      type: String,
+      default: defprops.checkboxGroup.placement
+    },
+    // label的字体大小，px单位
+    labelSize: {
+      type: [String, Number],
+      default: defprops.checkboxGroup.labelSize
+    },
+    // label的字体颜色
+    labelColor: {
+      type: [String],
+      default: defprops.checkboxGroup.labelColor
+    },
+    // 是否禁止点击文本操作
+    labelDisabled: {
+      type: Boolean,
+      default: defprops.checkboxGroup.labelDisabled
+    },
+    // 图标颜色
+    iconColor: {
+      type: String,
+      default: defprops.checkboxGroup.iconColor
+    },
+    // 图标的大小，单位px
+    iconSize: {
+      type: [String, Number],
+      default: defprops.checkboxGroup.iconSize
+    },
+    // 勾选图标的对齐方式，left-左边，right-右边
+    iconPlacement: {
+      type: String,
+      default: defprops.checkboxGroup.iconPlacement
+    },
+    // 竖向配列时，是否显示下划线
+    borderBottom: {
+      type: Boolean,
+      default: defprops.checkboxGroup.borderBottom
     }
   }
 };
@@ -14388,41 +14690,46 @@ exports.mixin = mixin;
 exports.mpMixin = mpMixin;
 exports.n = n;
 exports.o = o;
+exports.onLoad = onLoad;
 exports.onReady = onReady;
 exports.openType = openType;
 exports.p = p;
-exports.props = props$v;
-exports.props$1 = props$u;
-exports.props$10 = props$l;
-exports.props$11 = props$k;
-exports.props$12 = props$j;
-exports.props$13 = props$i;
-exports.props$14 = props$h;
-exports.props$15 = props$g;
-exports.props$16 = props$f;
-exports.props$17 = props$e;
-exports.props$18 = props$d;
-exports.props$19 = props$c;
-exports.props$2 = props$t;
-exports.props$20 = props$b;
-exports.props$21 = props$a;
-exports.props$22 = props$9;
-exports.props$23 = props$8;
-exports.props$24 = props$7;
-exports.props$25 = props$6;
-exports.props$26 = props$5;
-exports.props$27 = props$4;
-exports.props$28 = props$3;
-exports.props$29 = props$2;
-exports.props$3 = props$s;
-exports.props$30 = props$1;
-exports.props$31 = props;
-exports.props$4 = props$r;
-exports.props$5 = props$q;
-exports.props$6 = props$p;
-exports.props$7 = props$o;
-exports.props$8 = props$n;
-exports.props$9 = props$m;
+exports.props = props$z;
+exports.props$1 = props$y;
+exports.props$10 = props$p;
+exports.props$11 = props$o;
+exports.props$12 = props$n;
+exports.props$13 = props$m;
+exports.props$14 = props$l;
+exports.props$15 = props$k;
+exports.props$16 = props$j;
+exports.props$17 = props$i;
+exports.props$18 = props$h;
+exports.props$19 = props$g;
+exports.props$2 = props$x;
+exports.props$20 = props$f;
+exports.props$21 = props$e;
+exports.props$22 = props$d;
+exports.props$23 = props$c;
+exports.props$24 = props$b;
+exports.props$25 = props$a;
+exports.props$26 = props$9;
+exports.props$27 = props$8;
+exports.props$28 = props$7;
+exports.props$29 = props$6;
+exports.props$3 = props$w;
+exports.props$30 = props$5;
+exports.props$31 = props$4;
+exports.props$32 = props$3;
+exports.props$33 = props$2;
+exports.props$34 = props$1;
+exports.props$35 = props;
+exports.props$4 = props$v;
+exports.props$5 = props$u;
+exports.props$6 = props$t;
+exports.props$7 = props$s;
+exports.props$8 = props$r;
+exports.props$9 = props$q;
 exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s;
