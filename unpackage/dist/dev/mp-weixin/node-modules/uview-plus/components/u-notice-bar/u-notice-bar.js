@@ -74,5 +74,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     j: common_vendor.s(_ctx.$u.addStyle(_ctx.customStyle))
   }) : {});
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-63dbbc8e"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-notice-bar/u-notice-bar.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-63dbbc8e"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-notice-bar/u-notice-bar.vue"]]);
 wx.createComponent(Component);

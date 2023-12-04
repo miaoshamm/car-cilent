@@ -74,5 +74,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-8cce343a"], ["__file", "/Users/zikn/Project/parking-client/pages/account/account.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-8cce343a"], ["__file", "D:/parking-client/pages/account/account.vue"]]);
 wx.createPage(MiniProgramPage);

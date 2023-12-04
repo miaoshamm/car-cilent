@@ -234,9 +234,8 @@
 	}
 </script>
 
-<style lang="scss" scoped>
-	@import url("../../static/css/index.scss");
-	$color: #DFA0B1;
+<style lang="less" scoped>
+	@import url("../../static/css/index.less");
 	
 	::v-deep .u-cell__title-text.data-v-b4243719{
 		font-size: 36rpx;
@@ -312,7 +311,7 @@
 			.sub-detail {
 				font-size: 24rpx;
 				margin: 24rpx 0 0;
-				color: $color;
+				color: #DFA0B1;
 			}
 		}
 
@@ -324,7 +323,7 @@
 
 			.super-title {
 				font-size: 30rpx;
-				color: $color;
+				color: #DFA0B1;
 				margin: 0 0 34rpx;
 			}
 

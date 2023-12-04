@@ -202,5 +202,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     J: common_vendor.s($options.wrapperStyle)
   });
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-5904192e"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-input/u-input.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-5904192e"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-input/u-input.vue"]]);
 wx.createComponent(Component);

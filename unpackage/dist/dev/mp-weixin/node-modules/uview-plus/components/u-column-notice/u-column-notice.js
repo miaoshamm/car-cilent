@@ -1,7 +1,7 @@
 "use strict";
 const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$20],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$22],
   watch: {
     text: {
       immediate: true,
@@ -99,5 +99,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     o: common_vendor.o((...args) => $options.clickHandler && $options.clickHandler(...args))
   });
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-6c9dce4e"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-column-notice/u-column-notice.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-6c9dce4e"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-column-notice/u-column-notice.vue"]]);
 wx.createComponent(Component);

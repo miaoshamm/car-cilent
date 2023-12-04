@@ -166,5 +166,5 @@ const _sfc_main = {
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {};
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-form/u-form.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-form/u-form.vue"]]);
 wx.createComponent(Component);

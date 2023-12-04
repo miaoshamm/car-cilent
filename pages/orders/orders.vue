@@ -56,6 +56,6 @@
 	}
 </script>
 
-<style lang="scss" scoped>
-	@import url("../../static/css/index.scss");
+<style lang="less" scoped>
+	@import url("../../static/css/index.less");
 </style>

@@ -42,7 +42,7 @@ if (!Array) {
 }
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
   return {
-    a: common_vendor.sr("uForm", "d98f0b0a-0"),
+    a: common_vendor.sr("uForm", "6fdaf72b-0"),
     b: common_vendor.p({
       model: _ctx.model,
       rules: _ctx.rules,
@@ -56,5 +56,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     })
   };
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u--form/u--form.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "D:/parking-client/node_modules/uview-plus/components/u--form/u--form.vue"]]);
 wx.createComponent(Component);
