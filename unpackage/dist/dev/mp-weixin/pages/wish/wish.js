@@ -40,7 +40,7 @@ const _sfc_main = {
           placeholder: "请输入手机号",
           modelValue: info.value.phone
         }),
-        d: common_vendor.sr("item1", "5e506610-1,5e506610-0"),
+        d: common_vendor.sr("item1", "1528e4c0-1,1528e4c0-0"),
         e: common_vendor.p({
           label: "手机号码",
           prop: "info.phone",
@@ -57,7 +57,7 @@ const _sfc_main = {
         h: common_vendor.p({
           name: "arrow-right"
         }),
-        i: common_vendor.sr("item1", "5e506610-3,5e506610-0"),
+        i: common_vendor.sr("item1", "1528e4c0-3,1528e4c0-0"),
         j: common_vendor.o(($event) => {
           _ctx.showSex = true;
           _ctx.hideKeyboard();
@@ -82,7 +82,7 @@ const _sfc_main = {
           label: "车辆型号",
           prop: "info.model"
         }),
-        p: common_vendor.sr("form1", "5e506610-0"),
+        p: common_vendor.sr("form1", "1528e4c0-0"),
         q: common_vendor.p({
           labelPosition: "left",
           model: _ctx.model1,
@@ -98,5 +98,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/parking-client/pages/wish/wish.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zikn/Project/parking-client/pages/wish/wish.vue"]]);
 wx.createPage(MiniProgramPage);
