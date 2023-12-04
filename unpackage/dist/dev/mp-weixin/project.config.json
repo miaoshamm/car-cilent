@@ -19,7 +19,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "2.25.3",
-  "appid": "touristappid",
+  "appid": "wx93d1a51fea553047",
   "projectname": "parking-client",
   "condition": {
     "search": {

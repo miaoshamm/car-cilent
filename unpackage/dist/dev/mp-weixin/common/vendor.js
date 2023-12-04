@@ -1654,6 +1654,9 @@ class EffectScope {
     }
   }
 }
+function effectScope(detached) {
+  return new EffectScope(detached);
+}
 function recordEffectScope(effect, scope = activeEffectScope) {
   if (scope && scope.active) {
     scope.effects.push(effect);
@@ -10110,7 +10113,109 @@ const install = (Vue) => {
 const uviewPlus = {
   install
 };
-const props$r = {
+var isVue2 = false;
+/*!
+  * pinia v2.0.33
+  * (c) 2023 Eduardo San Martin Morote
+  * @license MIT
+  */
+const piniaSymbol = Symbol("pinia");
+var MutationType;
+(function(MutationType2) {
+  MutationType2["direct"] = "direct";
+  MutationType2["patchObject"] = "patch object";
+  MutationType2["patchFunction"] = "patch function";
+})(MutationType || (MutationType = {}));
+const IS_CLIENT = typeof window !== "undefined";
+const USE_DEVTOOLS = IS_CLIENT;
+const componentStateTypes = [];
+const getStoreType = (id) => "🍍 " + id;
+function addStoreToDevtools(app, store) {
+  if (!componentStateTypes.includes(getStoreType(store.$id))) {
+    componentStateTypes.push(getStoreType(store.$id));
+  }
+}
+function patchActionForGrouping(store, actionNames) {
+  const actions = actionNames.reduce((storeActions, actionName) => {
+    storeActions[actionName] = toRaw(store)[actionName];
+    return storeActions;
+  }, {});
+  for (const actionName in actions) {
+    store[actionName] = function() {
+      const trackedStore = new Proxy(store, {
+        get(...args) {
+          return Reflect.get(...args);
+        },
+        set(...args) {
+          return Reflect.set(...args);
+        }
+      });
+      return actions[actionName].apply(trackedStore, arguments);
+    };
+  }
+}
+function devtoolsPlugin({ app, store, options }) {
+  if (store.$id.startsWith("__hot:")) {
+    return;
+  }
+  if (options.state) {
+    store._isOptionsAPI = true;
+  }
+  if (typeof options.state === "function") {
+    patchActionForGrouping(
+      // @ts-expect-error: can cast the store...
+      store,
+      Object.keys(options.actions)
+    );
+    const originalHotUpdate = store._hotUpdate;
+    toRaw(store)._hotUpdate = function(newStore) {
+      originalHotUpdate.apply(this, arguments);
+      patchActionForGrouping(store, Object.keys(newStore._hmrPayload.actions));
+    };
+  }
+  addStoreToDevtools(
+    app,
+    // FIXME: is there a way to allow the assignment from Store<Id, S, G, A> to StoreGeneric?
+    store
+  );
+}
+function createPinia() {
+  const scope = effectScope(true);
+  const state = scope.run(() => ref({}));
+  let _p = [];
+  let toBeInstalled = [];
+  const pinia = markRaw({
+    install(app) {
+      {
+        pinia._a = app;
+        app.provide(piniaSymbol, pinia);
+        app.config.globalProperties.$pinia = pinia;
+        toBeInstalled.forEach((plugin2) => _p.push(plugin2));
+        toBeInstalled = [];
+      }
+    },
+    use(plugin2) {
+      if (!this._a && !isVue2) {
+        toBeInstalled.push(plugin2);
+      } else {
+        _p.push(plugin2);
+      }
+      return this;
+    },
+    _p,
+    // it's actually undefined here
+    // @ts-expect-error
+    _a: null,
+    _e: scope,
+    _s: /* @__PURE__ */ new Map(),
+    state
+  });
+  if (USE_DEVTOOLS && typeof Proxy !== "undefined") {
+    pinia.use(devtoolsPlugin);
+  }
+  return pinia;
+}
+const props$s = {
   props: {
     // 是否展示modal
     show: {
@@ -10194,7 +10299,7 @@ const props$r = {
     }
   }
 };
-const props$q = {
+const props$r = {
   props: {
     // 显示的内容，数组
     text: {
@@ -10264,7 +10369,7 @@ const props$q = {
     }
   }
 };
-const props$p = {
+const props$q = {
   props: {
     // 列表数组，元素可为字符串，如为对象可通过keyName指定目标属性名
     list: {
@@ -10603,7 +10708,7 @@ const icons = {
   "uicon-zh": "",
   "uicon-en": ""
 };
-const props$o = {
+const props$p = {
   props: {
     // 图标类名
     name: {
@@ -10692,7 +10797,7 @@ const props$o = {
     }
   }
 };
-const props$n = {
+const props$o = {
   props: {
     // 宫格的name
     name: {
@@ -10706,7 +10811,7 @@ const props$n = {
     }
   }
 };
-const props$m = {
+const props$n = {
   props: {
     // 分成几列
     col: {
@@ -10763,7 +10868,7 @@ const openType = {
     }
   }
 };
-const props$l = {
+const props$m = {
   props: {
     // 是否细边框
     hairline: {
@@ -10915,7 +11020,7 @@ const props$l = {
     }
   }
 };
-const props$k = {
+const props$l = {
   props: {
     // 标题
     title: {
@@ -11025,7 +11130,7 @@ const props$k = {
     }
   }
 };
-const props$j = {
+const props$k = {
   props: {
     // 头像图片路径(不能为相对路径)
     src: {
@@ -11177,7 +11282,7 @@ const value = {
     }
   }
 };
-const props$i = {
+const props$j = {
   props: {
     // 主题颜色
     type: {
@@ -11287,7 +11392,7 @@ const props$i = {
     }
   }
 };
-const props$h = {
+const props$i = {
   props: {
     // item标签的名称，作为与u-tabbar的value参数匹配的标识符
     name: {
@@ -11321,7 +11426,7 @@ const props$h = {
     }
   }
 };
-const props$g = {
+const props$h = {
   props: {
     // 当前匹配项的name
     value: {
@@ -11365,7 +11470,7 @@ const props$g = {
     }
   }
 };
-const props$f = {
+const props$g = {
   props: {
     // 图片地址
     src: {
@@ -11449,7 +11554,7 @@ const props$f = {
     }
   }
 };
-const props$e = {
+const props$f = {
   props: {
     // 绑定的值
     modelValue: {
@@ -11635,6 +11740,49 @@ const props$e = {
     }
   }
 };
+const props$e = {
+  props: {
+    // input的label提示语
+    label: {
+      type: String,
+      default: defprops.formItem.label
+    },
+    // 绑定的值
+    prop: {
+      type: String,
+      default: defprops.formItem.prop
+    },
+    // 是否显示表单域的下划线边框
+    borderBottom: {
+      type: [String, Boolean],
+      default: defprops.formItem.borderBottom
+    },
+    // label的宽度，单位px
+    labelWidth: {
+      type: [String, Number],
+      default: defprops.formItem.labelWidth
+    },
+    // 右侧图标
+    rightIcon: {
+      type: String,
+      default: defprops.formItem.rightIcon
+    },
+    // 左侧图标
+    leftIcon: {
+      type: String,
+      default: defprops.formItem.leftIcon
+    },
+    // 是否显示左边的必填星号，只作显示用，具体校验必填的逻辑，请在rules中配置
+    required: {
+      type: Boolean,
+      default: defprops.formItem.required
+    },
+    leftIconStyle: {
+      type: [String, Object],
+      default: defprops.formItem.leftIconStyle
+    }
+  }
+};
 const props$d = {
   props: {
     // 当前form的需要验证字段的集合
@@ -11677,624 +11825,6 @@ const props$d = {
     labelStyle: {
       type: Object,
       default: defprops.form.labelStyle
-    }
-  }
-};
-const props$c = {
-  props: {
-    // 输入框的内容
-    value: {
-      type: [String, Number],
-      default: defprops.textarea.value
-    },
-    // 输入框的内容
-    modelValue: {
-      type: [String, Number],
-      default: defprops.textarea.value
-    },
-    // 输入框为空时占位符
-    placeholder: {
-      type: [String, Number],
-      default: defprops.textarea.placeholder
-    },
-    // 指定placeholder的样式类，注意页面或组件的style中写了scoped时，需要在类名前写/deep/
-    placeholderClass: {
-      type: String,
-      default: defprops.input.placeholderClass
-    },
-    // 指定placeholder的样式
-    placeholderStyle: {
-      type: [String, Object],
-      default: defprops.input.placeholderStyle
-    },
-    // 输入框高度
-    height: {
-      type: [String, Number],
-      default: defprops.textarea.height
-    },
-    // 设置键盘右下角按钮的文字，仅微信小程序，App-vue和H5有效
-    confirmType: {
-      type: String,
-      default: defprops.textarea.confirmType
-    },
-    // 是否禁用
-    disabled: {
-      type: Boolean,
-      default: defprops.textarea.disabled
-    },
-    // 是否显示统计字数
-    count: {
-      type: Boolean,
-      default: defprops.textarea.count
-    },
-    // 是否自动获取焦点，nvue不支持，H5取决于浏览器的实现
-    focus: {
-      type: Boolean,
-      default: defprops.textarea.focus
-    },
-    // 是否自动增加高度
-    autoHeight: {
-      type: Boolean,
-      default: defprops.textarea.autoHeight
-    },
-    // 如果textarea是在一个position:fixed的区域，需要显示指定属性fixed为true
-    fixed: {
-      type: Boolean,
-      default: defprops.textarea.fixed
-    },
-    // 指定光标与键盘的距离
-    cursorSpacing: {
-      type: Number,
-      default: defprops.textarea.cursorSpacing
-    },
-    // 指定focus时的光标位置
-    cursor: {
-      type: [String, Number],
-      default: defprops.textarea.cursor
-    },
-    // 是否显示键盘上方带有”完成“按钮那一栏，
-    showConfirmBar: {
-      type: Boolean,
-      default: defprops.textarea.showConfirmBar
-    },
-    // 光标起始位置，自动聚焦时有效，需与selection-end搭配使用
-    selectionStart: {
-      type: Number,
-      default: defprops.textarea.selectionStart
-    },
-    // 光标结束位置，自动聚焦时有效，需与selection-start搭配使用
-    selectionEnd: {
-      type: Number,
-      default: defprops.textarea.selectionEnd
-    },
-    // 键盘弹起时，是否自动上推页面
-    adjustPosition: {
-      type: Boolean,
-      default: defprops.textarea.adjustPosition
-    },
-    // 是否去掉 iOS 下的默认内边距，只微信小程序有效
-    disableDefaultPadding: {
-      type: Boolean,
-      default: defprops.textarea.disableDefaultPadding
-    },
-    // focus时，点击页面的时候不收起键盘，只微信小程序有效
-    holdKeyboard: {
-      type: Boolean,
-      default: defprops.textarea.holdKeyboard
-    },
-    // 最大输入长度，设置为 -1 的时候不限制最大长度
-    maxlength: {
-      type: [String, Number],
-      default: defprops.textarea.maxlength
-    },
-    // 边框类型，surround-四周边框，bottom-底部边框
-    border: {
-      type: String,
-      default: defprops.textarea.border
-    },
-    // 用于处理或者过滤输入框内容的方法
-    formatter: {
-      type: [Function, null],
-      default: defprops.textarea.formatter
-    },
-    // 是否忽略组件内对文本合成系统事件的处理
-    ignoreCompositionEvent: {
-      type: Boolean,
-      default: true
-    }
-  }
-};
-const props$b = {
-  props: {
-    // 是否展示弹窗
-    show: {
-      type: Boolean,
-      default: defprops.popup.show
-    },
-    // 是否显示遮罩
-    overlay: {
-      type: Boolean,
-      default: defprops.popup.overlay
-    },
-    // 弹出的方向，可选值为 top bottom right left center
-    mode: {
-      type: String,
-      default: defprops.popup.mode
-    },
-    // 动画时长，单位ms
-    duration: {
-      type: [String, Number],
-      default: defprops.popup.duration
-    },
-    // 是否显示关闭图标
-    closeable: {
-      type: Boolean,
-      default: defprops.popup.closeable
-    },
-    // 自定义遮罩的样式
-    overlayStyle: {
-      type: [Object, String],
-      default: defprops.popup.overlayStyle
-    },
-    // 点击遮罩是否关闭弹窗
-    closeOnClickOverlay: {
-      type: Boolean,
-      default: defprops.popup.closeOnClickOverlay
-    },
-    // 层级
-    zIndex: {
-      type: [String, Number],
-      default: defprops.popup.zIndex
-    },
-    // 是否为iPhoneX留出底部安全距离
-    safeAreaInsetBottom: {
-      type: Boolean,
-      default: defprops.popup.safeAreaInsetBottom
-    },
-    // 是否留出顶部安全距离（状态栏高度）
-    safeAreaInsetTop: {
-      type: Boolean,
-      default: defprops.popup.safeAreaInsetTop
-    },
-    // 自定义关闭图标位置，top-left为左上角，top-right为右上角，bottom-left为左下角，bottom-right为右下角
-    closeIconPos: {
-      type: String,
-      default: defprops.popup.closeIconPos
-    },
-    // 是否显示圆角
-    round: {
-      type: [Boolean, String, Number],
-      default: defprops.popup.round
-    },
-    // mode=center，也即中部弹出时，是否使用缩放模式
-    zoom: {
-      type: Boolean,
-      default: defprops.popup.zoom
-    },
-    // 弹窗背景色，设置为transparent可去除白色背景
-    bgColor: {
-      type: String,
-      default: defprops.popup.bgColor
-    },
-    // 遮罩的透明度，0-1之间
-    overlayOpacity: {
-      type: [Number, String],
-      default: defprops.popup.overlayOpacity
-    }
-  }
-};
-const props$a = {
-  props: {
-    color: {
-      type: String,
-      default: defprops.line.color
-    },
-    // 长度，竖向时表现为高度，横向时表现为长度，可以为百分比，带px单位的值等
-    length: {
-      type: [String, Number],
-      default: defprops.line.length
-    },
-    // 线条方向，col-竖向，row-横向
-    direction: {
-      type: String,
-      default: defprops.line.direction
-    },
-    // 是否显示细边框
-    hairline: {
-      type: Boolean,
-      default: defprops.line.hairline
-    },
-    // 线条与上下左右元素的间距，字符串形式，如"30px"、"20px 30px"
-    margin: {
-      type: [String, Number],
-      default: defprops.line.margin
-    },
-    // 是否虚线，true-虚线，false-实线
-    dashed: {
-      type: Boolean,
-      default: defprops.line.dashed
-    }
-  }
-};
-const props$9 = {
-  props: {
-    // 是否显示组件
-    show: {
-      type: Boolean,
-      default: defprops.loadingIcon.show
-    },
-    // 颜色
-    color: {
-      type: String,
-      default: defprops.loadingIcon.color
-    },
-    // 提示文字颜色
-    textColor: {
-      type: String,
-      default: defprops.loadingIcon.textColor
-    },
-    // 文字和图标是否垂直排列
-    vertical: {
-      type: Boolean,
-      default: defprops.loadingIcon.vertical
-    },
-    // 模式选择，circle-圆形，spinner-花朵形，semicircle-半圆形
-    mode: {
-      type: String,
-      default: defprops.loadingIcon.mode
-    },
-    // 图标大小，单位默认px
-    size: {
-      type: [String, Number],
-      default: defprops.loadingIcon.size
-    },
-    // 文字大小
-    textSize: {
-      type: [String, Number],
-      default: defprops.loadingIcon.textSize
-    },
-    // 文字内容
-    text: {
-      type: [String, Number],
-      default: defprops.loadingIcon.text
-    },
-    // 动画模式
-    timingFunction: {
-      type: String,
-      default: defprops.loadingIcon.timingFunction
-    },
-    // 动画执行周期时间
-    duration: {
-      type: [String, Number],
-      default: defprops.loadingIcon.duration
-    },
-    // mode=circle时的暗边颜色
-    inactiveColor: {
-      type: String,
-      default: defprops.loadingIcon.inactiveColor
-    }
-  }
-};
-const props$8 = {
-  props: {
-    // 显示的内容，字符串
-    text: {
-      type: [Array],
-      default: defprops.columnNotice.text
-    },
-    // 是否显示左侧的音量图标
-    icon: {
-      type: String,
-      default: defprops.columnNotice.icon
-    },
-    // 通告模式，link-显示右箭头，closable-显示右侧关闭图标
-    mode: {
-      type: String,
-      default: defprops.columnNotice.mode
-    },
-    // 文字颜色，各图标也会使用文字颜色
-    color: {
-      type: String,
-      default: defprops.columnNotice.color
-    },
-    // 背景颜色
-    bgColor: {
-      type: String,
-      default: defprops.columnNotice.bgColor
-    },
-    // 字体大小，单位px
-    fontSize: {
-      type: [String, Number],
-      default: defprops.columnNotice.fontSize
-    },
-    // 水平滚动时的滚动速度，即每秒滚动多少px(px)，这有利于控制文字无论多少时，都能有一个恒定的速度
-    speed: {
-      type: [String, Number],
-      default: defprops.columnNotice.speed
-    },
-    // direction = row时，是否使用步进形式滚动
-    step: {
-      type: Boolean,
-      default: defprops.columnNotice.step
-    },
-    // 滚动一个周期的时间长，单位ms
-    duration: {
-      type: [String, Number],
-      default: defprops.columnNotice.duration
-    },
-    // 是否禁止用手滑动切换
-    // 目前HX2.6.11，只支持App 2.5.5+、H5 2.5.5+、支付宝小程序、字节跳动小程序
-    disableTouch: {
-      type: Boolean,
-      default: defprops.columnNotice.disableTouch
-    }
-  }
-};
-const props$7 = {
-  props: {
-    // 显示的内容，字符串
-    text: {
-      type: String,
-      default: defprops.rowNotice.text
-    },
-    // 是否显示左侧的音量图标
-    icon: {
-      type: String,
-      default: defprops.rowNotice.icon
-    },
-    // 通告模式，link-显示右箭头，closable-显示右侧关闭图标
-    mode: {
-      type: String,
-      default: defprops.rowNotice.mode
-    },
-    // 文字颜色，各图标也会使用文字颜色
-    color: {
-      type: String,
-      default: defprops.rowNotice.color
-    },
-    // 背景颜色
-    bgColor: {
-      type: String,
-      default: defprops.rowNotice.bgColor
-    },
-    // 字体大小，单位px
-    fontSize: {
-      type: [String, Number],
-      default: defprops.rowNotice.fontSize
-    },
-    // 水平滚动时的滚动速度，即每秒滚动多少px(rpx)，这有利于控制文字无论多少时，都能有一个恒定的速度
-    speed: {
-      type: [String, Number],
-      default: defprops.rowNotice.speed
-    }
-  }
-};
-const props$6 = {
-  props: {
-    // 轮播的长度
-    length: {
-      type: [String, Number],
-      default: defprops.swiperIndicator.length
-    },
-    // 当前处于活动状态的轮播的索引
-    current: {
-      type: [String, Number],
-      default: defprops.swiperIndicator.current
-    },
-    // 指示器非激活颜色
-    indicatorActiveColor: {
-      type: String,
-      default: defprops.swiperIndicator.indicatorActiveColor
-    },
-    // 指示器的激活颜色
-    indicatorInactiveColor: {
-      type: String,
-      default: defprops.swiperIndicator.indicatorInactiveColor
-    },
-    // 指示器模式，line-线型，dot-点型
-    indicatorMode: {
-      type: String,
-      default: defprops.swiperIndicator.indicatorMode
-    }
-  }
-};
-const props$5 = {
-  props: {
-    // 文字颜色
-    color: {
-      type: String,
-      default: defprops.link.color
-    },
-    // 字体大小，单位px
-    fontSize: {
-      type: [String, Number],
-      default: defprops.link.fontSize
-    },
-    // 是否显示下划线
-    underLine: {
-      type: Boolean,
-      default: defprops.link.underLine
-    },
-    // 要跳转的链接
-    href: {
-      type: String,
-      default: defprops.link.href
-    },
-    // 小程序中复制到粘贴板的提示语
-    mpTips: {
-      type: String,
-      default: defprops.link.mpTips
-    },
-    // 下划线颜色
-    lineColor: {
-      type: String,
-      default: defprops.link.lineColor
-    },
-    // 超链接的问题，不使用slot形式传入，是因为nvue下无法修改颜色
-    text: {
-      type: String,
-      default: defprops.link.text
-    }
-  }
-};
-const props$4 = {
-  props: {
-    // 是否显示圆点
-    isDot: {
-      type: Boolean,
-      default: defprops.badge.isDot
-    },
-    // 显示的内容
-    value: {
-      type: [Number, String],
-      default: defprops.badge.value
-    },
-    // 显示的内容
-    modelValue: {
-      type: [Number, String],
-      default: defprops.badge.modelValue
-    },
-    // 是否显示
-    show: {
-      type: Boolean,
-      default: defprops.badge.show
-    },
-    // 最大值，超过最大值会显示 '{max}+'
-    max: {
-      type: [Number, String],
-      default: defprops.badge.max
-    },
-    // 主题类型，error|warning|success|primary
-    type: {
-      type: String,
-      default: defprops.badge.type
-    },
-    // 当数值为 0 时，是否展示 Badge
-    showZero: {
-      type: Boolean,
-      default: defprops.badge.showZero
-    },
-    // 背景颜色，优先级比type高，如设置，type参数会失效
-    bgColor: {
-      type: [String, null],
-      default: defprops.badge.bgColor
-    },
-    // 字体颜色
-    color: {
-      type: [String, null],
-      default: defprops.badge.color
-    },
-    // 徽标形状，circle-四角均为圆角，horn-左下角为直角
-    shape: {
-      type: String,
-      default: defprops.badge.shape
-    },
-    // 设置数字的显示方式，overflow|ellipsis|limit
-    // overflow会根据max字段判断，超出显示`${max}+`
-    // ellipsis会根据max判断，超出显示`${max}...`
-    // limit会依据1000作为判断条件，超出1000，显示`${value/1000}K`，比如2.2k、3.34w，最多保留2位小数
-    numberType: {
-      type: String,
-      default: defprops.badge.numberType
-    },
-    // 设置badge的位置偏移，格式为 [x, y]，也即设置的为top和right的值，absolute为true时有效
-    offset: {
-      type: Array,
-      default: defprops.badge.offset
-    },
-    // 是否反转背景和字体颜色
-    inverted: {
-      type: Boolean,
-      default: defprops.badge.inverted
-    },
-    // 是否绝对定位
-    absolute: {
-      type: Boolean,
-      default: defprops.badge.absolute
-    }
-  }
-};
-const props$3 = {
-  props: {}
-};
-const props$2 = {
-  props: {
-    // 是否展示组件
-    show: {
-      type: Boolean,
-      default: defprops.transition.show
-    },
-    // 使用的动画模式
-    mode: {
-      type: String,
-      default: defprops.transition.mode
-    },
-    // 动画的执行时间，单位ms
-    duration: {
-      type: [String, Number],
-      default: defprops.transition.duration
-    },
-    // 使用的动画过渡函数
-    timingFunction: {
-      type: String,
-      default: defprops.transition.timingFunction
-    }
-  }
-};
-const getClassNames = (name) => ({
-  enter: `u-${name}-enter u-${name}-enter-active`,
-  "enter-to": `u-${name}-enter-to u-${name}-enter-active`,
-  leave: `u-${name}-leave u-${name}-leave-active`,
-  "leave-to": `u-${name}-leave-to u-${name}-leave-active`
-});
-const transition = {
-  methods: {
-    // 组件被点击发出事件
-    clickHandler() {
-      this.$emit("click");
-    },
-    // vue版本的组件进场处理
-    async vueEnter() {
-      const classNames = getClassNames(this.mode);
-      this.status = "enter";
-      this.$emit("beforeEnter");
-      this.inited = true;
-      this.display = true;
-      this.classes = classNames.enter;
-      await nextTick$1();
-      {
-        this.$emit("enter");
-        this.transitionEnded = false;
-        this.$emit("afterEnter");
-        this.classes = classNames["enter-to"];
-      }
-    },
-    // 动画离场处理
-    async vueLeave() {
-      if (!this.display)
-        return;
-      const classNames = getClassNames(this.mode);
-      this.status = "leave";
-      this.$emit("beforeLeave");
-      this.classes = classNames.leave;
-      await nextTick$1();
-      {
-        this.transitionEnded = false;
-        this.$emit("leave");
-        setTimeout(this.onTransitionEnd, this.duration);
-        this.classes = classNames["leave-to"];
-      }
-    },
-    // 完成过渡后触发
-    onTransitionEnd() {
-      if (this.transitionEnded)
-        return;
-      this.transitionEnded = true;
-      this.$emit(this.status === "leave" ? "afterLeave" : "afterEnter");
-      if (!this.show && this.display) {
-        this.display = false;
-        this.inited = false;
-      }
     }
   }
 };
@@ -13189,6 +12719,624 @@ Schema.register = function register(type2, validator) {
 };
 Schema.warning = warning;
 Schema.messages = messages;
+const props$c = {
+  props: {
+    // 输入框的内容
+    value: {
+      type: [String, Number],
+      default: defprops.textarea.value
+    },
+    // 输入框的内容
+    modelValue: {
+      type: [String, Number],
+      default: defprops.textarea.value
+    },
+    // 输入框为空时占位符
+    placeholder: {
+      type: [String, Number],
+      default: defprops.textarea.placeholder
+    },
+    // 指定placeholder的样式类，注意页面或组件的style中写了scoped时，需要在类名前写/deep/
+    placeholderClass: {
+      type: String,
+      default: defprops.input.placeholderClass
+    },
+    // 指定placeholder的样式
+    placeholderStyle: {
+      type: [String, Object],
+      default: defprops.input.placeholderStyle
+    },
+    // 输入框高度
+    height: {
+      type: [String, Number],
+      default: defprops.textarea.height
+    },
+    // 设置键盘右下角按钮的文字，仅微信小程序，App-vue和H5有效
+    confirmType: {
+      type: String,
+      default: defprops.textarea.confirmType
+    },
+    // 是否禁用
+    disabled: {
+      type: Boolean,
+      default: defprops.textarea.disabled
+    },
+    // 是否显示统计字数
+    count: {
+      type: Boolean,
+      default: defprops.textarea.count
+    },
+    // 是否自动获取焦点，nvue不支持，H5取决于浏览器的实现
+    focus: {
+      type: Boolean,
+      default: defprops.textarea.focus
+    },
+    // 是否自动增加高度
+    autoHeight: {
+      type: Boolean,
+      default: defprops.textarea.autoHeight
+    },
+    // 如果textarea是在一个position:fixed的区域，需要显示指定属性fixed为true
+    fixed: {
+      type: Boolean,
+      default: defprops.textarea.fixed
+    },
+    // 指定光标与键盘的距离
+    cursorSpacing: {
+      type: Number,
+      default: defprops.textarea.cursorSpacing
+    },
+    // 指定focus时的光标位置
+    cursor: {
+      type: [String, Number],
+      default: defprops.textarea.cursor
+    },
+    // 是否显示键盘上方带有”完成“按钮那一栏，
+    showConfirmBar: {
+      type: Boolean,
+      default: defprops.textarea.showConfirmBar
+    },
+    // 光标起始位置，自动聚焦时有效，需与selection-end搭配使用
+    selectionStart: {
+      type: Number,
+      default: defprops.textarea.selectionStart
+    },
+    // 光标结束位置，自动聚焦时有效，需与selection-start搭配使用
+    selectionEnd: {
+      type: Number,
+      default: defprops.textarea.selectionEnd
+    },
+    // 键盘弹起时，是否自动上推页面
+    adjustPosition: {
+      type: Boolean,
+      default: defprops.textarea.adjustPosition
+    },
+    // 是否去掉 iOS 下的默认内边距，只微信小程序有效
+    disableDefaultPadding: {
+      type: Boolean,
+      default: defprops.textarea.disableDefaultPadding
+    },
+    // focus时，点击页面的时候不收起键盘，只微信小程序有效
+    holdKeyboard: {
+      type: Boolean,
+      default: defprops.textarea.holdKeyboard
+    },
+    // 最大输入长度，设置为 -1 的时候不限制最大长度
+    maxlength: {
+      type: [String, Number],
+      default: defprops.textarea.maxlength
+    },
+    // 边框类型，surround-四周边框，bottom-底部边框
+    border: {
+      type: String,
+      default: defprops.textarea.border
+    },
+    // 用于处理或者过滤输入框内容的方法
+    formatter: {
+      type: [Function, null],
+      default: defprops.textarea.formatter
+    },
+    // 是否忽略组件内对文本合成系统事件的处理
+    ignoreCompositionEvent: {
+      type: Boolean,
+      default: true
+    }
+  }
+};
+const props$b = {
+  props: {
+    // 是否展示弹窗
+    show: {
+      type: Boolean,
+      default: defprops.popup.show
+    },
+    // 是否显示遮罩
+    overlay: {
+      type: Boolean,
+      default: defprops.popup.overlay
+    },
+    // 弹出的方向，可选值为 top bottom right left center
+    mode: {
+      type: String,
+      default: defprops.popup.mode
+    },
+    // 动画时长，单位ms
+    duration: {
+      type: [String, Number],
+      default: defprops.popup.duration
+    },
+    // 是否显示关闭图标
+    closeable: {
+      type: Boolean,
+      default: defprops.popup.closeable
+    },
+    // 自定义遮罩的样式
+    overlayStyle: {
+      type: [Object, String],
+      default: defprops.popup.overlayStyle
+    },
+    // 点击遮罩是否关闭弹窗
+    closeOnClickOverlay: {
+      type: Boolean,
+      default: defprops.popup.closeOnClickOverlay
+    },
+    // 层级
+    zIndex: {
+      type: [String, Number],
+      default: defprops.popup.zIndex
+    },
+    // 是否为iPhoneX留出底部安全距离
+    safeAreaInsetBottom: {
+      type: Boolean,
+      default: defprops.popup.safeAreaInsetBottom
+    },
+    // 是否留出顶部安全距离（状态栏高度）
+    safeAreaInsetTop: {
+      type: Boolean,
+      default: defprops.popup.safeAreaInsetTop
+    },
+    // 自定义关闭图标位置，top-left为左上角，top-right为右上角，bottom-left为左下角，bottom-right为右下角
+    closeIconPos: {
+      type: String,
+      default: defprops.popup.closeIconPos
+    },
+    // 是否显示圆角
+    round: {
+      type: [Boolean, String, Number],
+      default: defprops.popup.round
+    },
+    // mode=center，也即中部弹出时，是否使用缩放模式
+    zoom: {
+      type: Boolean,
+      default: defprops.popup.zoom
+    },
+    // 弹窗背景色，设置为transparent可去除白色背景
+    bgColor: {
+      type: String,
+      default: defprops.popup.bgColor
+    },
+    // 遮罩的透明度，0-1之间
+    overlayOpacity: {
+      type: [Number, String],
+      default: defprops.popup.overlayOpacity
+    }
+  }
+};
+const props$a = {
+  props: {
+    color: {
+      type: String,
+      default: defprops.line.color
+    },
+    // 长度，竖向时表现为高度，横向时表现为长度，可以为百分比，带px单位的值等
+    length: {
+      type: [String, Number],
+      default: defprops.line.length
+    },
+    // 线条方向，col-竖向，row-横向
+    direction: {
+      type: String,
+      default: defprops.line.direction
+    },
+    // 是否显示细边框
+    hairline: {
+      type: Boolean,
+      default: defprops.line.hairline
+    },
+    // 线条与上下左右元素的间距，字符串形式，如"30px"、"20px 30px"
+    margin: {
+      type: [String, Number],
+      default: defprops.line.margin
+    },
+    // 是否虚线，true-虚线，false-实线
+    dashed: {
+      type: Boolean,
+      default: defprops.line.dashed
+    }
+  }
+};
+const props$9 = {
+  props: {
+    // 是否显示组件
+    show: {
+      type: Boolean,
+      default: defprops.loadingIcon.show
+    },
+    // 颜色
+    color: {
+      type: String,
+      default: defprops.loadingIcon.color
+    },
+    // 提示文字颜色
+    textColor: {
+      type: String,
+      default: defprops.loadingIcon.textColor
+    },
+    // 文字和图标是否垂直排列
+    vertical: {
+      type: Boolean,
+      default: defprops.loadingIcon.vertical
+    },
+    // 模式选择，circle-圆形，spinner-花朵形，semicircle-半圆形
+    mode: {
+      type: String,
+      default: defprops.loadingIcon.mode
+    },
+    // 图标大小，单位默认px
+    size: {
+      type: [String, Number],
+      default: defprops.loadingIcon.size
+    },
+    // 文字大小
+    textSize: {
+      type: [String, Number],
+      default: defprops.loadingIcon.textSize
+    },
+    // 文字内容
+    text: {
+      type: [String, Number],
+      default: defprops.loadingIcon.text
+    },
+    // 动画模式
+    timingFunction: {
+      type: String,
+      default: defprops.loadingIcon.timingFunction
+    },
+    // 动画执行周期时间
+    duration: {
+      type: [String, Number],
+      default: defprops.loadingIcon.duration
+    },
+    // mode=circle时的暗边颜色
+    inactiveColor: {
+      type: String,
+      default: defprops.loadingIcon.inactiveColor
+    }
+  }
+};
+const props$8 = {
+  props: {
+    // 显示的内容，字符串
+    text: {
+      type: [Array],
+      default: defprops.columnNotice.text
+    },
+    // 是否显示左侧的音量图标
+    icon: {
+      type: String,
+      default: defprops.columnNotice.icon
+    },
+    // 通告模式，link-显示右箭头，closable-显示右侧关闭图标
+    mode: {
+      type: String,
+      default: defprops.columnNotice.mode
+    },
+    // 文字颜色，各图标也会使用文字颜色
+    color: {
+      type: String,
+      default: defprops.columnNotice.color
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.columnNotice.bgColor
+    },
+    // 字体大小，单位px
+    fontSize: {
+      type: [String, Number],
+      default: defprops.columnNotice.fontSize
+    },
+    // 水平滚动时的滚动速度，即每秒滚动多少px(px)，这有利于控制文字无论多少时，都能有一个恒定的速度
+    speed: {
+      type: [String, Number],
+      default: defprops.columnNotice.speed
+    },
+    // direction = row时，是否使用步进形式滚动
+    step: {
+      type: Boolean,
+      default: defprops.columnNotice.step
+    },
+    // 滚动一个周期的时间长，单位ms
+    duration: {
+      type: [String, Number],
+      default: defprops.columnNotice.duration
+    },
+    // 是否禁止用手滑动切换
+    // 目前HX2.6.11，只支持App 2.5.5+、H5 2.5.5+、支付宝小程序、字节跳动小程序
+    disableTouch: {
+      type: Boolean,
+      default: defprops.columnNotice.disableTouch
+    }
+  }
+};
+const props$7 = {
+  props: {
+    // 显示的内容，字符串
+    text: {
+      type: String,
+      default: defprops.rowNotice.text
+    },
+    // 是否显示左侧的音量图标
+    icon: {
+      type: String,
+      default: defprops.rowNotice.icon
+    },
+    // 通告模式，link-显示右箭头，closable-显示右侧关闭图标
+    mode: {
+      type: String,
+      default: defprops.rowNotice.mode
+    },
+    // 文字颜色，各图标也会使用文字颜色
+    color: {
+      type: String,
+      default: defprops.rowNotice.color
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.rowNotice.bgColor
+    },
+    // 字体大小，单位px
+    fontSize: {
+      type: [String, Number],
+      default: defprops.rowNotice.fontSize
+    },
+    // 水平滚动时的滚动速度，即每秒滚动多少px(rpx)，这有利于控制文字无论多少时，都能有一个恒定的速度
+    speed: {
+      type: [String, Number],
+      default: defprops.rowNotice.speed
+    }
+  }
+};
+const props$6 = {
+  props: {
+    // 轮播的长度
+    length: {
+      type: [String, Number],
+      default: defprops.swiperIndicator.length
+    },
+    // 当前处于活动状态的轮播的索引
+    current: {
+      type: [String, Number],
+      default: defprops.swiperIndicator.current
+    },
+    // 指示器非激活颜色
+    indicatorActiveColor: {
+      type: String,
+      default: defprops.swiperIndicator.indicatorActiveColor
+    },
+    // 指示器的激活颜色
+    indicatorInactiveColor: {
+      type: String,
+      default: defprops.swiperIndicator.indicatorInactiveColor
+    },
+    // 指示器模式，line-线型，dot-点型
+    indicatorMode: {
+      type: String,
+      default: defprops.swiperIndicator.indicatorMode
+    }
+  }
+};
+const props$5 = {
+  props: {
+    // 文字颜色
+    color: {
+      type: String,
+      default: defprops.link.color
+    },
+    // 字体大小，单位px
+    fontSize: {
+      type: [String, Number],
+      default: defprops.link.fontSize
+    },
+    // 是否显示下划线
+    underLine: {
+      type: Boolean,
+      default: defprops.link.underLine
+    },
+    // 要跳转的链接
+    href: {
+      type: String,
+      default: defprops.link.href
+    },
+    // 小程序中复制到粘贴板的提示语
+    mpTips: {
+      type: String,
+      default: defprops.link.mpTips
+    },
+    // 下划线颜色
+    lineColor: {
+      type: String,
+      default: defprops.link.lineColor
+    },
+    // 超链接的问题，不使用slot形式传入，是因为nvue下无法修改颜色
+    text: {
+      type: String,
+      default: defprops.link.text
+    }
+  }
+};
+const props$4 = {
+  props: {
+    // 是否显示圆点
+    isDot: {
+      type: Boolean,
+      default: defprops.badge.isDot
+    },
+    // 显示的内容
+    value: {
+      type: [Number, String],
+      default: defprops.badge.value
+    },
+    // 显示的内容
+    modelValue: {
+      type: [Number, String],
+      default: defprops.badge.modelValue
+    },
+    // 是否显示
+    show: {
+      type: Boolean,
+      default: defprops.badge.show
+    },
+    // 最大值，超过最大值会显示 '{max}+'
+    max: {
+      type: [Number, String],
+      default: defprops.badge.max
+    },
+    // 主题类型，error|warning|success|primary
+    type: {
+      type: String,
+      default: defprops.badge.type
+    },
+    // 当数值为 0 时，是否展示 Badge
+    showZero: {
+      type: Boolean,
+      default: defprops.badge.showZero
+    },
+    // 背景颜色，优先级比type高，如设置，type参数会失效
+    bgColor: {
+      type: [String, null],
+      default: defprops.badge.bgColor
+    },
+    // 字体颜色
+    color: {
+      type: [String, null],
+      default: defprops.badge.color
+    },
+    // 徽标形状，circle-四角均为圆角，horn-左下角为直角
+    shape: {
+      type: String,
+      default: defprops.badge.shape
+    },
+    // 设置数字的显示方式，overflow|ellipsis|limit
+    // overflow会根据max字段判断，超出显示`${max}+`
+    // ellipsis会根据max判断，超出显示`${max}...`
+    // limit会依据1000作为判断条件，超出1000，显示`${value/1000}K`，比如2.2k、3.34w，最多保留2位小数
+    numberType: {
+      type: String,
+      default: defprops.badge.numberType
+    },
+    // 设置badge的位置偏移，格式为 [x, y]，也即设置的为top和right的值，absolute为true时有效
+    offset: {
+      type: Array,
+      default: defprops.badge.offset
+    },
+    // 是否反转背景和字体颜色
+    inverted: {
+      type: Boolean,
+      default: defprops.badge.inverted
+    },
+    // 是否绝对定位
+    absolute: {
+      type: Boolean,
+      default: defprops.badge.absolute
+    }
+  }
+};
+const props$3 = {
+  props: {}
+};
+const props$2 = {
+  props: {
+    // 是否展示组件
+    show: {
+      type: Boolean,
+      default: defprops.transition.show
+    },
+    // 使用的动画模式
+    mode: {
+      type: String,
+      default: defprops.transition.mode
+    },
+    // 动画的执行时间，单位ms
+    duration: {
+      type: [String, Number],
+      default: defprops.transition.duration
+    },
+    // 使用的动画过渡函数
+    timingFunction: {
+      type: String,
+      default: defprops.transition.timingFunction
+    }
+  }
+};
+const getClassNames = (name) => ({
+  enter: `u-${name}-enter u-${name}-enter-active`,
+  "enter-to": `u-${name}-enter-to u-${name}-enter-active`,
+  leave: `u-${name}-leave u-${name}-leave-active`,
+  "leave-to": `u-${name}-leave-to u-${name}-leave-active`
+});
+const transition = {
+  methods: {
+    // 组件被点击发出事件
+    clickHandler() {
+      this.$emit("click");
+    },
+    // vue版本的组件进场处理
+    async vueEnter() {
+      const classNames = getClassNames(this.mode);
+      this.status = "enter";
+      this.$emit("beforeEnter");
+      this.inited = true;
+      this.display = true;
+      this.classes = classNames.enter;
+      await nextTick$1();
+      {
+        this.$emit("enter");
+        this.transitionEnded = false;
+        this.$emit("afterEnter");
+        this.classes = classNames["enter-to"];
+      }
+    },
+    // 动画离场处理
+    async vueLeave() {
+      if (!this.display)
+        return;
+      const classNames = getClassNames(this.mode);
+      this.status = "leave";
+      this.$emit("beforeLeave");
+      this.classes = classNames.leave;
+      await nextTick$1();
+      {
+        this.transitionEnded = false;
+        this.$emit("leave");
+        setTimeout(this.onTransitionEnd, this.duration);
+        this.classes = classNames["leave-to"];
+      }
+    },
+    // 完成过渡后触发
+    onTransitionEnd() {
+      if (this.transitionEnded)
+        return;
+      this.transitionEnded = true;
+      this.$emit(this.status === "leave" ? "afterLeave" : "afterEnter");
+      if (!this.show && this.display) {
+        this.display = false;
+        this.inited = false;
+      }
+    }
+  }
+};
 const props$1 = {
   props: {
     // 是否显示遮罩
@@ -13224,6 +13372,7 @@ const props = {
 exports.Schema = Schema;
 exports._export_sfc = _export_sfc;
 exports.button = button;
+exports.createPinia = createPinia;
 exports.createSSRApp = createSSRApp;
 exports.e = e;
 exports.f = f;
@@ -13235,34 +13384,35 @@ exports.n = n;
 exports.o = o;
 exports.openType = openType;
 exports.p = p;
-exports.props = props$r;
-exports.props$1 = props$q;
-exports.props$10 = props$h;
-exports.props$11 = props$g;
-exports.props$12 = props$f;
-exports.props$13 = props$e;
-exports.props$14 = props$d;
-exports.props$15 = props$c;
-exports.props$16 = props$b;
-exports.props$17 = props$a;
-exports.props$18 = props$9;
-exports.props$19 = props$8;
-exports.props$2 = props$p;
-exports.props$20 = props$7;
-exports.props$21 = props$6;
-exports.props$22 = props$5;
-exports.props$23 = props$4;
-exports.props$24 = props$3;
-exports.props$25 = props$2;
-exports.props$26 = props$1;
-exports.props$27 = props;
-exports.props$3 = props$o;
-exports.props$4 = props$n;
-exports.props$5 = props$m;
-exports.props$6 = props$l;
-exports.props$7 = props$k;
-exports.props$8 = props$j;
-exports.props$9 = props$i;
+exports.props = props$s;
+exports.props$1 = props$r;
+exports.props$10 = props$i;
+exports.props$11 = props$h;
+exports.props$12 = props$g;
+exports.props$13 = props$f;
+exports.props$14 = props$e;
+exports.props$15 = props$d;
+exports.props$16 = props$c;
+exports.props$17 = props$b;
+exports.props$18 = props$a;
+exports.props$19 = props$9;
+exports.props$2 = props$q;
+exports.props$20 = props$8;
+exports.props$21 = props$7;
+exports.props$22 = props$6;
+exports.props$23 = props$5;
+exports.props$24 = props$4;
+exports.props$25 = props$3;
+exports.props$26 = props$2;
+exports.props$27 = props$1;
+exports.props$28 = props;
+exports.props$3 = props$p;
+exports.props$4 = props$o;
+exports.props$5 = props$n;
+exports.props$6 = props$m;
+exports.props$7 = props$l;
+exports.props$8 = props$k;
+exports.props$9 = props$j;
 exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s;
@@ -13272,3 +13422,4 @@ exports.transition = transition;
 exports.unref = unref;
 exports.uviewPlus = uviewPlus;
 exports.value = value;
+exports.wx$1 = wx$1;
