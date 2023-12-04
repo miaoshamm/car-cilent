@@ -53,7 +53,7 @@ const _sfc_main = {
       {
         name: "/static/images/index/grid3.png",
         title: "洗车服务",
-        small: "洗车服务",
+        small: "临江大道",
         url: "/pages/wish/wish"
       },
       {
