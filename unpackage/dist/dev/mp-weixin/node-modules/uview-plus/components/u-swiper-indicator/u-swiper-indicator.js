@@ -2,7 +2,7 @@
 const common_vendor = require("../../../../common/vendor.js");
 const _sfc_main = {
   name: "u-swiper-indicator",
-  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$28],
+  mixins: [common_vendor.mpMixin, common_vendor.mixin, common_vendor.props$25],
   data() {
     return {
       lineWidth: 22

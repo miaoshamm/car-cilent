@@ -13,7 +13,6 @@ if (!Math) {
   "./pages/order_detail/order_detail.js";
   "./pages/bill_rule/bill_rule.js";
   "./pages/pick_up/pick_up.js";
-  "./pages/service/service.js";
   "./pages/wish/wish_pay/wish_pay.js";
   "./pages/staff/staff.js";
 }

@@ -1,5 +1,5 @@
 <template>
-	<view class="wrapper">
+	<view class="wrapper wrapper-p">
 		<view class="title">请稍等，正在确定维保地点</view>
 		<License :licensePlate="licensePlate" />
 		<view class="car-info">
@@ -27,30 +27,37 @@
 						</template>
 					</u-form-item>
 				</view>
-				<view class="box">
-					<u-form-item class="certificate" label="工作证" prop="info.phone" borderBottom>
+				<view class="box certificate">
+					<u-form-item label="工作证" prop="info.phone" borderBottom>
 						<view class="box-img">
 							<view class="box-img-info">
-								<image></image>
+								<image src="../../static/images/common/card-photo1.png"></image>
 								<text>正面照</text>
 							</view>
 							<view class="box-img-info">
-								<image></image>
+								<image src="../../static/images/common/card-photo2.png"></image>
 								<text>反面照</text>
 							</view>
 						</view>
 					</u-form-item>
 				</view>
-				<view class="box">
+				<view class="box certificate">
 					<u-form-item label="行驶证" prop="info.phone" borderBottom>
+						<view class="box-img">
+							<view class="box-img-info">
+								<image src="../../static/images/common/card-photo1.png"></image>
+								<text>行驶证</text>
+							</view>
+						</view>
 					</u-form-item>
 				</view>
 			</u--form>
 		</view>
 	</view>
 	<view class="check-btn">
-		<u-button text="上传认证" color="#DFA0B1"></u-button>
+		<u-button text="上传认证" color="#DFA0B1" @click="info.uploadShow = true"></u-button>
 	</view>
+	<u-modal showCancelButton confirmColor="#DFA0B1" :show="info.uploadShow" content='确定无误吗？' @confirm="upload" @cancel="info.uploadShow = false"></u-modal>
 </template>
 
 <script setup>
@@ -66,8 +73,13 @@
 		model: "",
 		modelId: 0,
 		timeShow: false,
-		modelShow: false
+		modelShow: false,
+		uploadShow:false
 	})
+	
+	const upload = () => {
+		info.value.uploadShow = false
+	}
 </script>
 
 <style lang="less">

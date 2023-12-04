@@ -10,6 +10,9 @@
   position: relative;
   box-sizing: border-box;
 }
+.wrapper-t {
+  padding-top: 200rpx;
+}
 .wrapper-p {
   padding-bottom: 140rpx;
 }
@@ -45,6 +48,24 @@
   background: #fff;
   padding: 0 32rpx;
   border-radius: 16rpx;
+}
+.car-info .certificate .u-form-item__body.data-v-b4fd400b {
+  flex-direction: column !important;
+}
+.car-info .certificate .box-img {
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  margin: 24rpx 0 0;
+}
+.car-info .certificate .box-img image {
+  width: 295rpx;
+  height: 160rpx;
+  margin: 0 0 8rpx;
+}
+.car-info .certificate .box-img .box-img-info {
+  display: flex;
+  flex-direction: column;
 }
 .service {
   display: flex;

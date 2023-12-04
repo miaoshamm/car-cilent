@@ -1,6 +1,5 @@
 <template>
-	<view class="wrapper-p">
-		<u-navbar placeholder safeAreaInsetTop :title="title === 'wish' ? '预约车辆维保' : ''" :autoBack="true"></u-navbar>
+	<view class="wrapper-p wrapper-t">
 		<u-checkbox-group v-model="checkboxValue1" iconPlacement="right" @change="checkboxChange">
 			<view class="check-box">
 				<view class="service">
@@ -10,7 +9,7 @@
 						<text class="price">¥ 45.00</text>
 					</view>
 				</view>
-				<u-checkbox name="check1" shape="circle" activeColor="#DFA0B1" v-if="title === 'wish'"></u-checkbox>
+				<u-checkbox name="check1" shape="circle" activeColor="#DFA0B1" v-if="type === 'wish'"></u-checkbox>
 				<u-radio activeColor="#DFA0B1" v-else></u-radio>
 			</view>
 			<view class="gift">
@@ -32,7 +31,7 @@
 						<text class="price">¥ 45.00</text>
 					</view>
 				</view>
-				<u-checkbox name="" shape="circle" disabled activeColor="#DFA0B1" v-if="title === 'wish'"></u-checkbox>
+				<u-checkbox name="" shape="circle" disabled activeColor="#DFA0B1" v-if="type === 'wish'"></u-checkbox>
 				<u-radio activeColor="#DFA0B1" v-else></u-radio>
 			</view>
 			<view class="gift">
@@ -55,22 +54,22 @@
 
 <script setup>
 	import {
-		ref
+		ref,
+		defineProps
 	} from 'vue';
 	import {
 		onLoad
 	} from "@dcloudio/uni-app"
 
-	const title = ref("")
+	const props = defineProps({
+		type: String
+	})
+	const type = props.type
 	const checkboxValue1 = ref([]);
 
 	const checkboxChange = (n) => {
 		console.log('change', n);
 	};
-
-	onLoad((options) => {
-		title.value = options.type
-	})
 </script>
 
 <style lang="less">

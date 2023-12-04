@@ -12,6 +12,9 @@
 	box-sizing: border-box;
 }
 
+.wrapper-t{
+	padding-top: 200rpx;
+}
 .wrapper-p{
 	padding-bottom: 140rpx;
 }
@@ -50,9 +53,24 @@
 		background: #fff;
 		padding: 0 32rpx;
 		border-radius: 16rpx;
-		.certificate{
-			.box-img{
-				
+	}
+	.certificate{
+		/deep/ .u-form-item__body.data-v-b4fd400b{
+			flex-direction: column !important;
+		}
+		.box-img{
+			display: flex;
+			text-align: center;
+			justify-content: space-between;
+			margin: 24rpx 0 0;
+			image{
+				width: 295rpx;
+				height: 160rpx;
+				margin: 0 0 8rpx;
+			}
+			.box-img-info{
+				display: flex;
+				flex-direction: column;
 			}
 		}
 	}
