@@ -5,51 +5,51 @@
 		</view>
 		<view class="car-info">
 			<u--form class="car-form" labelPosition="left" :model="model1" :rules="rules" labelWidth="120">
-				<u-form-item label="手机号码" prop="info.phone" borderBottom>
-					<u--input v-model="info.phone" border="none" placeholder="请输入手机号"></u--input>
-				</u-form-item>
-				<u-form-item label="维保时间" prop="info.time" borderBottom @click="info.timeShow = true">
-					<u--input disabled v-model="info.time" disabledColor="#ffffff" placeholder="请选择维保时间" border="none"></u--input>
-					<template #right>
-						<u-icon name="arrow-right"></u-icon>
-					</template>
-				</u-form-item>
-				<u-form-item label="车辆型号" prop="info.model" borderBottom @click="info.modelShow = true">
-					<u--input disabled v-model="info.model" disabledColor="#ffffff" placeholder="请选择车辆型号"
-						border="none"></u--input>
-					<template #right>
-						<u-icon name="arrow-right"></u-icon>
-					</template>
-				</u-form-item>
-				<u-form-item label="预约服务" borderBottom>
-					<u--input disabled disabledColor="#ffffff" border="none"></u--input>
-				</u-form-item>
-				<u-form-item borderBottom v-for="item in checkList" :key="item.id">
-					<view class="service">
-						<image src="/static/images/wish/service.png" mode=""></image>
-						<view class="text">
-							<text class="name">精洗</text>
-							<text class="price">¥ 45.00</text>
+				<view class="box">
+					<u-form-item label="手机号码" prop="info.phone" borderBottom>
+						<u--input v-model="info.phone" border="none" placeholder="请输入手机号"></u--input>
+					</u-form-item>
+					<u-form-item label="维保时间" prop="info.time" borderBottom @click="info.timeShow = true">
+						<u--input disabled v-model="info.time" disabledColor="#ffffff" placeholder="请选择维保时间"
+							border="none"></u--input>
+						<template #right>
+							<u-icon name="arrow-right"></u-icon>
+						</template>
+					</u-form-item>
+					<u-form-item label="车辆型号" prop="info.model" borderBottom @click="info.modelShow = true">
+						<u--input disabled v-model="info.model" disabledColor="#ffffff" placeholder="请选择车辆型号"
+							border="none"></u--input>
+						<template #right>
+							<u-icon name="arrow-right"></u-icon>
+						</template>
+					</u-form-item>
+					<u-form-item label="预约服务" borderBottom>
+						<u--input disabled disabledColor="#ffffff" border="none"></u--input>
+					</u-form-item>
+					<u-form-item borderBottom v-for="item in checkList" :key="item.id">
+						<view class="service">
+							<image src="/static/images/wish/service.png" mode=""></image>
+							<view class="text">
+								<text class="name">精洗</text>
+								<text class="price">¥ 45.00</text>
+							</view>
 						</view>
-					</view>
-					<template #right>
-						<u-icon name="arrow-right"></u-icon>
-					</template>
-				</u-form-item>
-				<u-form-item>
-					<view class="add-service">
-						<up-button @click="goService" customStyle="border:none;" color="#DFA0B1" iconColor="#DFA0B1" :plain="true"
-							:hairline="false" icon="plus" text="增添服务"></up-button>
-					</view>
-				</u-form-item>
+						<template #right>
+							<u-icon name="arrow-right"></u-icon>
+						</template>
+					</u-form-item>
+					<u-form-item>
+						<view class="add-service">
+							<up-button @click="goService" customStyle="border:none;" color="#DFA0B1" iconColor="#DFA0B1" :plain="true"
+								:hairline="false" icon="plus" text="增添服务"></up-button>
+						</view>
+					</u-form-item>
+				</view>
 			</u--form>
 		</view>
 		<Insurance type="wish" />
 	</view>
-	<view class="pay-box">
-		<text class="price">￥45.00</text>
-		<u-button text="立即支付" color="#DFA0B1" @click="goPay"></u-button>
-	</view>
+	<PriceBtn :price="45"/>
 	<u-datetime-picker :formatter="formatter" :minDate="nowTime" @cancel="info.timeShow = false" @confirm="checkTime"
 		:show="info.timeShow" mode="datetime"></u-datetime-picker>
 	<u-picker @cancel="info.modelShow = false" @confirm="checkModel" :show="info.modelShow" :columns="modelColumns"
@@ -62,6 +62,7 @@
 	} from 'vue';
 	import License from "@/components/license_plate_selection/license_plate_selection.vue"
 	import Insurance from "@/components/insurance_tips/insurance_tips.vue"
+	import PriceBtn from "@/components/price_btn/price_btn.vue"
 	import dayjs from 'dayjs';
 	import {
 		onReady

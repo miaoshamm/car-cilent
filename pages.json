@@ -98,13 +98,21 @@
         "navigationBarTitleText": "车辆维保服务",
         "enablePullDownRefresh": false
       }
+    },
+    {
+    	"path" : "pages/staff/staff",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "职工入口",
+    		"enablePullDownRefresh" : false
+    	}
     }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#fff"
   },
   "uniIdRouter": {},
   "tabBar": {

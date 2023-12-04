@@ -78,10 +78,32 @@
 				<text>2023-11-22 12:22:00</text>
 			</view>
 		</view>
+		<view class="box">
+			<view class="box-info">
+				<text>开发票</text>
+				<view class="check">
+					<text>立即开票</text>
+					<u-icon name="arrow-right" color="rgba(0, 0, 0, .4)"></u-icon>
+				</view>
+			</view>
+		</view>
+		<view class="box">
+			<view class="box-info">
+				<text>评价服务</text>
+				<view class="check">
+					<text>立即评价</text>
+					<u-icon name="arrow-right" color="rgba(0, 0, 0, .4)"></u-icon>
+				</view>
+			</view>
+		</view>
+		<Insurance />
 	</view>
 	<view class="check-btn">
 		<u-button plain text="查看维保地点" color="#DFA0B1"></u-button>
 	</view>
+	<!-- <view class="check-btn">
+		<u-button text="返回首页" color="#DFA0B1"></u-button>
+	</view> -->
 </template>
 
 <script setup>
@@ -89,19 +111,13 @@
 		ref
 	} from 'vue';
 
+	import Insurance from "@/components/insurance_tips/insurance_tips.vue"
 	import License from "@/components/license_plate_selection/license_plate_selection.vue"
 	let licensePlate = ref("皖GHHHHHN")
 </script>
 
 <style lang="less" scoped>
 	@import url("@/static/css/index.less");
-
-	.title {
-		font-size: 36rpx;
-		color: #81335E;
-		font-weight: 700;
-		margin: 0 0 20rpx;
-	}
 
 	.box {
 		padding: 0 32rpx;
@@ -114,6 +130,12 @@
 			justify-content: space-between;
 			font-size: 28rpx;
 			padding: 28rpx 0;
+			
+			.check{
+				display: flex;
+				color: rgba(0, 0, 0, .4);
+				font-size: 28rpx;
+			}
 			
 			.box-service{
 				display: flex;
