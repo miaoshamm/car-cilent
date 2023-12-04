@@ -168,7 +168,6 @@ const ON_ERROR = "onError";
 const ON_THEME_CHANGE = "onThemeChange";
 const ON_PAGE_NOT_FOUND = "onPageNotFound";
 const ON_UNHANDLE_REJECTION = "onUnhandledRejection";
-const ON_EXIT = "onExit";
 const ON_LOAD = "onLoad";
 const ON_READY = "onReady";
 const ON_UNLOAD = "onUnload";
@@ -285,7 +284,6 @@ const UniLifecycleHooks = [
   ON_THEME_CHANGE,
   ON_PAGE_NOT_FOUND,
   ON_UNHANDLE_REJECTION,
-  ON_EXIT,
   ON_INIT,
   ON_LOAD,
   ON_READY,
@@ -353,9 +351,9 @@ E.prototype = {
     return this;
   },
   once: function(name, callback, ctx) {
-    var self = this;
+    var self2 = this;
     function listener() {
-      self.off(name, listener);
+      self2.off(name, listener);
       callback.apply(ctx, arguments);
     }
     listener._ = callback;
@@ -1163,7 +1161,7 @@ function initWrapper(protocols2) {
     }
     return processArgs(methodName, res, returnValue, {}, keepReturnValue);
   }
-  return function wrapper(methodName, method3) {
+  return function wrapper3(methodName, method3) {
     if (!hasOwn(protocols2, methodName)) {
       return method3;
     }
@@ -1268,8 +1266,8 @@ function populateParameters(fromRes, toRes) {
     appVersion: "1.0.0",
     appVersionCode: "100",
     appLanguage: getAppLanguage(hostLanguage),
-    uniCompileVersion: "3.98",
-    uniRuntimeVersion: "3.98",
+    uniCompileVersion: "3.96",
+    uniRuntimeVersion: "3.96",
     uniPlatform: "mp-weixin",
     deviceBrand,
     deviceModel: model,
@@ -1455,7 +1453,7 @@ const baseApis = {
   invokePushCallback
 };
 function initUni(api, protocols2, platform2 = wx) {
-  const wrapper = initWrapper(protocols2);
+  const wrapper3 = initWrapper(protocols2);
   const UniProxyHandlers = {
     get(target, key) {
       if (hasOwn(target, key)) {
@@ -1467,7 +1465,7 @@ function initUni(api, protocols2, platform2 = wx) {
       if (hasOwn(baseApis, key)) {
         return promisify(key, baseApis[key]);
       }
-      return promisify(key, wrapper(key, platform2[key]));
+      return promisify(key, wrapper3(key, platform2[key]));
     }
   };
   return new Proxy({}, UniProxyHandlers);
@@ -2110,8 +2108,8 @@ function size(target, isReadonly2 = false) {
 function add(value2) {
   value2 = toRaw(value2);
   const target = toRaw(this);
-  const proto = getProto(target);
-  const hadKey = proto.has.call(target, value2);
+  const proto2 = getProto(target);
+  const hadKey = proto2.has.call(target, value2);
   if (!hadKey) {
     target.add(value2);
     trigger(target, "add", value2, value2);
@@ -2557,13 +2555,13 @@ class ComputedRefImpl {
     ] = isReadonly2;
   }
   get value() {
-    const self = toRaw(this);
-    trackRefValue(self);
-    if (self._dirty || !self._cacheable) {
-      self._dirty = false;
-      self._value = self.effect.run();
+    const self2 = toRaw(this);
+    trackRefValue(self2);
+    if (self2._dirty || !self2._cacheable) {
+      self2._dirty = false;
+      self2._value = self2.effect.run();
     }
-    return self._value;
+    return self2._value;
   }
   set value(newValue) {
     this._setter(newValue);
@@ -3550,43 +3548,43 @@ function injectHook(type2, hook, target = currentInstance, prepend = false) {
     warn(`${apiName} is called when there is no active component instance to be associated with. Lifecycle injection APIs can only be used during execution of setup().`);
   }
 }
-const createHook = (lifecycle) => (hook, target = currentInstance) => (
+const createHook$1 = (lifecycle) => (hook, target = currentInstance) => (
   // post-create lifecycle registrations are noops during SSR (except for serverPrefetch)
   (!isInSSRComponentSetup || lifecycle === "sp") && injectHook(lifecycle, (...args) => hook(...args), target)
 );
-const onBeforeMount = createHook(
+const onBeforeMount = createHook$1(
   "bm"
   /* LifecycleHooks.BEFORE_MOUNT */
 );
-const onMounted = createHook(
+const onMounted = createHook$1(
   "m"
   /* LifecycleHooks.MOUNTED */
 );
-const onBeforeUpdate = createHook(
+const onBeforeUpdate = createHook$1(
   "bu"
   /* LifecycleHooks.BEFORE_UPDATE */
 );
-const onUpdated = createHook(
+const onUpdated = createHook$1(
   "u"
   /* LifecycleHooks.UPDATED */
 );
-const onBeforeUnmount = createHook(
+const onBeforeUnmount = createHook$1(
   "bum"
   /* LifecycleHooks.BEFORE_UNMOUNT */
 );
-const onUnmounted = createHook(
+const onUnmounted = createHook$1(
   "um"
   /* LifecycleHooks.UNMOUNTED */
 );
-const onServerPrefetch = createHook(
+const onServerPrefetch = createHook$1(
   "sp"
   /* LifecycleHooks.SERVER_PREFETCH */
 );
-const onRenderTriggered = createHook(
+const onRenderTriggered = createHook$1(
   "rtg"
   /* LifecycleHooks.RENDER_TRIGGERED */
 );
-const onRenderTracked = createHook(
+const onRenderTracked = createHook$1(
   "rtc"
   /* LifecycleHooks.RENDER_TRACKED */
 );
@@ -5717,14 +5715,6 @@ function applyOptions$2(options, instance, publicThis) {
 function set(target, key, val) {
   return target[key] = val;
 }
-function $callMethod(method3, ...args) {
-  const fn = this[method3];
-  if (fn) {
-    return fn(...args);
-  }
-  console.error(`method ${method3} not found`);
-  return null;
-}
 function createErrorHandler(app) {
   return function errorHandler(err, instance, _info) {
     if (!instance) {
@@ -5823,7 +5813,6 @@ function initApp(app) {
   {
     globalProperties.$set = set;
     globalProperties.$applyOptions = applyOptions$2;
-    globalProperties.$callMethod = $callMethod;
   }
   {
     index$1.invokeCreateVueAppHook(app);
@@ -6219,12 +6208,6 @@ function parseApp(instance, parseAppOptions) {
       instance.$callHook(ON_LAUNCH, options);
     }
   };
-  const { onError } = internalInstance;
-  if (onError) {
-    internalInstance.appContext.config.errorHandler = (err) => {
-      instance.$callHook(ON_ERROR, err);
-    };
-  }
   initLocale(instance);
   const vueOptions = instance.$.type;
   initHooks(appOptions, HOOKS);
@@ -7039,7 +7022,7 @@ function deepMerge$2() {
   }
   return result;
 }
-function isUndefined(val) {
+function isUndefined$1(val) {
   return typeof val === "undefined";
 }
 function encode(val) {
@@ -7107,7 +7090,7 @@ function settle(resolve2, reject, response) {
 const mergeKeys$1 = (keys, config2) => {
   const config3 = {};
   keys.forEach((prop) => {
-    if (!isUndefined(config2[prop])) {
+    if (!isUndefined$1(config2[prop])) {
       config3[prop] = config2[prop];
     }
   });
@@ -7184,9 +7167,9 @@ InterceptorManager.prototype.forEach = function forEach2(fn) {
 const mergeKeys = (keys, globalsConfig, config2) => {
   const config3 = {};
   keys.forEach((prop) => {
-    if (!isUndefined(config2[prop])) {
+    if (!isUndefined$1(config2[prop])) {
       config3[prop] = config2[prop];
-    } else if (!isUndefined(globalsConfig[prop])) {
+    } else if (!isUndefined$1(globalsConfig[prop])) {
       config3[prop] = globalsConfig[prop];
     }
   });
@@ -7215,7 +7198,7 @@ const mergeConfig = (globalsConfig, config2 = {}) => {
       "formData"
     ];
     uploadKeys.forEach((prop) => {
-      if (!isUndefined(config2[prop])) {
+      if (!isUndefined$1(config2[prop])) {
         config3[prop] = config2[prop];
       }
     });
@@ -7287,7 +7270,7 @@ var clone = function() {
       if (depth2 === 0)
         return parent2;
       var child;
-      var proto;
+      var proto2;
       if (typeof parent2 != "object") {
         return parent2;
       }
@@ -7323,11 +7306,11 @@ var clone = function() {
         child = Object.create(parent2);
       } else {
         if (typeof prototype == "undefined") {
-          proto = Object.getPrototypeOf(parent2);
-          child = Object.create(proto);
+          proto2 = Object.getPrototypeOf(parent2);
+          child = Object.create(proto2);
         } else {
           child = Object.create(prototype);
-          proto = prototype;
+          proto2 = prototype;
         }
       }
       if (circular) {
@@ -10215,7 +10198,311 @@ function createPinia() {
   }
   return pinia;
 }
-const props$s = {
+var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
+var dayjs_minExports = {};
+var dayjs_min = {
+  get exports() {
+    return dayjs_minExports;
+  },
+  set exports(v) {
+    dayjs_minExports = v;
+  }
+};
+(function(module2, exports2) {
+  !function(t2, e2) {
+    module2.exports = e2();
+  }(commonjsGlobal, function() {
+    var t2 = 1e3, e2 = 6e4, n2 = 36e5, r = "millisecond", i = "second", s2 = "minute", u = "hour", a = "day", o2 = "week", c = "month", f2 = "quarter", h = "year", d = "date", l = "Invalid Date", $ = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/, y = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g, M2 = { name: "en", weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"), months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"), ordinal: function(t3) {
+      var e3 = ["th", "st", "nd", "rd"], n3 = t3 % 100;
+      return "[" + t3 + (e3[(n3 - 20) % 10] || e3[n3] || e3[0]) + "]";
+    } }, m = function(t3, e3, n3) {
+      var r2 = String(t3);
+      return !r2 || r2.length >= e3 ? t3 : "" + Array(e3 + 1 - r2.length).join(n3) + t3;
+    }, v = { s: m, z: function(t3) {
+      var e3 = -t3.utcOffset(), n3 = Math.abs(e3), r2 = Math.floor(n3 / 60), i2 = n3 % 60;
+      return (e3 <= 0 ? "+" : "-") + m(r2, 2, "0") + ":" + m(i2, 2, "0");
+    }, m: function t3(e3, n3) {
+      if (e3.date() < n3.date())
+        return -t3(n3, e3);
+      var r2 = 12 * (n3.year() - e3.year()) + (n3.month() - e3.month()), i2 = e3.clone().add(r2, c), s3 = n3 - i2 < 0, u2 = e3.clone().add(r2 + (s3 ? -1 : 1), c);
+      return +(-(r2 + (n3 - i2) / (s3 ? i2 - u2 : u2 - i2)) || 0);
+    }, a: function(t3) {
+      return t3 < 0 ? Math.ceil(t3) || 0 : Math.floor(t3);
+    }, p: function(t3) {
+      return { M: c, y: h, w: o2, d: a, D: d, h: u, m: s2, s: i, ms: r, Q: f2 }[t3] || String(t3 || "").toLowerCase().replace(/s$/, "");
+    }, u: function(t3) {
+      return void 0 === t3;
+    } }, g = "en", D2 = {};
+    D2[g] = M2;
+    var p2 = "$isDayjsObject", S2 = function(t3) {
+      return t3 instanceof _ || !(!t3 || !t3[p2]);
+    }, w = function t3(e3, n3, r2) {
+      var i2;
+      if (!e3)
+        return g;
+      if ("string" == typeof e3) {
+        var s3 = e3.toLowerCase();
+        D2[s3] && (i2 = s3), n3 && (D2[s3] = n3, i2 = s3);
+        var u2 = e3.split("-");
+        if (!i2 && u2.length > 1)
+          return t3(u2[0]);
+      } else {
+        var a2 = e3.name;
+        D2[a2] = e3, i2 = a2;
+      }
+      return !r2 && i2 && (g = i2), i2 || !r2 && g;
+    }, O = function(t3, e3) {
+      if (S2(t3))
+        return t3.clone();
+      var n3 = "object" == typeof e3 ? e3 : {};
+      return n3.date = t3, n3.args = arguments, new _(n3);
+    }, b = v;
+    b.l = w, b.i = S2, b.w = function(t3, e3) {
+      return O(t3, { locale: e3.$L, utc: e3.$u, x: e3.$x, $offset: e3.$offset });
+    };
+    var _ = function() {
+      function M3(t3) {
+        this.$L = w(t3.locale, null, true), this.parse(t3), this.$x = this.$x || t3.x || {}, this[p2] = true;
+      }
+      var m2 = M3.prototype;
+      return m2.parse = function(t3) {
+        this.$d = function(t4) {
+          var e3 = t4.date, n3 = t4.utc;
+          if (null === e3)
+            return /* @__PURE__ */ new Date(NaN);
+          if (b.u(e3))
+            return /* @__PURE__ */ new Date();
+          if (e3 instanceof Date)
+            return new Date(e3);
+          if ("string" == typeof e3 && !/Z$/i.test(e3)) {
+            var r2 = e3.match($);
+            if (r2) {
+              var i2 = r2[2] - 1 || 0, s3 = (r2[7] || "0").substring(0, 3);
+              return n3 ? new Date(Date.UTC(r2[1], i2, r2[3] || 1, r2[4] || 0, r2[5] || 0, r2[6] || 0, s3)) : new Date(r2[1], i2, r2[3] || 1, r2[4] || 0, r2[5] || 0, r2[6] || 0, s3);
+            }
+          }
+          return new Date(e3);
+        }(t3), this.init();
+      }, m2.init = function() {
+        var t3 = this.$d;
+        this.$y = t3.getFullYear(), this.$M = t3.getMonth(), this.$D = t3.getDate(), this.$W = t3.getDay(), this.$H = t3.getHours(), this.$m = t3.getMinutes(), this.$s = t3.getSeconds(), this.$ms = t3.getMilliseconds();
+      }, m2.$utils = function() {
+        return b;
+      }, m2.isValid = function() {
+        return !(this.$d.toString() === l);
+      }, m2.isSame = function(t3, e3) {
+        var n3 = O(t3);
+        return this.startOf(e3) <= n3 && n3 <= this.endOf(e3);
+      }, m2.isAfter = function(t3, e3) {
+        return O(t3) < this.startOf(e3);
+      }, m2.isBefore = function(t3, e3) {
+        return this.endOf(e3) < O(t3);
+      }, m2.$g = function(t3, e3, n3) {
+        return b.u(t3) ? this[e3] : this.set(n3, t3);
+      }, m2.unix = function() {
+        return Math.floor(this.valueOf() / 1e3);
+      }, m2.valueOf = function() {
+        return this.$d.getTime();
+      }, m2.startOf = function(t3, e3) {
+        var n3 = this, r2 = !!b.u(e3) || e3, f3 = b.p(t3), l2 = function(t4, e4) {
+          var i2 = b.w(n3.$u ? Date.UTC(n3.$y, e4, t4) : new Date(n3.$y, e4, t4), n3);
+          return r2 ? i2 : i2.endOf(a);
+        }, $2 = function(t4, e4) {
+          return b.w(n3.toDate()[t4].apply(n3.toDate("s"), (r2 ? [0, 0, 0, 0] : [23, 59, 59, 999]).slice(e4)), n3);
+        }, y2 = this.$W, M4 = this.$M, m3 = this.$D, v2 = "set" + (this.$u ? "UTC" : "");
+        switch (f3) {
+          case h:
+            return r2 ? l2(1, 0) : l2(31, 11);
+          case c:
+            return r2 ? l2(1, M4) : l2(0, M4 + 1);
+          case o2:
+            var g2 = this.$locale().weekStart || 0, D3 = (y2 < g2 ? y2 + 7 : y2) - g2;
+            return l2(r2 ? m3 - D3 : m3 + (6 - D3), M4);
+          case a:
+          case d:
+            return $2(v2 + "Hours", 0);
+          case u:
+            return $2(v2 + "Minutes", 1);
+          case s2:
+            return $2(v2 + "Seconds", 2);
+          case i:
+            return $2(v2 + "Milliseconds", 3);
+          default:
+            return this.clone();
+        }
+      }, m2.endOf = function(t3) {
+        return this.startOf(t3, false);
+      }, m2.$set = function(t3, e3) {
+        var n3, o3 = b.p(t3), f3 = "set" + (this.$u ? "UTC" : ""), l2 = (n3 = {}, n3[a] = f3 + "Date", n3[d] = f3 + "Date", n3[c] = f3 + "Month", n3[h] = f3 + "FullYear", n3[u] = f3 + "Hours", n3[s2] = f3 + "Minutes", n3[i] = f3 + "Seconds", n3[r] = f3 + "Milliseconds", n3)[o3], $2 = o3 === a ? this.$D + (e3 - this.$W) : e3;
+        if (o3 === c || o3 === h) {
+          var y2 = this.clone().set(d, 1);
+          y2.$d[l2]($2), y2.init(), this.$d = y2.set(d, Math.min(this.$D, y2.daysInMonth())).$d;
+        } else
+          l2 && this.$d[l2]($2);
+        return this.init(), this;
+      }, m2.set = function(t3, e3) {
+        return this.clone().$set(t3, e3);
+      }, m2.get = function(t3) {
+        return this[b.p(t3)]();
+      }, m2.add = function(r2, f3) {
+        var d2, l2 = this;
+        r2 = Number(r2);
+        var $2 = b.p(f3), y2 = function(t3) {
+          var e3 = O(l2);
+          return b.w(e3.date(e3.date() + Math.round(t3 * r2)), l2);
+        };
+        if ($2 === c)
+          return this.set(c, this.$M + r2);
+        if ($2 === h)
+          return this.set(h, this.$y + r2);
+        if ($2 === a)
+          return y2(1);
+        if ($2 === o2)
+          return y2(7);
+        var M4 = (d2 = {}, d2[s2] = e2, d2[u] = n2, d2[i] = t2, d2)[$2] || 1, m3 = this.$d.getTime() + r2 * M4;
+        return b.w(m3, this);
+      }, m2.subtract = function(t3, e3) {
+        return this.add(-1 * t3, e3);
+      }, m2.format = function(t3) {
+        var e3 = this, n3 = this.$locale();
+        if (!this.isValid())
+          return n3.invalidDate || l;
+        var r2 = t3 || "YYYY-MM-DDTHH:mm:ssZ", i2 = b.z(this), s3 = this.$H, u2 = this.$m, a2 = this.$M, o3 = n3.weekdays, c2 = n3.months, f3 = n3.meridiem, h2 = function(t4, n4, i3, s4) {
+          return t4 && (t4[n4] || t4(e3, r2)) || i3[n4].slice(0, s4);
+        }, d2 = function(t4) {
+          return b.s(s3 % 12 || 12, t4, "0");
+        }, $2 = f3 || function(t4, e4, n4) {
+          var r3 = t4 < 12 ? "AM" : "PM";
+          return n4 ? r3.toLowerCase() : r3;
+        };
+        return r2.replace(y, function(t4, r3) {
+          return r3 || function(t5) {
+            switch (t5) {
+              case "YY":
+                return String(e3.$y).slice(-2);
+              case "YYYY":
+                return b.s(e3.$y, 4, "0");
+              case "M":
+                return a2 + 1;
+              case "MM":
+                return b.s(a2 + 1, 2, "0");
+              case "MMM":
+                return h2(n3.monthsShort, a2, c2, 3);
+              case "MMMM":
+                return h2(c2, a2);
+              case "D":
+                return e3.$D;
+              case "DD":
+                return b.s(e3.$D, 2, "0");
+              case "d":
+                return String(e3.$W);
+              case "dd":
+                return h2(n3.weekdaysMin, e3.$W, o3, 2);
+              case "ddd":
+                return h2(n3.weekdaysShort, e3.$W, o3, 3);
+              case "dddd":
+                return o3[e3.$W];
+              case "H":
+                return String(s3);
+              case "HH":
+                return b.s(s3, 2, "0");
+              case "h":
+                return d2(1);
+              case "hh":
+                return d2(2);
+              case "a":
+                return $2(s3, u2, true);
+              case "A":
+                return $2(s3, u2, false);
+              case "m":
+                return String(u2);
+              case "mm":
+                return b.s(u2, 2, "0");
+              case "s":
+                return String(e3.$s);
+              case "ss":
+                return b.s(e3.$s, 2, "0");
+              case "SSS":
+                return b.s(e3.$ms, 3, "0");
+              case "Z":
+                return i2;
+            }
+            return null;
+          }(t4) || i2.replace(":", "");
+        });
+      }, m2.utcOffset = function() {
+        return 15 * -Math.round(this.$d.getTimezoneOffset() / 15);
+      }, m2.diff = function(r2, d2, l2) {
+        var $2, y2 = this, M4 = b.p(d2), m3 = O(r2), v2 = (m3.utcOffset() - this.utcOffset()) * e2, g2 = this - m3, D3 = function() {
+          return b.m(y2, m3);
+        };
+        switch (M4) {
+          case h:
+            $2 = D3() / 12;
+            break;
+          case c:
+            $2 = D3();
+            break;
+          case f2:
+            $2 = D3() / 3;
+            break;
+          case o2:
+            $2 = (g2 - v2) / 6048e5;
+            break;
+          case a:
+            $2 = (g2 - v2) / 864e5;
+            break;
+          case u:
+            $2 = g2 / n2;
+            break;
+          case s2:
+            $2 = g2 / e2;
+            break;
+          case i:
+            $2 = g2 / t2;
+            break;
+          default:
+            $2 = g2;
+        }
+        return l2 ? $2 : b.a($2);
+      }, m2.daysInMonth = function() {
+        return this.endOf(c).$D;
+      }, m2.$locale = function() {
+        return D2[this.$L];
+      }, m2.locale = function(t3, e3) {
+        if (!t3)
+          return this.$L;
+        var n3 = this.clone(), r2 = w(t3, e3, true);
+        return r2 && (n3.$L = r2), n3;
+      }, m2.clone = function() {
+        return b.w(this.$d, this);
+      }, m2.toDate = function() {
+        return new Date(this.valueOf());
+      }, m2.toJSON = function() {
+        return this.isValid() ? this.toISOString() : null;
+      }, m2.toISOString = function() {
+        return this.$d.toISOString();
+      }, m2.toString = function() {
+        return this.$d.toUTCString();
+      }, M3;
+    }(), k = _.prototype;
+    return O.prototype = k, [["$ms", r], ["$s", i], ["$m", s2], ["$H", u], ["$W", a], ["$M", c], ["$y", h], ["$D", d]].forEach(function(t3) {
+      k[t3[1]] = function(e3) {
+        return this.$g(e3, t3[0], t3[1]);
+      };
+    }), O.extend = function(t3, e3) {
+      return t3.$i || (t3(e3, _, O), t3.$i = true), O;
+    }, O.locale = w, O.isDayjs = S2, O.unix = function(t3) {
+      return O(1e3 * t3);
+    }, O.en = D2[g], O.Ls = D2, O.p = {}, O;
+  });
+})(dayjs_min);
+const dayjs$1 = dayjs_minExports;
+const createHook = (lifecycle) => (hook, target = getCurrentInstance()) => {
+  !isInSSRComponentSetup && injectHook(lifecycle, hook, target);
+};
+const onReady = /* @__PURE__ */ createHook(ON_READY);
+const props$v = {
   props: {
     // 是否展示modal
     show: {
@@ -10299,7 +10586,7 @@ const props$s = {
     }
   }
 };
-const props$r = {
+const props$u = {
   props: {
     // 显示的内容，数组
     text: {
@@ -10369,7 +10656,7 @@ const props$r = {
     }
   }
 };
-const props$q = {
+const props$t = {
   props: {
     // 列表数组，元素可为字符串，如为对象可通过keyName指定目标属性名
     list: {
@@ -10708,7 +10995,7 @@ const icons = {
   "uicon-zh": "",
   "uicon-en": ""
 };
-const props$p = {
+const props$s = {
   props: {
     // 图标类名
     name: {
@@ -10797,7 +11084,7 @@ const props$p = {
     }
   }
 };
-const props$o = {
+const props$r = {
   props: {
     // 宫格的name
     name: {
@@ -10811,7 +11098,7 @@ const props$o = {
     }
   }
 };
-const props$n = {
+const props$q = {
   props: {
     // 分成几列
     col: {
@@ -10868,7 +11155,7 @@ const openType = {
     }
   }
 };
-const props$m = {
+const props$p = {
   props: {
     // 是否细边框
     hairline: {
@@ -11020,7 +11307,7 @@ const props$m = {
     }
   }
 };
-const props$l = {
+const props$o = {
   props: {
     // 标题
     title: {
@@ -11130,7 +11417,7 @@ const props$l = {
     }
   }
 };
-const props$k = {
+const props$n = {
   props: {
     // 头像图片路径(不能为相对路径)
     src: {
@@ -11282,7 +11569,7 @@ const value = {
     }
   }
 };
-const props$j = {
+const props$m = {
   props: {
     // 主题颜色
     type: {
@@ -11392,7 +11679,7 @@ const props$j = {
     }
   }
 };
-const props$i = {
+const props$l = {
   props: {
     // item标签的名称，作为与u-tabbar的value参数匹配的标识符
     name: {
@@ -11426,7 +11713,7 @@ const props$i = {
     }
   }
 };
-const props$h = {
+const props$k = {
   props: {
     // 当前匹配项的name
     value: {
@@ -11470,7 +11757,7 @@ const props$h = {
     }
   }
 };
-const props$g = {
+const props$j = {
   props: {
     // 图片地址
     src: {
@@ -11554,7 +11841,7 @@ const props$g = {
     }
   }
 };
-const props$f = {
+const props$i = {
   props: {
     // 绑定的值
     modelValue: {
@@ -11740,7 +12027,7 @@ const props$f = {
     }
   }
 };
-const props$e = {
+const props$h = {
   props: {
     // input的label提示语
     label: {
@@ -11783,7 +12070,7 @@ const props$e = {
     }
   }
 };
-const props$d = {
+const props$g = {
   props: {
     // 当前form的需要验证字段的集合
     model: {
@@ -12719,7 +13006,690 @@ Schema.register = function register(type2, validator) {
 };
 Schema.warning = warning;
 Schema.messages = messages;
-const props$c = {
+const props$f = {
+  props: {
+    // 是否打开组件
+    show: {
+      type: Boolean,
+      default: defprops.datetimePicker.show
+    },
+    // 弹出的方向，可选值为 top bottom right left center
+    popupMode: {
+      type: String,
+      default: defprops.picker.popupMode
+    },
+    // 是否展示顶部的操作栏
+    showToolbar: {
+      type: Boolean,
+      default: defprops.datetimePicker.showToolbar
+    },
+    // 绑定值
+    modelValue: {
+      type: [String, Number],
+      default: defprops.datetimePicker.value
+    },
+    // 顶部标题
+    title: {
+      type: String,
+      default: defprops.datetimePicker.title
+    },
+    // 展示格式，mode=date为日期选择，mode=time为时间选择，mode=year-month为年月选择，mode=datetime为日期时间选择
+    mode: {
+      type: String,
+      default: defprops.datetimePicker.mode
+    },
+    // 可选的最大时间
+    maxDate: {
+      type: Number,
+      // 最大默认值为后10年
+      default: defprops.datetimePicker.maxDate
+    },
+    // 可选的最小时间
+    minDate: {
+      type: Number,
+      // 最小默认值为前10年
+      default: defprops.datetimePicker.minDate
+    },
+    // 可选的最小小时，仅mode=time有效
+    minHour: {
+      type: Number,
+      default: defprops.datetimePicker.minHour
+    },
+    // 可选的最大小时，仅mode=time有效
+    maxHour: {
+      type: Number,
+      default: defprops.datetimePicker.maxHour
+    },
+    // 可选的最小分钟，仅mode=time有效
+    minMinute: {
+      type: Number,
+      default: defprops.datetimePicker.minMinute
+    },
+    // 可选的最大分钟，仅mode=time有效
+    maxMinute: {
+      type: Number,
+      default: defprops.datetimePicker.maxMinute
+    },
+    // 选项过滤函数
+    filter: {
+      type: [Function, null],
+      default: defprops.datetimePicker.filter
+    },
+    // 选项格式化函数
+    formatter: {
+      type: [Function, null],
+      default: defprops.datetimePicker.formatter
+    },
+    // 是否显示加载中状态
+    loading: {
+      type: Boolean,
+      default: defprops.datetimePicker.loading
+    },
+    // 各列中，单个选项的高度
+    itemHeight: {
+      type: [String, Number],
+      default: defprops.datetimePicker.itemHeight
+    },
+    // 取消按钮的文字
+    cancelText: {
+      type: String,
+      default: defprops.datetimePicker.cancelText
+    },
+    // 确认按钮的文字
+    confirmText: {
+      type: String,
+      default: defprops.datetimePicker.confirmText
+    },
+    // 取消按钮的颜色
+    cancelColor: {
+      type: String,
+      default: defprops.datetimePicker.cancelColor
+    },
+    // 确认按钮的颜色
+    confirmColor: {
+      type: String,
+      default: defprops.datetimePicker.confirmColor
+    },
+    // 每列中可见选项的数量
+    visibleItemCount: {
+      type: [String, Number],
+      default: defprops.datetimePicker.visibleItemCount
+    },
+    // 是否允许点击遮罩关闭选择器
+    closeOnClickOverlay: {
+      type: Boolean,
+      default: defprops.datetimePicker.closeOnClickOverlay
+    },
+    // 各列的默认索引
+    defaultIndex: {
+      type: Array,
+      default: defprops.datetimePicker.defaultIndex
+    }
+  }
+};
+var SECONDS_A_MINUTE = 60;
+var SECONDS_A_HOUR = SECONDS_A_MINUTE * 60;
+var SECONDS_A_DAY = SECONDS_A_HOUR * 24;
+var SECONDS_A_WEEK = SECONDS_A_DAY * 7;
+var MILLISECONDS_A_SECOND = 1e3;
+var MILLISECONDS_A_MINUTE = SECONDS_A_MINUTE * MILLISECONDS_A_SECOND;
+var MILLISECONDS_A_HOUR = SECONDS_A_HOUR * MILLISECONDS_A_SECOND;
+var MILLISECONDS_A_DAY = SECONDS_A_DAY * MILLISECONDS_A_SECOND;
+var MILLISECONDS_A_WEEK = SECONDS_A_WEEK * MILLISECONDS_A_SECOND;
+var MS = "millisecond";
+var S = "second";
+var MIN = "minute";
+var H = "hour";
+var D = "day";
+var W = "week";
+var M = "month";
+var Q = "quarter";
+var Y = "year";
+var DATE = "date";
+var FORMAT_DEFAULT = "YYYY-MM-DDTHH:mm:ssZ";
+var INVALID_DATE_STRING = "Invalid Date";
+var REGEX_PARSE = /^(\d{4})[-/]?(\d{1,2})?[-/]?(\d{0,2})[Tt\s]*(\d{1,2})?:?(\d{1,2})?:?(\d{1,2})?[.:]?(\d+)?$/;
+var REGEX_FORMAT = /\[([^\]]+)]|Y{1,4}|M{1,4}|D{1,2}|d{1,4}|H{1,2}|h{1,2}|a|A|m{1,2}|s{1,2}|Z{1,2}|SSS/g;
+const en = {
+  name: "en",
+  weekdays: "Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday".split("_"),
+  months: "January_February_March_April_May_June_July_August_September_October_November_December".split("_"),
+  ordinal: function ordinal(n2) {
+    var s2 = ["th", "st", "nd", "rd"];
+    var v = n2 % 100;
+    return "[" + n2 + (s2[(v - 20) % 10] || s2[v] || s2[0]) + "]";
+  }
+};
+var padStart = function padStart2(string2, length, pad) {
+  var s2 = String(string2);
+  if (!s2 || s2.length >= length)
+    return string2;
+  return "" + Array(length + 1 - s2.length).join(pad) + string2;
+};
+var padZoneStr = function padZoneStr2(instance) {
+  var negMinutes = -instance.utcOffset();
+  var minutes = Math.abs(negMinutes);
+  var hourOffset = Math.floor(minutes / 60);
+  var minuteOffset = minutes % 60;
+  return (negMinutes <= 0 ? "+" : "-") + padStart(hourOffset, 2, "0") + ":" + padStart(minuteOffset, 2, "0");
+};
+var monthDiff = function monthDiff2(a, b) {
+  if (a.date() < b.date())
+    return -monthDiff2(b, a);
+  var wholeMonthDiff = (b.year() - a.year()) * 12 + (b.month() - a.month());
+  var anchor = a.clone().add(wholeMonthDiff, M);
+  var c = b - anchor < 0;
+  var anchor2 = a.clone().add(wholeMonthDiff + (c ? -1 : 1), M);
+  return +(-(wholeMonthDiff + (b - anchor) / (c ? anchor - anchor2 : anchor2 - anchor)) || 0);
+};
+var absFloor = function absFloor2(n2) {
+  return n2 < 0 ? Math.ceil(n2) || 0 : Math.floor(n2);
+};
+var prettyUnit = function prettyUnit2(u) {
+  var special = {
+    M,
+    y: Y,
+    w: W,
+    d: D,
+    D: DATE,
+    h: H,
+    m: MIN,
+    s: S,
+    ms: MS,
+    Q
+  };
+  return special[u] || String(u || "").toLowerCase().replace(/s$/, "");
+};
+var isUndefined = function isUndefined2(s2) {
+  return s2 === void 0;
+};
+const U = {
+  s: padStart,
+  z: padZoneStr,
+  m: monthDiff,
+  a: absFloor,
+  p: prettyUnit,
+  u: isUndefined
+};
+var L = "en";
+var Ls = {};
+Ls[L] = en;
+var IS_DAYJS = "$isDayjsObject";
+var isDayjs = function isDayjs2(d) {
+  return d instanceof Dayjs || !!(d && d[IS_DAYJS]);
+};
+var parseLocale = function parseLocale2(preset, object3, isLocal) {
+  var l;
+  if (!preset)
+    return L;
+  if (typeof preset === "string") {
+    var presetLower = preset.toLowerCase();
+    if (Ls[presetLower]) {
+      l = presetLower;
+    }
+    if (object3) {
+      Ls[presetLower] = object3;
+      l = presetLower;
+    }
+    var presetSplit = preset.split("-");
+    if (!l && presetSplit.length > 1) {
+      return parseLocale2(presetSplit[0]);
+    }
+  } else {
+    var name = preset.name;
+    Ls[name] = preset;
+    l = name;
+  }
+  if (!isLocal && l)
+    L = l;
+  return l || !isLocal && L;
+};
+var dayjs = function dayjs2(date3, c) {
+  if (isDayjs(date3)) {
+    return date3.clone();
+  }
+  var cfg = typeof c === "object" ? c : {};
+  cfg.date = date3;
+  cfg.args = arguments;
+  return new Dayjs(cfg);
+};
+var wrapper = function wrapper2(date3, instance) {
+  return dayjs(date3, {
+    locale: instance.$L,
+    utc: instance.$u,
+    x: instance.$x,
+    $offset: instance.$offset
+    // todo: refactor; do not use this.$offset in you code
+  });
+};
+var Utils = U;
+Utils.l = parseLocale;
+Utils.i = isDayjs;
+Utils.w = wrapper;
+var parseDate = function parseDate2(cfg) {
+  var date3 = cfg.date, utc = cfg.utc;
+  if (date3 === null)
+    return /* @__PURE__ */ new Date(NaN);
+  if (Utils.u(date3))
+    return /* @__PURE__ */ new Date();
+  if (date3 instanceof Date)
+    return new Date(date3);
+  if (typeof date3 === "string" && !/Z$/i.test(date3)) {
+    var d = date3.match(REGEX_PARSE);
+    if (d) {
+      var m = d[2] - 1 || 0;
+      var ms = (d[7] || "0").substring(0, 3);
+      if (utc) {
+        return new Date(Date.UTC(d[1], m, d[3] || 1, d[4] || 0, d[5] || 0, d[6] || 0, ms));
+      }
+      return new Date(d[1], m, d[3] || 1, d[4] || 0, d[5] || 0, d[6] || 0, ms);
+    }
+  }
+  return new Date(date3);
+};
+var Dayjs = /* @__PURE__ */ function() {
+  function Dayjs2(cfg) {
+    this.$L = parseLocale(cfg.locale, null, true);
+    this.parse(cfg);
+    this.$x = this.$x || cfg.x || {};
+    this[IS_DAYJS] = true;
+  }
+  var _proto = Dayjs2.prototype;
+  _proto.parse = function parse(cfg) {
+    this.$d = parseDate(cfg);
+    this.init();
+  };
+  _proto.init = function init() {
+    var $d = this.$d;
+    this.$y = $d.getFullYear();
+    this.$M = $d.getMonth();
+    this.$D = $d.getDate();
+    this.$W = $d.getDay();
+    this.$H = $d.getHours();
+    this.$m = $d.getMinutes();
+    this.$s = $d.getSeconds();
+    this.$ms = $d.getMilliseconds();
+  };
+  _proto.$utils = function $utils() {
+    return Utils;
+  };
+  _proto.isValid = function isValid() {
+    return !(this.$d.toString() === INVALID_DATE_STRING);
+  };
+  _proto.isSame = function isSame(that, units) {
+    var other = dayjs(that);
+    return this.startOf(units) <= other && other <= this.endOf(units);
+  };
+  _proto.isAfter = function isAfter(that, units) {
+    return dayjs(that) < this.startOf(units);
+  };
+  _proto.isBefore = function isBefore(that, units) {
+    return this.endOf(units) < dayjs(that);
+  };
+  _proto.$g = function $g(input, get2, set2) {
+    if (Utils.u(input))
+      return this[get2];
+    return this.set(set2, input);
+  };
+  _proto.unix = function unix() {
+    return Math.floor(this.valueOf() / 1e3);
+  };
+  _proto.valueOf = function valueOf() {
+    return this.$d.getTime();
+  };
+  _proto.startOf = function startOf(units, _startOf) {
+    var _this = this;
+    var isStartOf = !Utils.u(_startOf) ? _startOf : true;
+    var unit = Utils.p(units);
+    var instanceFactory = function instanceFactory2(d, m) {
+      var ins = Utils.w(_this.$u ? Date.UTC(_this.$y, m, d) : new Date(_this.$y, m, d), _this);
+      return isStartOf ? ins : ins.endOf(D);
+    };
+    var instanceFactorySet = function instanceFactorySet2(method3, slice) {
+      var argumentStart = [0, 0, 0, 0];
+      var argumentEnd = [23, 59, 59, 999];
+      return Utils.w(_this.toDate()[method3].apply(
+        // eslint-disable-line prefer-spread
+        _this.toDate("s"),
+        (isStartOf ? argumentStart : argumentEnd).slice(slice)
+      ), _this);
+    };
+    var $W = this.$W, $M = this.$M, $D = this.$D;
+    var utcPad = "set" + (this.$u ? "UTC" : "");
+    switch (unit) {
+      case Y:
+        return isStartOf ? instanceFactory(1, 0) : instanceFactory(31, 11);
+      case M:
+        return isStartOf ? instanceFactory(1, $M) : instanceFactory(0, $M + 1);
+      case W: {
+        var weekStart = this.$locale().weekStart || 0;
+        var gap = ($W < weekStart ? $W + 7 : $W) - weekStart;
+        return instanceFactory(isStartOf ? $D - gap : $D + (6 - gap), $M);
+      }
+      case D:
+      case DATE:
+        return instanceFactorySet(utcPad + "Hours", 0);
+      case H:
+        return instanceFactorySet(utcPad + "Minutes", 1);
+      case MIN:
+        return instanceFactorySet(utcPad + "Seconds", 2);
+      case S:
+        return instanceFactorySet(utcPad + "Milliseconds", 3);
+      default:
+        return this.clone();
+    }
+  };
+  _proto.endOf = function endOf(arg) {
+    return this.startOf(arg, false);
+  };
+  _proto.$set = function $set(units, _int) {
+    var _C$D$C$DATE$C$M$C$Y$C;
+    var unit = Utils.p(units);
+    var utcPad = "set" + (this.$u ? "UTC" : "");
+    var name = (_C$D$C$DATE$C$M$C$Y$C = {}, _C$D$C$DATE$C$M$C$Y$C[D] = utcPad + "Date", _C$D$C$DATE$C$M$C$Y$C[DATE] = utcPad + "Date", _C$D$C$DATE$C$M$C$Y$C[M] = utcPad + "Month", _C$D$C$DATE$C$M$C$Y$C[Y] = utcPad + "FullYear", _C$D$C$DATE$C$M$C$Y$C[H] = utcPad + "Hours", _C$D$C$DATE$C$M$C$Y$C[MIN] = utcPad + "Minutes", _C$D$C$DATE$C$M$C$Y$C[S] = utcPad + "Seconds", _C$D$C$DATE$C$M$C$Y$C[MS] = utcPad + "Milliseconds", _C$D$C$DATE$C$M$C$Y$C)[unit];
+    var arg = unit === D ? this.$D + (_int - this.$W) : _int;
+    if (unit === M || unit === Y) {
+      var date3 = this.clone().set(DATE, 1);
+      date3.$d[name](arg);
+      date3.init();
+      this.$d = date3.set(DATE, Math.min(this.$D, date3.daysInMonth())).$d;
+    } else if (name)
+      this.$d[name](arg);
+    this.init();
+    return this;
+  };
+  _proto.set = function set2(string2, _int2) {
+    return this.clone().$set(string2, _int2);
+  };
+  _proto.get = function get2(unit) {
+    return this[Utils.p(unit)]();
+  };
+  _proto.add = function add2(number3, units) {
+    var _this2 = this, _C$MIN$C$H$C$S$unit;
+    number3 = Number(number3);
+    var unit = Utils.p(units);
+    var instanceFactorySet = function instanceFactorySet2(n2) {
+      var d = dayjs(_this2);
+      return Utils.w(d.date(d.date() + Math.round(n2 * number3)), _this2);
+    };
+    if (unit === M) {
+      return this.set(M, this.$M + number3);
+    }
+    if (unit === Y) {
+      return this.set(Y, this.$y + number3);
+    }
+    if (unit === D) {
+      return instanceFactorySet(1);
+    }
+    if (unit === W) {
+      return instanceFactorySet(7);
+    }
+    var step = (_C$MIN$C$H$C$S$unit = {}, _C$MIN$C$H$C$S$unit[MIN] = MILLISECONDS_A_MINUTE, _C$MIN$C$H$C$S$unit[H] = MILLISECONDS_A_HOUR, _C$MIN$C$H$C$S$unit[S] = MILLISECONDS_A_SECOND, _C$MIN$C$H$C$S$unit)[unit] || 1;
+    var nextTimeStamp = this.$d.getTime() + number3 * step;
+    return Utils.w(nextTimeStamp, this);
+  };
+  _proto.subtract = function subtract(number3, string2) {
+    return this.add(number3 * -1, string2);
+  };
+  _proto.format = function format2(formatStr) {
+    var _this3 = this;
+    var locale = this.$locale();
+    if (!this.isValid())
+      return locale.invalidDate || INVALID_DATE_STRING;
+    var str = formatStr || FORMAT_DEFAULT;
+    var zoneStr = Utils.z(this);
+    var $H = this.$H, $m = this.$m, $M = this.$M;
+    var weekdays = locale.weekdays, months = locale.months, meridiem = locale.meridiem;
+    var getShort = function getShort2(arr, index2, full, length) {
+      return arr && (arr[index2] || arr(_this3, str)) || full[index2].slice(0, length);
+    };
+    var get$H = function get$H2(num) {
+      return Utils.s($H % 12 || 12, num, "0");
+    };
+    var meridiemFunc = meridiem || function(hour, minute, isLowercase) {
+      var m = hour < 12 ? "AM" : "PM";
+      return isLowercase ? m.toLowerCase() : m;
+    };
+    var matches = function matches2(match) {
+      switch (match) {
+        case "YY":
+          return String(_this3.$y).slice(-2);
+        case "YYYY":
+          return Utils.s(_this3.$y, 4, "0");
+        case "M":
+          return $M + 1;
+        case "MM":
+          return Utils.s($M + 1, 2, "0");
+        case "MMM":
+          return getShort(locale.monthsShort, $M, months, 3);
+        case "MMMM":
+          return getShort(months, $M);
+        case "D":
+          return _this3.$D;
+        case "DD":
+          return Utils.s(_this3.$D, 2, "0");
+        case "d":
+          return String(_this3.$W);
+        case "dd":
+          return getShort(locale.weekdaysMin, _this3.$W, weekdays, 2);
+        case "ddd":
+          return getShort(locale.weekdaysShort, _this3.$W, weekdays, 3);
+        case "dddd":
+          return weekdays[_this3.$W];
+        case "H":
+          return String($H);
+        case "HH":
+          return Utils.s($H, 2, "0");
+        case "h":
+          return get$H(1);
+        case "hh":
+          return get$H(2);
+        case "a":
+          return meridiemFunc($H, $m, true);
+        case "A":
+          return meridiemFunc($H, $m, false);
+        case "m":
+          return String($m);
+        case "mm":
+          return Utils.s($m, 2, "0");
+        case "s":
+          return String(_this3.$s);
+        case "ss":
+          return Utils.s(_this3.$s, 2, "0");
+        case "SSS":
+          return Utils.s(_this3.$ms, 3, "0");
+        case "Z":
+          return zoneStr;
+      }
+      return null;
+    };
+    return str.replace(REGEX_FORMAT, function(match, $1) {
+      return $1 || matches(match) || zoneStr.replace(":", "");
+    });
+  };
+  _proto.utcOffset = function utcOffset() {
+    return -Math.round(this.$d.getTimezoneOffset() / 15) * 15;
+  };
+  _proto.diff = function diff2(input, units, _float) {
+    var _this4 = this;
+    var unit = Utils.p(units);
+    var that = dayjs(input);
+    var zoneDelta = (that.utcOffset() - this.utcOffset()) * MILLISECONDS_A_MINUTE;
+    var diff3 = this - that;
+    var getMonth = function getMonth2() {
+      return Utils.m(_this4, that);
+    };
+    var result;
+    switch (unit) {
+      case Y:
+        result = getMonth() / 12;
+        break;
+      case M:
+        result = getMonth();
+        break;
+      case Q:
+        result = getMonth() / 3;
+        break;
+      case W:
+        result = (diff3 - zoneDelta) / MILLISECONDS_A_WEEK;
+        break;
+      case D:
+        result = (diff3 - zoneDelta) / MILLISECONDS_A_DAY;
+        break;
+      case H:
+        result = diff3 / MILLISECONDS_A_HOUR;
+        break;
+      case MIN:
+        result = diff3 / MILLISECONDS_A_MINUTE;
+        break;
+      case S:
+        result = diff3 / MILLISECONDS_A_SECOND;
+        break;
+      default:
+        result = diff3;
+        break;
+    }
+    return _float ? result : Utils.a(result);
+  };
+  _proto.daysInMonth = function daysInMonth() {
+    return this.endOf(M).$D;
+  };
+  _proto.$locale = function $locale() {
+    return Ls[this.$L];
+  };
+  _proto.locale = function locale(preset, object3) {
+    if (!preset)
+      return this.$L;
+    var that = this.clone();
+    var nextLocaleName = parseLocale(preset, object3, true);
+    if (nextLocaleName)
+      that.$L = nextLocaleName;
+    return that;
+  };
+  _proto.clone = function clone2() {
+    return Utils.w(this.$d, this);
+  };
+  _proto.toDate = function toDate() {
+    return new Date(this.valueOf());
+  };
+  _proto.toJSON = function toJSON() {
+    return this.isValid() ? this.toISOString() : null;
+  };
+  _proto.toISOString = function toISOString() {
+    return this.$d.toISOString();
+  };
+  _proto.toString = function toString2() {
+    return this.$d.toUTCString();
+  };
+  return Dayjs2;
+}();
+var proto = Dayjs.prototype;
+dayjs.prototype = proto;
+[["$ms", MS], ["$s", S], ["$m", MIN], ["$H", H], ["$W", D], ["$M", M], ["$y", Y], ["$D", DATE]].forEach(function(g) {
+  proto[g[1]] = function(input) {
+    return this.$g(input, g[0], g[1]);
+  };
+});
+dayjs.extend = function(plugin2, option) {
+  if (!plugin2.$i) {
+    plugin2(option, Dayjs, dayjs);
+    plugin2.$i = true;
+  }
+  return dayjs;
+};
+dayjs.locale = parseLocale;
+dayjs.isDayjs = isDayjs;
+dayjs.unix = function(timestamp) {
+  return dayjs(timestamp * 1e3);
+};
+dayjs.en = Ls[L];
+dayjs.Ls = Ls;
+dayjs.p = {};
+const props$e = {
+  props: {
+    // 是否展示picker弹窗
+    show: {
+      type: Boolean,
+      default: defprops.picker.show
+    },
+    // 弹出的方向，可选值为 top bottom right left center
+    popupMode: {
+      type: String,
+      default: defprops.picker.popupMode
+    },
+    // 是否展示顶部的操作栏
+    showToolbar: {
+      type: Boolean,
+      default: defprops.picker.showToolbar
+    },
+    // 顶部标题
+    title: {
+      type: String,
+      default: defprops.picker.title
+    },
+    // 对象数组，设置每一列的数据
+    columns: {
+      type: Array,
+      default: defprops.picker.columns
+    },
+    // 是否显示加载中状态
+    loading: {
+      type: Boolean,
+      default: defprops.picker.loading
+    },
+    // 各列中，单个选项的高度
+    itemHeight: {
+      type: [String, Number],
+      default: defprops.picker.itemHeight
+    },
+    // 取消按钮的文字
+    cancelText: {
+      type: String,
+      default: defprops.picker.cancelText
+    },
+    // 确认按钮的文字
+    confirmText: {
+      type: String,
+      default: defprops.picker.confirmText
+    },
+    // 取消按钮的颜色
+    cancelColor: {
+      type: String,
+      default: defprops.picker.cancelColor
+    },
+    // 确认按钮的颜色
+    confirmColor: {
+      type: String,
+      default: defprops.picker.confirmColor
+    },
+    // 每列中可见选项的数量
+    visibleItemCount: {
+      type: [String, Number],
+      default: defprops.picker.visibleItemCount
+    },
+    // 选项对象中，需要展示的属性键名
+    keyName: {
+      type: String,
+      default: defprops.picker.keyName
+    },
+    // 是否允许点击遮罩关闭选择器
+    closeOnClickOverlay: {
+      type: Boolean,
+      default: defprops.picker.closeOnClickOverlay
+    },
+    // 各列的默认索引
+    defaultIndex: {
+      type: Array,
+      default: defprops.picker.defaultIndex
+    },
+    // 是否在手指松开时立即触发 change 事件。若不开启则会在滚动动画结束后触发 change 事件，只在微信2.21.1及以上有效
+    immediateChange: {
+      type: Boolean,
+      default: defprops.picker.immediateChange
+    }
+  }
+};
+const props$d = {
   props: {
     // 输入框的内容
     value: {
@@ -12843,7 +13813,7 @@ const props$c = {
     }
   }
 };
-const props$b = {
+const props$c = {
   props: {
     // 是否展示弹窗
     show: {
@@ -12922,7 +13892,7 @@ const props$b = {
     }
   }
 };
-const props$a = {
+const props$b = {
   props: {
     color: {
       type: String,
@@ -12955,7 +13925,7 @@ const props$a = {
     }
   }
 };
-const props$9 = {
+const props$a = {
   props: {
     // 是否显示组件
     show: {
@@ -13014,7 +13984,7 @@ const props$9 = {
     }
   }
 };
-const props$8 = {
+const props$9 = {
   props: {
     // 显示的内容，字符串
     text: {
@@ -13069,7 +14039,7 @@ const props$8 = {
     }
   }
 };
-const props$7 = {
+const props$8 = {
   props: {
     // 显示的内容，字符串
     text: {
@@ -13108,7 +14078,7 @@ const props$7 = {
     }
   }
 };
-const props$6 = {
+const props$7 = {
   props: {
     // 轮播的长度
     length: {
@@ -13137,7 +14107,7 @@ const props$6 = {
     }
   }
 };
-const props$5 = {
+const props$6 = {
   props: {
     // 文字颜色
     color: {
@@ -13176,7 +14146,7 @@ const props$5 = {
     }
   }
 };
-const props$4 = {
+const props$5 = {
   props: {
     // 是否显示圆点
     isDot: {
@@ -13253,10 +14223,10 @@ const props$4 = {
     }
   }
 };
-const props$3 = {
+const props$4 = {
   props: {}
 };
-const props$2 = {
+const props$3 = {
   props: {
     // 是否展示组件
     show: {
@@ -13337,6 +14307,40 @@ const transition = {
     }
   }
 };
+const props$2 = {
+  props: {
+    // 是否展示工具条
+    show: {
+      type: Boolean,
+      default: defprops.toolbar.show
+    },
+    // 取消按钮的文字
+    cancelText: {
+      type: String,
+      default: defprops.toolbar.cancelText
+    },
+    // 确认按钮的文字
+    confirmText: {
+      type: String,
+      default: defprops.toolbar.confirmText
+    },
+    // 取消按钮的颜色
+    cancelColor: {
+      type: String,
+      default: defprops.toolbar.cancelColor
+    },
+    // 确认按钮的颜色
+    confirmColor: {
+      type: String,
+      default: defprops.toolbar.confirmColor
+    },
+    // 标题文字
+    title: {
+      type: String,
+      default: defprops.toolbar.title
+    }
+  }
+};
 const props$1 = {
   props: {
     // 是否显示遮罩
@@ -13374,6 +14378,8 @@ exports._export_sfc = _export_sfc;
 exports.button = button;
 exports.createPinia = createPinia;
 exports.createSSRApp = createSSRApp;
+exports.dayjs = dayjs$1;
+exports.dayjs$1 = dayjs;
 exports.e = e;
 exports.f = f;
 exports.icons = icons;
@@ -13382,37 +14388,41 @@ exports.mixin = mixin;
 exports.mpMixin = mpMixin;
 exports.n = n;
 exports.o = o;
+exports.onReady = onReady;
 exports.openType = openType;
 exports.p = p;
-exports.props = props$s;
-exports.props$1 = props$r;
-exports.props$10 = props$i;
-exports.props$11 = props$h;
-exports.props$12 = props$g;
-exports.props$13 = props$f;
-exports.props$14 = props$e;
-exports.props$15 = props$d;
-exports.props$16 = props$c;
-exports.props$17 = props$b;
-exports.props$18 = props$a;
-exports.props$19 = props$9;
-exports.props$2 = props$q;
-exports.props$20 = props$8;
-exports.props$21 = props$7;
-exports.props$22 = props$6;
-exports.props$23 = props$5;
-exports.props$24 = props$4;
-exports.props$25 = props$3;
-exports.props$26 = props$2;
-exports.props$27 = props$1;
-exports.props$28 = props;
-exports.props$3 = props$p;
-exports.props$4 = props$o;
-exports.props$5 = props$n;
-exports.props$6 = props$m;
-exports.props$7 = props$l;
-exports.props$8 = props$k;
-exports.props$9 = props$j;
+exports.props = props$v;
+exports.props$1 = props$u;
+exports.props$10 = props$l;
+exports.props$11 = props$k;
+exports.props$12 = props$j;
+exports.props$13 = props$i;
+exports.props$14 = props$h;
+exports.props$15 = props$g;
+exports.props$16 = props$f;
+exports.props$17 = props$e;
+exports.props$18 = props$d;
+exports.props$19 = props$c;
+exports.props$2 = props$t;
+exports.props$20 = props$b;
+exports.props$21 = props$a;
+exports.props$22 = props$9;
+exports.props$23 = props$8;
+exports.props$24 = props$7;
+exports.props$25 = props$6;
+exports.props$26 = props$5;
+exports.props$27 = props$4;
+exports.props$28 = props$3;
+exports.props$29 = props$2;
+exports.props$3 = props$s;
+exports.props$30 = props$1;
+exports.props$31 = props;
+exports.props$4 = props$r;
+exports.props$5 = props$q;
+exports.props$6 = props$p;
+exports.props$7 = props$o;
+exports.props$8 = props$n;
+exports.props$9 = props$m;
 exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s;

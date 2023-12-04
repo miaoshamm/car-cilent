@@ -60,5 +60,5 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
     a: common_vendor.s($options.gridStyle)
   };
 }
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-85602471"], ["__file", "/Users/zikn/Project/parking-client/node_modules/uview-plus/components/u-grid/u-grid.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-85602471"], ["__file", "D:/parking-client/node_modules/uview-plus/components/u-grid/u-grid.vue"]]);
 wx.createComponent(Component);

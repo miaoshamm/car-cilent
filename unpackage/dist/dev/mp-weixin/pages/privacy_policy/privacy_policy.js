@@ -14,5 +14,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zikn/Project/parking-client/pages/privacy_policy/privacy_policy.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/parking-client/pages/privacy_policy/privacy_policy.vue"]]);
 wx.createPage(MiniProgramPage);

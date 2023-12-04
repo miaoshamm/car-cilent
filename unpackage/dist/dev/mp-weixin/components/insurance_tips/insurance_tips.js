@@ -15,5 +15,5 @@ const _sfc_main = {
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zikn/Project/parking-client/components/insurance_tips/insurance_tips.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/parking-client/components/insurance_tips/insurance_tips.vue"]]);
 wx.createComponent(Component);

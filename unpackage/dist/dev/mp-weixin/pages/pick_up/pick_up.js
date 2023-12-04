@@ -25,5 +25,5 @@ function _sfc_render(_ctx, _cache) {
     })
   };
 }
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-9304b3b9"], ["__file", "/Users/zikn/Project/parking-client/pages/pick_up/pick_up.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-9304b3b9"], ["__file", "D:/parking-client/pages/pick_up/pick_up.vue"]]);
 wx.createPage(MiniProgramPage);

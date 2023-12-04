@@ -40,5 +40,5 @@ const _sfc_main = {
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-d559bba5"], ["__file", "/Users/zikn/Project/parking-client/components/user_menu/user_menu.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-d559bba5"], ["__file", "D:/parking-client/components/user_menu/user_menu.vue"]]);
 wx.createComponent(Component);

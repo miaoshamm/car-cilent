@@ -120,7 +120,7 @@ const _sfc_main = {
           inputAlign: "right"
         }),
         v: common_vendor.o(handleInvoice),
-        w: common_vendor.sr(formRef.value, "7845a2a0-0"),
+        w: common_vendor.sr(formRef.value, "616083f0-0"),
         x: formRef.value
       }) : {
         y: common_vendor.p({
@@ -161,5 +161,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zikn/Project/parking-client/pages/order_detail/order_detail.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/parking-client/pages/order_detail/order_detail.vue"]]);
 wx.createPage(MiniProgramPage);

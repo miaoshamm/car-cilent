@@ -10,7 +10,9 @@
     "pages/terms_of_service/terms_of_service",
     "pages/order_detail/order_detail",
     "pages/bill_rule/bill_rule",
-    "pages/pick_up/pick_up"
+    "pages/pick_up/pick_up",
+    "pages/service/service",
+    "pages/wish/wish_pay/wish_pay"
   ],
   "window": {
     "navigationBarTextStyle": "black",
