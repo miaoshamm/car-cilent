@@ -3,7 +3,7 @@
 	<view style="min-height: 100vh; background: #F6F7F8;">
 		<!-- 顶部导航 -->
 		<view class="nav">
-			<text class="nav-title">城市服务代客泊车小程序</text>
+			<text class="nav-title">城市生活</text>
 		</view>
 		<view class="main">
 			<u-notice-bar bgColor="#F6F7F8" icon="/static/images/index/notice.svg"
@@ -121,7 +121,7 @@
 		{
 			name: '/static/images/index/grid3.png',
 			title: '洗车服务',
-			small: "洗车服务",
+			small: "临江大道",
 			url:"/pages/wish/wish"
 		},
 		{

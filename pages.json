@@ -82,6 +82,7 @@
       "path": "pages/pick_up/pick_up",
       "style": {
         "navigationBarTitleText": "预约接送服务",
+				"navigationStyle": "custom",
         "enablePullDownRefresh": false
       }
     },
