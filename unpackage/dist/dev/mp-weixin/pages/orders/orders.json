@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "我的订单",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-tabbar-item": "../../node-modules/uview-plus/components/u-tabbar-item/u-tabbar-item",
-    "u-tabbar": "../../node-modules/uview-plus/components/u-tabbar/u-tabbar",
-    "order-card": "../../components/order_card/order_card"
-  }
-}

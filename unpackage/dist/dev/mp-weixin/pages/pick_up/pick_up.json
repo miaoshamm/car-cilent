@@ -1,9 +1,0 @@
-{
-  "navigationBarTitleText": "预约接送服务",
-  "navigationStyle": "custom",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-navbar": "../../node-modules/uview-plus/components/u-navbar/u-navbar",
-    "choose-employ": "../../components/choose_employee/choose_employee"
-  }
-}
