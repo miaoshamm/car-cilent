@@ -1,9 +1,9 @@
 {
   "navigationBarTitleText": "预约接送服务",
+  "navigationStyle": "custom",
   "enablePullDownRefresh": false,
   "usingComponents": {
-    "up-image": "../../node-modules/uview-plus/components/u-image/u-image",
-    "u-icon": "../../node-modules/uview-plus/components/u-icon/u-icon",
-    "insurance-tips": "../../components/insurance_tips/insurance_tips"
+    "u-navbar": "../../node-modules/uview-plus/components/u-navbar/u-navbar",
+    "choose-employ": "../../components/choose_employee/choose_employee"
   }
 }

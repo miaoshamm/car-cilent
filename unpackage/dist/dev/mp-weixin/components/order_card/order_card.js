@@ -48,5 +48,5 @@ const _sfc_main = {
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-5634394a"], ["__file", "D:/parking-client/components/order_card/order_card.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-5634394a"], ["__file", "/Users/zikn/Project/parking-client/components/order_card/order_card.vue"]]);
 wx.createComponent(Component);

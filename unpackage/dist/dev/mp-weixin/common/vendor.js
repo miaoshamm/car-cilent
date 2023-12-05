@@ -10521,7 +10521,7 @@ const createHook = (lifecycle) => (hook, target = getCurrentInstance()) => {
 const onShow = /* @__PURE__ */ createHook(ON_SHOW);
 const onReady = /* @__PURE__ */ createHook(ON_READY);
 const onUnload = /* @__PURE__ */ createHook(ON_UNLOAD);
-const props$v = {
+const props$w = {
   props: {
     // 是否展示modal
     show: {
@@ -10605,7 +10605,7 @@ const props$v = {
     }
   }
 };
-const props$u = {
+const props$v = {
   props: {
     // 显示的内容，数组
     text: {
@@ -10675,7 +10675,7 @@ const props$u = {
     }
   }
 };
-const props$t = {
+const props$u = {
   props: {
     // 列表数组，元素可为字符串，如为对象可通过keyName指定目标属性名
     list: {
@@ -11014,7 +11014,7 @@ const icons = {
   "uicon-zh": "",
   "uicon-en": ""
 };
-const props$s = {
+const props$t = {
   props: {
     // 图标类名
     name: {
@@ -11103,7 +11103,7 @@ const props$s = {
     }
   }
 };
-const props$r = {
+const props$s = {
   props: {
     // 宫格的name
     name: {
@@ -11117,7 +11117,7 @@ const props$r = {
     }
   }
 };
-const props$q = {
+const props$r = {
   props: {
     // 分成几列
     col: {
@@ -11174,7 +11174,7 @@ const openType = {
     }
   }
 };
-const props$p = {
+const props$q = {
   props: {
     // 是否细边框
     hairline: {
@@ -11326,7 +11326,7 @@ const props$p = {
     }
   }
 };
-const props$o = {
+const props$p = {
   props: {
     // 标题
     title: {
@@ -11436,7 +11436,7 @@ const props$o = {
     }
   }
 };
-const props$n = {
+const props$o = {
   props: {
     // 头像图片路径(不能为相对路径)
     src: {
@@ -11588,7 +11588,7 @@ const value = {
     }
   }
 };
-const props$m = {
+const props$n = {
   props: {
     // 主题颜色
     type: {
@@ -11698,7 +11698,7 @@ const props$m = {
     }
   }
 };
-const props$l = {
+const props$m = {
   props: {
     // item标签的名称，作为与u-tabbar的value参数匹配的标识符
     name: {
@@ -11732,7 +11732,7 @@ const props$l = {
     }
   }
 };
-const props$k = {
+const props$l = {
   props: {
     // 当前匹配项的name
     value: {
@@ -11776,7 +11776,7 @@ const props$k = {
     }
   }
 };
-const props$j = {
+const props$k = {
   props: {
     // 图片地址
     src: {
@@ -11860,7 +11860,7 @@ const props$j = {
     }
   }
 };
-const props$i = {
+const props$j = {
   props: {
     // 绑定的值
     modelValue: {
@@ -12046,7 +12046,7 @@ const props$i = {
     }
   }
 };
-const props$h = {
+const props$i = {
   props: {
     // input的label提示语
     label: {
@@ -12089,7 +12089,7 @@ const props$h = {
     }
   }
 };
-const props$g = {
+const props$h = {
   props: {
     // 当前form的需要验证字段的集合
     model: {
@@ -13025,7 +13025,7 @@ Schema.register = function register(type2, validator) {
 };
 Schema.warning = warning;
 Schema.messages = messages;
-const props$f = {
+const props$g = {
   props: {
     // 是否打开组件
     show: {
@@ -13624,7 +13624,7 @@ dayjs.unix = function(timestamp) {
 dayjs.en = Ls[L];
 dayjs.Ls = Ls;
 dayjs.p = {};
-const props$e = {
+const props$f = {
   props: {
     // 是否展示picker弹窗
     show: {
@@ -13708,7 +13708,7 @@ const props$e = {
     }
   }
 };
-const props$d = {
+const props$e = {
   props: {
     // 输入框的内容
     value: {
@@ -13832,7 +13832,7 @@ const props$d = {
     }
   }
 };
-const props$c = {
+const props$d = {
   props: {
     // 是否展示弹窗
     show: {
@@ -13908,6 +13908,90 @@ const props$c = {
     overlayOpacity: {
       type: [Number, String],
       default: defprops.popup.overlayOpacity
+    }
+  }
+};
+const props$c = {
+  props: {
+    // 是否开启顶部安全区适配
+    safeAreaInsetTop: {
+      type: Boolean,
+      default: defprops.navbar.safeAreaInsetTop
+    },
+    // 固定在顶部时，是否生成一个等高元素，以防止塌陷
+    placeholder: {
+      type: Boolean,
+      default: defprops.navbar.placeholder
+    },
+    // 是否固定在顶部
+    fixed: {
+      type: Boolean,
+      default: defprops.navbar.fixed
+    },
+    // 是否显示下边框
+    border: {
+      type: Boolean,
+      default: defprops.navbar.border
+    },
+    // 左边的图标
+    leftIcon: {
+      type: String,
+      default: defprops.navbar.leftIcon
+    },
+    // 左边的提示文字
+    leftText: {
+      type: String,
+      default: defprops.navbar.leftText
+    },
+    // 左右的提示文字
+    rightText: {
+      type: String,
+      default: defprops.navbar.rightText
+    },
+    // 右边的图标
+    rightIcon: {
+      type: String,
+      default: defprops.navbar.rightIcon
+    },
+    // 标题
+    title: {
+      type: [String, Number],
+      default: defprops.navbar.title
+    },
+    // 背景颜色
+    bgColor: {
+      type: String,
+      default: defprops.navbar.bgColor
+    },
+    // 标题的宽度
+    titleWidth: {
+      type: [String, Number],
+      default: defprops.navbar.titleWidth
+    },
+    // 导航栏高度
+    height: {
+      type: [String, Number],
+      default: defprops.navbar.height
+    },
+    // 左侧返回图标的大小
+    leftIconSize: {
+      type: [String, Number],
+      default: defprops.navbar.leftIconSize
+    },
+    // 左侧返回图标的颜色
+    leftIconColor: {
+      type: String,
+      default: defprops.navbar.leftIconColor
+    },
+    // 点击左侧区域(返回图标)，是否自动返回上一页
+    autoBack: {
+      type: Boolean,
+      default: defprops.navbar.autoBack
+    },
+    // 标题的样式，对象或字符串
+    titleStyle: {
+      type: [String, Object],
+      default: defprops.navbar.titleStyle
     }
   }
 };
@@ -14412,38 +14496,40 @@ exports.onShow = onShow;
 exports.onUnload = onUnload;
 exports.openType = openType;
 exports.p = p;
-exports.props = props$v;
-exports.props$1 = props$u;
-exports.props$10 = props$l;
-exports.props$11 = props$k;
-exports.props$12 = props$j;
-exports.props$13 = props$i;
-exports.props$14 = props$h;
-exports.props$15 = props$g;
-exports.props$16 = props$f;
-exports.props$17 = props$e;
-exports.props$18 = props$d;
-exports.props$19 = props$c;
-exports.props$2 = props$t;
-exports.props$20 = props$b;
-exports.props$21 = props$a;
-exports.props$22 = props$9;
-exports.props$23 = props$8;
-exports.props$24 = props$7;
-exports.props$25 = props$6;
-exports.props$26 = props$5;
-exports.props$27 = props$4;
-exports.props$28 = props$3;
-exports.props$29 = props$2;
-exports.props$3 = props$s;
-exports.props$30 = props$1;
-exports.props$31 = props;
-exports.props$4 = props$r;
-exports.props$5 = props$q;
-exports.props$6 = props$p;
-exports.props$7 = props$o;
-exports.props$8 = props$n;
-exports.props$9 = props$m;
+exports.props = props$w;
+exports.props$1 = props$v;
+exports.props$10 = props$m;
+exports.props$11 = props$l;
+exports.props$12 = props$k;
+exports.props$13 = props$j;
+exports.props$14 = props$i;
+exports.props$15 = props$h;
+exports.props$16 = props$g;
+exports.props$17 = props$f;
+exports.props$18 = props$e;
+exports.props$19 = props$d;
+exports.props$2 = props$u;
+exports.props$20 = props$c;
+exports.props$21 = props$b;
+exports.props$22 = props$a;
+exports.props$23 = props$9;
+exports.props$24 = props$8;
+exports.props$25 = props$7;
+exports.props$26 = props$6;
+exports.props$27 = props$5;
+exports.props$28 = props$4;
+exports.props$29 = props$3;
+exports.props$3 = props$t;
+exports.props$30 = props$2;
+exports.props$31 = props$1;
+exports.props$32 = props;
+exports.props$4 = props$s;
+exports.props$5 = props$r;
+exports.props$6 = props$q;
+exports.props$7 = props$p;
+exports.props$8 = props$o;
+exports.props$9 = props$n;
+exports.reactive = reactive;
 exports.ref = ref;
 exports.resolveComponent = resolveComponent;
 exports.s = s;

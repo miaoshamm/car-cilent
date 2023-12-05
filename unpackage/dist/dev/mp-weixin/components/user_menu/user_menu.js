@@ -33,12 +33,12 @@ const _sfc_main = {
         c: common_vendor.p({
           name: "arrow-right",
           color: "#C0C3CD",
-          size: "28"
+          size: "32rpx"
         }),
         d: common_vendor.o(menuClick)
       };
     };
   }
 };
-const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-d559bba5"], ["__file", "D:/parking-client/components/user_menu/user_menu.vue"]]);
+const Component = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__scopeId", "data-v-d559bba5"], ["__file", "/Users/zikn/Project/parking-client/components/user_menu/user_menu.vue"]]);
 wx.createComponent(Component);

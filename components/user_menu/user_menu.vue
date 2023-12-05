@@ -3,7 +3,7 @@
 		<text style="font-size: 36rpx;"><slot></slot>{{props.title}}</text>
 		<view class="right">
 			<text>{{props.description}}</text>
-			<u-icon name="arrow-right" color="#C0C3CD" size="28"></u-icon>
+			<u-icon name="arrow-right" color="#C0C3CD" size="32rpx"></u-icon>
 		</view>
 	</view>
 </template>

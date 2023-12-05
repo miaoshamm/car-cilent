@@ -165,9 +165,9 @@ const _sfc_main = {
         }),
         r: common_vendor.f(checkList.value, (item, k0, i0) => {
           return {
-            a: "5e506610-13-" + i0 + "," + ("5e506610-12-" + i0),
+            a: "1528e4c0-13-" + i0 + "," + ("1528e4c0-12-" + i0),
             b: item.id,
-            c: "5e506610-12-" + i0 + ",5e506610-1"
+            c: "1528e4c0-12-" + i0 + ",1528e4c0-1"
           };
         }),
         s: common_vendor.p({
@@ -230,5 +230,5 @@ const _sfc_main = {
     };
   }
 };
-const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "D:/parking-client/pages/wish/wish.vue"]]);
+const MiniProgramPage = /* @__PURE__ */ common_vendor._export_sfc(_sfc_main, [["__file", "/Users/zikn/Project/parking-client/pages/wish/wish.vue"]]);
 wx.createPage(MiniProgramPage);
