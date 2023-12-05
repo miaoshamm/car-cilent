@@ -34,26 +34,14 @@
 				</template>
 			</u-tabbar-item>
 		</u-tabbar>
+		<Tabbar :value="1"/>
 	</view>
 </template>
 
 <script setup>
 	import { ref } from 'vue';
 	import OrderCard from '../../components/order_card/order_card.vue';
-	const value1 = ref(1)
-	const click1 = (index) => {
-		let url = ""
-		if(index === 0){
-			url = "/pages/index/index"
-		}else if(index === 1){
-			url = "/pages/orders/orders"
-		}else{
-			url = "/pages/account/account"
-		}
-		uni.switchTab({
-			url
-		})
-	}
+	import Tabbar from "@/components/tabbar/tabbar.vue"
 </script>
 
 <style lang="less" scoped>
