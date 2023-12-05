@@ -1,1 +1,0 @@
-<view class="data-v-9304b3b9" style="min-height:100vh;background:#F6F7F8;padding:32rpx;box-sizing:border-box"><u-navbar wx:if="{{b}}" class="data-v-9304b3b9" bindrightClick="{{a}}" u-i="9304b3b9-0" bind:__l="__l" u-p="{{b}}"></u-navbar><choose-employ class="data-v-9304b3b9" u-i="9304b3b9-1" bind:__l="__l"></choose-employ></view>

@@ -1,7 +1,0 @@
-{
-  "navigationBarTitleText": "查看发票",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "order-card": "../../components/order_card/order_card"
-  }
-}
