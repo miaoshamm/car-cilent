@@ -230,18 +230,6 @@
 			overflow: hidden;
 		}
 
-		.grid {
-			.grid-text {
-				font-size: 28rpx;
-				margin: 8rpx 0 0;
-			}
-
-			.grid-text-small {
-				font-size: 20rpx;
-				margin: 10rpx 0 0;
-			}
-		}
-
 		.subscribe {
 			display: flex;
 			height: 128rpx;

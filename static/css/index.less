@@ -1,3 +1,20 @@
+@bgColor:#DFA0B1;
+@price:#E34D59;
+@titleColor:#81335E;
+@textColor:rgba(0, 0, 0, .4);
+
+.grid {
+	.grid-text {
+		font-size: 28rpx;
+		margin: 8rpx 0 0;
+	}
+
+	.grid-text-small {
+		font-size: 20rpx;
+		margin: 10rpx 0 0;
+	}
+}
+
 ::v-deep .u-tabbar__content__item-wrapper.data-v-d5be2d5d{
 	height: 128rpx;
 	border-top: 4rpx solid #eee;
@@ -31,7 +48,7 @@
 	box-sizing: border-box;
 
 	.price {
-		color: #E34D59;
+		color: @price;
 		font-size: 48rpx;
 		font-weight: bold;
 	}
@@ -93,7 +110,12 @@
 		.price{
 			font-size: 28rpx;
 			font-weight: 700;
-			color: #E34D59;
+			color: @price;
+		}
+		.normal {
+			color: @textColor;
+			font-size: 28rpx;
+			margin: 8rpx 0 0;
 		}
 	}
 }
@@ -110,7 +132,7 @@
 
 .title {
 	font-size: 36rpx;
-	color: #81335E;
+	color: @titleColor;
 	font-weight: 700;
 	margin: 0 0 20rpx;
 }
