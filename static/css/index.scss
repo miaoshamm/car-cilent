@@ -1,7 +1,9 @@
-@bgColor:#DFA0B1;
-@price:#E34D59;
-@titleColor:#81335E;
-@textColor:rgba(0, 0, 0, .4);
+$bgColor:#449656;
+$cardColor:#EAFAEA;
+$linearBgColor:linear-gradient(180deg, #ECFBEC 0%, #FFFFFF 26%, #FFFFFF 100%);
+$price:#E34D59;
+$titleColor:#81335E;
+$textColor:rgba(0, 0, 0, .4);
 
 .grid {
 	.grid-text {
@@ -48,7 +50,7 @@
 	box-sizing: border-box;
 
 	.price {
-		color: @price;
+		color: $price;
 		font-size: 48rpx;
 		font-weight: bold;
 	}
@@ -72,9 +74,9 @@
 		border-radius: 16rpx;
 	}
 	.certificate{
-		/deep/ .u-form-item__body.data-v-b4fd400b{
-			flex-direction: column !important;
-		}
+		// /deep/ .u-form-item__body.data-v-b4fd400b{
+		// 	flex-direction: column !important;
+		// }
 		.box-img{
 			display: flex;
 			text-align: center;
@@ -110,10 +112,10 @@
 		.price{
 			font-size: 28rpx;
 			font-weight: 700;
-			color: @price;
+			color: $price;
 		}
 		.normal {
-			color: @textColor;
+			color: $textColor;
 			font-size: 28rpx;
 			margin: 8rpx 0 0;
 		}
@@ -132,7 +134,17 @@
 
 .title {
 	font-size: 36rpx;
-	color: @titleColor;
+	color: $titleColor;
 	font-weight: 700;
 	margin: 0 0 20rpx;
+}
+
+
+button::before {
+  border:0;
+  border:none;
+}
+button::after {
+  border:0;
+  border:none;
 }
