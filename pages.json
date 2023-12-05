@@ -40,8 +40,7 @@
     {
       "path": "pages/wish/wish",
       "style": {
-        "navigationBarTitleText": "预约车辆维保",
-        "enablePullDownRefresh": false
+        "navigationStyle": "custom"
       }
     },
     {
@@ -88,24 +87,26 @@
       }
     },
     {
-      "path": "pages/service/service",
-      "style": {
-        "navigationStyle": "custom"
-      }
-    },
-    {
       "path": "pages/wish/wish_pay/wish_pay",
       "style": {
         "navigationBarTitleText": "车辆维保服务",
         "enablePullDownRefresh": false
       }
+    },
+    {
+    	"path" : "pages/staff/staff",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "职工入口",
+    		"enablePullDownRefresh" : false
+    	}
     }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#fff"
   },
   "uniIdRouter": {},
   "tabBar": {

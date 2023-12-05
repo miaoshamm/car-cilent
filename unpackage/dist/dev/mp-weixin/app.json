@@ -11,14 +11,14 @@
     "pages/order_detail/order_detail",
     "pages/bill_rule/bill_rule",
     "pages/pick_up/pick_up",
-    "pages/service/service",
-    "pages/wish/wish_pay/wish_pay"
+    "pages/wish/wish_pay/wish_pay",
+    "pages/staff/staff"
   ],
   "window": {
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#fff"
   },
   "tabBar": {
     "borderStyle": "white",

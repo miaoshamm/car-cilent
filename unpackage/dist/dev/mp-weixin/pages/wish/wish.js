@@ -1,34 +1,36 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 if (!Array) {
+  const _easycom_u_navbar2 = common_vendor.resolveComponent("u-navbar");
   const _easycom_u__input2 = common_vendor.resolveComponent("u--input");
   const _easycom_u_form_item2 = common_vendor.resolveComponent("u-form-item");
   const _easycom_u_icon2 = common_vendor.resolveComponent("u-icon");
   const _easycom_up_button2 = common_vendor.resolveComponent("up-button");
   const _easycom_u__form2 = common_vendor.resolveComponent("u--form");
-  const _easycom_up_text2 = common_vendor.resolveComponent("up-text");
-  const _easycom_u_button2 = common_vendor.resolveComponent("u-button");
   const _easycom_u_datetime_picker2 = common_vendor.resolveComponent("u-datetime-picker");
   const _easycom_u_picker2 = common_vendor.resolveComponent("u-picker");
-  (_easycom_u__input2 + _easycom_u_form_item2 + _easycom_u_icon2 + _easycom_up_button2 + _easycom_u__form2 + _easycom_up_text2 + _easycom_u_button2 + _easycom_u_datetime_picker2 + _easycom_u_picker2)();
+  (_easycom_u_navbar2 + _easycom_u__input2 + _easycom_u_form_item2 + _easycom_u_icon2 + _easycom_up_button2 + _easycom_u__form2 + _easycom_u_datetime_picker2 + _easycom_u_picker2)();
 }
+const _easycom_u_navbar = () => "../../node-modules/uview-plus/components/u-navbar/u-navbar.js";
 const _easycom_u__input = () => "../../node-modules/uview-plus/components/u-input/u-input.js";
 const _easycom_u_form_item = () => "../../node-modules/uview-plus/components/u-form-item/u-form-item.js";
 const _easycom_u_icon = () => "../../node-modules/uview-plus/components/u-icon/u-icon.js";
 const _easycom_up_button = () => "../../node-modules/uview-plus/components/u-button/u-button.js";
 const _easycom_u__form = () => "../../node-modules/uview-plus/components/u-form/u-form.js";
-const _easycom_up_text = () => "../../node-modules/uview-plus/components/u-text/u-text.js";
-const _easycom_u_button = () => "../../node-modules/uview-plus/components/u-button/u-button.js";
 const _easycom_u_datetime_picker = () => "../../node-modules/uview-plus/components/u-datetime-picker/u-datetime-picker.js";
 const _easycom_u_picker = () => "../../node-modules/uview-plus/components/u-picker/u-picker.js";
 if (!Math) {
-  (License + _easycom_u__input + _easycom_u_form_item + _easycom_u_icon + _easycom_up_button + _easycom_u__form + _easycom_up_text + _easycom_u_button + _easycom_u_datetime_picker + _easycom_u_picker)();
+  (_easycom_u_navbar + License + _easycom_u__input + _easycom_u_form_item + _easycom_u_icon + _easycom_up_button + _easycom_u__form + Insurance + PriceBtn + _easycom_u_datetime_picker + _easycom_u_picker + Service)();
 }
 const License = () => "../../components/license_plate_selection/license_plate_selection.js";
+const Insurance = () => "../../components/insurance_tips/insurance_tips.js";
+const PriceBtn = () => "../../components/price_btn/price_btn.js";
+const Service = () => "../../components/service/service.js";
 const _sfc_main = {
   __name: "wish",
   setup(__props) {
     let licensePlate = common_vendor.ref("皖GHHHHHN");
+    let serviceShow = common_vendor.ref(false);
     const nowTime = Date.now();
     const info = common_vendor.ref({
       phone: "",
@@ -65,10 +67,15 @@ const _sfc_main = {
       info.value.modelId = item.value[0].id;
       info.value.modelShow = false;
     };
+    const leftClick = () => {
+      if (serviceShow.value) {
+        serviceShow.value = false;
+      } else {
+        common_vendor.index.navigateBack();
+      }
+    };
     const goService = () => {
-      common_vendor.index.navigateTo({
-        url: "/pages/service/service?type=wish"
-      });
+      serviceShow.value = true;
     };
     const formatter = (type, value) => {
       if (type === "year") {
@@ -95,89 +102,89 @@ const _sfc_main = {
         }
       });
     };
-    const goPay = () => {
-      common_vendor.index.navigateTo({
-        url: "/pages/wish/wish_pay/wish_pay"
-      });
-    };
     common_vendor.onReady(() => {
       datetimePickerRef.value.setFormatter(formatter);
     });
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.p({
+        a: common_vendor.o(leftClick),
+        b: common_vendor.p({
+          safeAreaInsetTop: true,
+          title: "预约车辆维保"
+        }),
+        c: common_vendor.p({
           licensePlate: common_vendor.unref(licensePlate)
         }),
-        b: common_vendor.o(check),
-        c: common_vendor.o(($event) => info.value.phone = $event),
-        d: common_vendor.p({
+        d: common_vendor.o(check),
+        e: common_vendor.o(($event) => info.value.phone = $event),
+        f: common_vendor.p({
           border: "none",
           placeholder: "请输入手机号",
           modelValue: info.value.phone
         }),
-        e: common_vendor.p({
+        g: common_vendor.p({
           label: "手机号码",
           prop: "info.phone",
           borderBottom: true
         }),
-        f: common_vendor.o(($event) => info.value.time = $event),
-        g: common_vendor.p({
+        h: common_vendor.o(($event) => info.value.time = $event),
+        i: common_vendor.p({
           disabled: true,
           disabledColor: "#ffffff",
           placeholder: "请选择维保时间",
           border: "none",
           modelValue: info.value.time
         }),
-        h: common_vendor.p({
+        j: common_vendor.p({
           name: "arrow-right"
         }),
-        i: common_vendor.o(($event) => info.value.timeShow = true),
-        j: common_vendor.p({
+        k: common_vendor.o(($event) => info.value.timeShow = true),
+        l: common_vendor.p({
           label: "维保时间",
           prop: "info.time",
           borderBottom: true
         }),
-        k: common_vendor.o(($event) => info.value.model = $event),
-        l: common_vendor.p({
+        m: common_vendor.o(($event) => info.value.model = $event),
+        n: common_vendor.p({
           disabled: true,
           disabledColor: "#ffffff",
           placeholder: "请选择车辆型号",
           border: "none",
           modelValue: info.value.model
         }),
-        m: common_vendor.p({
+        o: common_vendor.p({
           name: "arrow-right"
         }),
-        n: common_vendor.o(($event) => info.value.modelShow = true),
-        o: common_vendor.p({
+        p: common_vendor.o(($event) => info.value.modelShow = true),
+        q: common_vendor.p({
           label: "车辆型号",
           prop: "info.model",
           borderBottom: true
         }),
-        p: common_vendor.p({
+        r: common_vendor.p({
           disabled: true,
           disabledColor: "#ffffff",
           border: "none"
         }),
-        q: common_vendor.p({
+        s: common_vendor.p({
           label: "预约服务",
           borderBottom: true
         }),
-        r: common_vendor.f(checkList.value, (item, k0, i0) => {
+        t: common_vendor.f(checkList.value, (item, k0, i0) => {
           return {
-            a: "1528e4c0-13-" + i0 + "," + ("1528e4c0-12-" + i0),
+            a: "1528e4c0-14-" + i0 + "," + ("1528e4c0-13-" + i0),
             b: item.id,
-            c: "1528e4c0-12-" + i0 + ",1528e4c0-1"
+            c: "1528e4c0-13-" + i0 + ",1528e4c0-2"
           };
         }),
-        s: common_vendor.p({
+        v: common_vendor.p({
           name: "arrow-right"
         }),
-        t: common_vendor.p({
+        w: common_vendor.p({
           borderBottom: true
         }),
-        v: common_vendor.o(goService),
-        w: common_vendor.p({
+        x: common_vendor.o(goService),
+        y: common_vendor.p({
           customStyle: "border:none;",
           color: "#DFA0B1",
           iconColor: "#DFA0B1",
@@ -186,30 +193,17 @@ const _sfc_main = {
           icon: "plus",
           text: "增添服务"
         }),
-        x: common_vendor.p({
+        z: common_vendor.p({
           labelPosition: "left",
           model: _ctx.model1,
           rules: _ctx.rules,
           labelWidth: "120"
         }),
-        y: common_vendor.p({
-          iconStyle: "width:18rpx;margin:0 10rpx 0 0;",
-          size: "24rpx",
-          prefixIcon: "/static/images/wish/clause.svg",
-          text: "车辆维保条款",
-          color: "#F2995F"
+        A: common_vendor.p({
+          type: "wish"
         }),
-        z: common_vendor.p({
-          size: "24rpx",
-          text: "查看计费规则",
-          decoration: "underline",
-          color: "#DFA0B1",
-          align: "right"
-        }),
-        A: common_vendor.o(goPay),
         B: common_vendor.p({
-          text: "立即支付",
-          color: "#DFA0B1"
+          price: 45
         }),
         C: common_vendor.o(($event) => info.value.timeShow = false),
         D: common_vendor.o(checkTime),
@@ -225,6 +219,11 @@ const _sfc_main = {
           show: info.value.modelShow,
           columns: modelColumns.value,
           keyName: "label"
+        }),
+        I: !common_vendor.unref(serviceShow),
+        J: common_vendor.unref(serviceShow),
+        K: common_vendor.p({
+          type: "wish"
         })
       };
     };

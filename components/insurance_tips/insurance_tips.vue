@@ -8,7 +8,7 @@
 			</view>
 			<text @click="navigateBillRule" style="color:#DFA0B1;font-size: 24rpx;text-decoration: underline;">查看计费规则</text>
 		</view>
-		<view class="tips" style="display: flex;margin-top: 19rpx;">
+		<view class="tips" style="display: flex;margin-top: 19rpx;" v-if="props.type != 'wish'">
 			<image src="../../static/images/order/tips.png" style="width: 20rpx;margin-top: 4rpx;" mode="widthFix"></image>
 			<text style="font-size: 20rpx;color: #979797;margin-left: 12rpx;">温馨提示：交车后 10 分钟开始计费，取车服务需要在取车前提前 60 内分钟支付</text>
 		</view>
@@ -16,6 +16,10 @@
 </template>
 
 <script setup>
+	import {defineProps} from "vue"
+	const props = defineProps({
+		type:String
+	})
 	const navigateBillRule=()=>{
 		uni.navigateTo({
 			url:'/pages/bill_rule/bill_rule'

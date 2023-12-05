@@ -162,7 +162,8 @@
 		{
 			name: '/static/images/index/grid5.png',
 			title: '职工泊车',
-			small: "中山六院"
+			small: "中山六院",
+			url:"/pages/staff/staff"
 		}
 	])
 	const driver = ref([{
