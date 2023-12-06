@@ -6,7 +6,7 @@
       <text class="nav-title">城市生活</text>
     </view>
     <view class="main">
-      <u-notice-bar bgColor="#F6F7F8" icon="/static/images/index/notice.svg" text="这是一条公告，这是一条公告，这是一条公告，这是，"></u-notice-bar>
+      <u-notice-bar direction="column" bgColor="#F6F7F8" icon="/static/images/index/notice.svg" :text="notice"></u-notice-bar>
       <view class="swiper">
         <u-swiper keyName="bannerImageUrl" indicator indicatorMode="line" circular :list="banner" @click="bannerClick"></u-swiper>
       </view>
@@ -49,13 +49,13 @@
         <view class="grid">
           <u-grid :border="false" col="3">
             <u-grid-item v-for="(listItem, listIndex) in driver" :key="listIndex">
-              <u-icon :name="listItem.name" :size="100"></u-icon>
-              <text class="grid-text">{{ listItem.title }}</text>
-              <text class="grid-text-small">{{ listItem.small }}</text>
+							<image :src="listItem.userAvatar" mode=""></image>
+              <text class="grid-driver">{{ listItem.userName}}</text>
+              <text class="grid-driver-small">驾龄：{{ listItem.drivingAge }}年</text>
             </u-grid-item>
           </u-grid>
         </view>
-        <view class="review">
+        <view class="review" v-for="item in evaluate" :key="item.id">
           <view class="review-title">
             <up-avatar :size="32" src="http://run.czjscktd.com/help-thing/lkr.jpg"></up-avatar>
             <text>刘德华</text>
@@ -69,42 +69,17 @@
         <view class="cell-title">
           <u-cell :border="false" :isLink="true" title="精选维保服务" va lue="立即保养"></u-cell>
         </view>
-        <view class="maintenance-box">
-          <image src="/static/images/index/maintenance.png" mode=""></image>
+        <view class="maintenance-box" v-for="item in carServiceList" :key="item.id">
+          <image :src="item.serviceImageUrl" mode=""></image>
           <view class="tenance-box-ri">
-            <text class="title">车辆精洗服务</text>
+            <text class="title">{{item.serviceName}}</text>
             <up-text
               :lines="2"
               size="13"
               color="#666"
-              text="为您的爱车提供最佳的外观和内部清洁效果
-						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
+              :text="item.serviceDescription"
             ></up-text>
-            <text class="price">¥99</text>
-          </view>
-        </view>
-        <view class="maintenance-box">
-          <image src="/static/images/index/maintenance.png" mode=""></image>
-          <view class="tenance-box-ri">
-            <text class="title">车辆精洗服务</text>
-            <up-text
-              :lines="2"
-              text="为您的爱车提供最佳的外观和内部清洁效果
-						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
-            ></up-text>
-            <text class="price">¥99</text>
-          </view>
-        </view>
-        <view class="maintenance-box">
-          <image src="/static/images/index/maintenance.png" mode=""></image>
-          <view class="tenance-box-ri">
-            <text class="title">车辆精洗服务</text>
-            <up-text
-              :lines="2"
-              text="为您的爱车提供最佳的外观和内部清洁效果
-						为您的爱车提供最佳的外观和内部清洁效果为您的爱车提供最佳的外观和内部清洁效果"
-            ></up-text>
-            <text class="price">¥99</text>
+            <text class="price">¥{{item.servicePrice}}</text>
           </view>
         </view>
       </view>
@@ -117,9 +92,13 @@
 import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
 import {onLoad} from "@dcloudio/uni-app"
-import {getBanner} from "@/api"
+import {getBanner,getNotice,getServicerByType,getUserEvaluate,getCarServices} from "@/api"
 
 const banner = ref([]);
+const notice = ref([]);
+const driver = ref([]);
+const evaluate = ref([]);
+const carServiceList = ref([]);
 const list = ref([
   {
     name: "/static/images/index/grid1.png",
@@ -152,38 +131,6 @@ const list = ref([
     url: "/pages/staff/staff",
   },
 ]);
-const driver = ref([
-  {
-    name: "/static/images/index/driver.png",
-    title: "黄思亮",
-    small: "驾龄：10年",
-  },
-  {
-    name: "/static/images/index/driver.png",
-    title: "黄思亮",
-    small: "驾龄：10年",
-  },
-  {
-    name: "/static/images/index/driver.png",
-    title: "黄思亮",
-    small: "驾龄：10年",
-  },
-  {
-    name: "/static/images/index/driver.png",
-    title: "黄思亮",
-    small: "驾龄：10年",
-  },
-  {
-    name: "/static/images/index/driver.png",
-    title: "黄思亮",
-    small: "驾龄：10年",
-  },
-  {
-    name: "/static/images/index/driver.png",
-    title: "黄思亮",
-    small: "驾龄：10年",
-  },
-]);
 const model = ref({
   show: true,
   title: "协议声明",
@@ -195,20 +142,37 @@ const model = ref({
 		`,
 });
 
-const getBannerList = async () => {
+// 获取数据
+const getInfo = async () => {
 	try{
-		const result = await getBanner()
-		if(result.code == 200){
-			banner.value = result.data
+		const bannerList = await getBanner()
+		const noticeList = await getNotice()
+		const servicer = await getServicerByType('VALET')
+		const userEvaluate = await getUserEvaluate()
+		const carService = await getCarServices()
+		
+		if(bannerList.code == 200){
+			banner.value = bannerList.data
+		}
+		if(noticeList.code == 200){
+			const arr = []
+			noticeList.data.forEach(item => {
+				arr.push(item.noticeContent)
+			})
+			notice.value = arr
+		}
+		if(servicer.code == 200){
+			driver.value = servicer.data
+		}
+		if(userEvaluate.code == 200){
+			evaluate.value = userEvaluate.data
+		}
+		if(carService.code == 200){
+			carServiceList.value = carService.data
 		}
 	}catch(e){
 		//TODO handle the exception
 	}
-}
-
-// 获取banner
-const getInfo = () => {
-	getBannerList()
 }
 
 const goService = (url) => {
@@ -359,7 +323,7 @@ onLoad(() => {
   }
 
   .review {
-    margin: 82rpx 0 0;
+    margin: 32rpx 0 0;
     padding: 30rpx 24rpx;
     background: #fff;
     border-radius: 32rpx;

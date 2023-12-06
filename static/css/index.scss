@@ -8,15 +8,30 @@
 }
 	
 .grid {
+	image{
+		width: 200rpx;
+		height: 200rpx;
+		border-radius: 32rpx;
+	}
 	.grid-text {
 		font-size: 28rpx;
 		margin: 8rpx 0 0;
 	}
-
 	.grid-text-small {
 		font-size: 20rpx;
 		margin: 10rpx 0 0;
 	}
+	
+	.grid-driver{
+		font-size: 28rpx;
+		margin: 8rpx 0 2rpx;
+	}
+
+	.grid-driver-small{
+		font-size: 24rpx;
+		margin: 0 0 24rpx;
+	}
+	
 }
 
 ::v-deep .u-tabbar__content__item-wrapper.data-v-d5be2d5d{
