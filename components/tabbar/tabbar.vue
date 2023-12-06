@@ -1,5 +1,5 @@
 <template>
-	<u-tabbar style="height: 128rpx;border-top: 4px solid #eee;" :border="false" activeColor="#DFA0B1" :value="value1"
+	<u-tabbar :border="false" activeColor="#449656" :value="value1"
 		:fixed="true" :placeholder="true" :safeAreaInsetBottom="false">
 		<u-tabbar-item text="首页" @click="click1">
 			<template #active-icon>

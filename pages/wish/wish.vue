@@ -43,8 +43,8 @@
                 <up-button
                   @click="goService"
                   customStyle="border:none;"
-                  color="#DFA0B1"
-                  iconColor="#DFA0B1"
+                  color="#449656"
+                  iconColor="#449656"
                   :plain="true"
                   :hairline="false"
                   icon="plus"
@@ -57,7 +57,7 @@
       </view>
       <Insurance type="wish" />
     </view>
-    <PriceBtn :price="45" />
+    <PriceBtn :price="45" url="/pages/wish/wish_pay/wish_pay" />
     <u-datetime-picker
       :formatter="formatter"
       :minDate="nowTime"
@@ -65,10 +65,11 @@
       @confirm="checkTime"
       :show="info.timeShow"
       mode="datetime"
+			confirmColor="#449656"
     ></u-datetime-picker>
-    <u-picker @cancel="info.modelShow = false" @confirm="checkModel" :show="info.modelShow" :columns="modelColumns" keyName="label"></u-picker>
+    <u-picker confirmColor="#449656" @cancel="info.modelShow = false" @confirm="checkModel" :show="info.modelShow" :columns="modelColumns" keyName="label"></u-picker>
   </view>
-  <Service v-show="serviceShow" type="wish" />
+  <Service v-show="serviceShow" />
 </template>
 
 <script setup>

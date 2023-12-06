@@ -1,7 +1,7 @@
 <template>
   <view v-show="info.status === 'noauth'">
     <view class="wrapper wrapper-p">
-      <view class="title" v-show="info.infoStatus === 'wait'">请稍等，正在确定维保地点</view>
+      <view class="title" v-show="info.infoStatus === 'wait'">职工认证信息</view>
       <view class="title" v-show="info.infoStatus === 'examine'">已经尽快信息审核中...</view>
       <view class="title" v-show="info.infoStatus === 'error'">信息有误，请修改后重新上传</view>
       <License :licensePlate="licensePlate" />
@@ -57,7 +57,8 @@
       </view>
     </view>
     <view class="check-btn" v-show="info.infoStatus != 'examine'">
-      <u-button text="上传认证" color="#DFA0B1" @click="info.uploadShow = true"></u-button>
+      <u-button text="上传认证" color="#449656" @click="info.uploadShow = true"></u-button>
+			<!-- <u-button text="重新认证" color="#449656" @click="info.uploadShow = true"></u-button> -->
     </view>
   </view>
   <view v-show="info.status === 'auth'">
@@ -89,8 +90,8 @@
       </view>
     </view>
   </view>
-  <u-modal showCancelButton confirmColor="#DFA0B1" :show="info.uploadShow" content="确定无误吗？" @confirm="upload" @cancel="info.uploadShow = false"></u-modal>
-  <u-picker @cancel="info.modelShow = false" @confirm="checkModel" :show="info.modelShow" :columns="modelColumns" keyName="label"></u-picker>
+  <u-modal showCancelButton confirmColor="#449656" :show="info.uploadShow" content="确定无误吗？" @confirm="upload" @cancel="info.uploadShow = false"></u-modal>
+  <u-picker confirmColor="#449656" @cancel="info.modelShow = false" @confirm="checkModel" :show="info.modelShow" :columns="modelColumns" keyName="label"></u-picker>
 </template>
 
 <script setup>

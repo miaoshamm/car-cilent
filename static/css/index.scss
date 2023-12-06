@@ -1,10 +1,12 @@
-$bgColor:#449656;
-$cardColor:#EAFAEA;
-$linearBgColor:linear-gradient(180deg, #ECFBEC 0%, #FFFFFF 26%, #FFFFFF 100%);
-$price:#E34D59;
-$titleColor:#81335E;
-$textColor:rgba(0, 0, 0, .4);
+::v-deep .u-cell__body.data-v-b4243719{
+	padding: 24rpx 0 !important;
+}
 
+::v-deep .u-checkbox-group--row.data-v-504cd728{
+	flex-flow: nowrap !important;
+	flex-direction: column !important;
+}
+	
 .grid {
 	.grid-text {
 		font-size: 28rpx;
@@ -74,9 +76,9 @@ $textColor:rgba(0, 0, 0, .4);
 		border-radius: 16rpx;
 	}
 	.certificate{
-		// /deep/ .u-form-item__body.data-v-b4fd400b{
-		// 	flex-direction: column !important;
-		// }
+		::v-deep .u-form-item__body.data-v-b4fd400b{
+			flex-direction: column !important;
+		}
 		.box-img{
 			display: flex;
 			text-align: center;
@@ -134,7 +136,7 @@ $textColor:rgba(0, 0, 0, .4);
 
 .title {
 	font-size: 36rpx;
-	color: $titleColor;
+	color: $bgColor;
 	font-weight: 700;
 	margin: 0 0 20rpx;
 }
@@ -147,4 +149,8 @@ button::before {
 button::after {
   border:0;
   border:none;
+}
+
+.u-tabbar__content__item-wrapper.data-v-d5be2d5d{
+	padding: 20rpx 0;
 }

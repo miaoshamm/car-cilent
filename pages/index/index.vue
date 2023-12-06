@@ -1,5 +1,5 @@
 <template>
-  <u-modal @confirm="closeModel" confirmColor="#DFA0B1" :show="model.show" :title="model.title" :content="model.content"></u-modal>
+  <u-modal @confirm="closeModel" confirmColor="#449656" :show="model.show" :title="model.title" :content="model.content"></u-modal>
   <view style="min-height: 100vh; background: #f6f7f8">
     <!-- 顶部导航 -->
     <view class="nav">
@@ -27,15 +27,18 @@
         <text class="sub-detail">查看详情</text>
       </view>
       <view class="supermarket">
-        <view class="super-title">线上生活超市</view>
-        <view class="super-content">
-          <view class="super-content-le">
-            <image src="/static/images/index/supermarket.png" mode=""></image>
-          </view>
-          <view class="super-content-ri">
-            <view class="super-cotent-title">司美全网最低价</view>
-            <view class="super-cotent-small">夏天来了，肉肉藏不住</view>
-            <u-button :disabled="true" text="即将上线" shape="circle" color="#DFA0B1"></u-button>
+        <image class="super-bg" src="../../static/images/index/card-bg.png" mode=""></image>
+        <view class="super-box">
+          <view class="super-title">线上生活超市</view>
+          <view class="super-content">
+            <view class="super-content-le">
+              <image src="/static/images/index/supermarket.png" mode=""></image>
+            </view>
+            <view class="super-content-ri">
+              <view class="super-cotent-title">司美全网最低价</view>
+              <view class="super-cotent-small">夏天来了，肉肉藏不住</view>
+              <u-button :disabled="true" text="即将上线" shape="circle" color="#449656"></u-button>
+            </view>
           </view>
         </view>
       </view>
@@ -123,7 +126,7 @@ const list = ref([
     name: "/static/images/index/grid1.png",
     title: "代客泊车",
     small: "中山六院",
-		url:'/pages/parking_hospital/parking_hospital'
+    url: "/pages/parking_hospital/parking_hospital",
   },
   {
     name: "/static/images/index/grid2.png",
@@ -204,7 +207,7 @@ const closeModel = () => {
 const bannerClick = () => {};
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 ::v-deep .u-cell__title-text.data-v-b4243719 {
   font-size: 36rpx;
   font-weight: bold;
@@ -212,7 +215,7 @@ const bannerClick = () => {};
 
 .nav {
   height: 208rpx;
-  background: #dfa0b1;
+  background: $bgColor;
   display: flex;
   align-items: center;
 
@@ -267,47 +270,61 @@ const bannerClick = () => {};
     .sub-detail {
       font-size: 24rpx;
       margin: 24rpx 0 0;
-      color: #dfa0b1;
+      color: $bgColor;
     }
   }
 
   .supermarket {
     padding: 30rpx 24rpx 24rpx;
-    background-color: #fff;
     border-radius: 24rpx;
     margin: 18rpx 0 0;
+    position: relative;
 
-    .super-title {
-      font-size: 30rpx;
-      color: #dfa0b1;
-      margin: 0 0 34rpx;
+    .super-bg {
+      position: absolute;
+      top: -20rpx;
+      left: -30rpx;
+      z-index: 0;
+      width: 108%;
+      height: 116%;
     }
 
-    .super-content {
-      display: flex;
-      justify-content: flex-start;
+    .super-box {
+      position: relative;
+      z-index: 100;
 
-      .super-content-le {
-        width: 208rpx;
-
-        image {
-          width: 100%;
-          height: 256rpx;
-        }
+      .super-title {
+        font-size: 30rpx;
+        color: $bgColor;
+        margin: 0 0 34rpx;
       }
 
-      .super-content-ri {
-        margin: 0 0 0 24rpx;
+      .super-content {
+        display: flex;
+        justify-content: flex-start;
 
-        .super-cotent-title {
-          font-size: 28rpx;
-          margin: 8rpx 0;
+        .super-content-le {
+          width: 208rpx;
+
+          image {
+            width: 100%;
+            height: 256rpx;
+          }
         }
 
-        .super-cotent-small {
-          font-size: 26rpx;
-          margin: 0 0 76rpx;
-          color: rgba(0, 0, 0, 0.5);
+        .super-content-ri {
+          margin: 0 0 0 24rpx;
+
+          .super-cotent-title {
+            font-size: 28rpx;
+            margin: 8rpx 0;
+          }
+
+          .super-cotent-small {
+            font-size: 26rpx;
+            margin: 0 0 76rpx;
+            color: rgba(0, 0, 0, 0.5);
+          }
         }
       }
     }
@@ -357,15 +374,19 @@ const bannerClick = () => {};
         width: 208rpx;
         height: 256rpx;
       }
+
       .tenance-box-ri {
         flex: 1;
         margin: 0 0 0 24rpx;
+
         .title {
           font-size: 36rpx;
           font-weight: bold;
           margin: 0 0 16rpx;
           display: block;
+          color: #000;
         }
+
         .price {
           font-size: 44rpx;
           font-weight: bold;
