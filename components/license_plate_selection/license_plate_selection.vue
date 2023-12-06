@@ -30,8 +30,7 @@
 	const props = defineProps({
 		licensePlate:String
 	})
-	const licensePlate = props.licensePlate.split('');
-	console.log(licensePlate);
+	const licensePlate =props.licensePlate ?   props.licensePlate.split('') : [];
 </script>
 
 <style lang="scss">
@@ -39,7 +38,7 @@
 	height: 209rpx;
 	border: 1px solid #fff;
 	border-radius: 16rpx;
-	background:  linear-gradient(180deg, #FCF0F3 0%, #FFFFFF 26%, #FFFFFF 100%);
+	background:  $linearBgColor;
 	box-sizing: border-box;
 	padding: 24rpx;
 	.input{
@@ -63,11 +62,11 @@
 	.input_card_new{
 		width: 66rpx;
 		height: 80rpx;
-		border: 1px dashed #DFA0B1;
+		border: 1px dashed $bgColor;
 		box-sizing: border-box;
-		background-color: #FDE6EC;
+		background-color: $cardColor;
 		border-radius: 8rpx;
-		color:#81335E;
+		color:$bgColor;
 		font-size: 18rpx;
 		display: flex;
 		justify-content: center;

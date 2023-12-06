@@ -19,7 +19,8 @@
       "path": "pages/orders/orders",
       "style": {
         "navigationBarTitleText": "我的订单",
-        "enablePullDownRefresh": false
+        "enablePullDownRefresh": false,
+				"navigationStyle": "custom"
       }
     },
     {
@@ -68,6 +69,7 @@
       "path": "pages/order_detail/order_detail",
       "style": {
         "navigationBarTitleText": "订单详情",
+				"navigationStyle": "custom",
         "enablePullDownRefresh": false
       }
     },
@@ -98,6 +100,15 @@
     	"style" : 
     	{
     		"navigationBarTitleText" : "职工入口",
+    		"enablePullDownRefresh" : false
+    	}
+    },
+    {
+    	"path" : "pages/parking_hospital/parking_hospital",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "预约代客泊车",
+				"navigationStyle": "custom",
     		"enablePullDownRefresh" : false
     	}
     }

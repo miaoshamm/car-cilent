@@ -1,53 +1,56 @@
 <template>
   <view style="min-height: 100vh; background: #f6f7f8; display: flex; flex-direction: column;">
-    <u-navbar @leftClick="" title="预约接送服务" @rightClick="rightClick" titleStyle="font-size:36rpx" :autoBack="true" placeholder safeAreaInsetTop></u-navbar>
-    <view style="position: relative;flex: 1;padding: 32rpx;">
-      <view class="card" style="background: linear-gradient(180deg, #fcf0f3 0%, #ffffff 26%, #ffffff 100%)">
-        <view class="card_line" style="min-height: 96rpx">
-          <text>预约地点</text>
-          <view style="display: flex; align-items: center" @click="openMap">
-            <text>{{ subscribeInfo.address }}</text>
-            <image src="../../static/images/order/location.png" mode="widthFix" style="width: 24rpx; margin-left: 12rpx"> </image>
-          </view>
-        </view>
-        <view class="size_box" />
-        <view class="card_line" style="justify-content: flex-start">
-          <text style="margin-right: 32rpx">预约姓名</text>
-          <input type="text" placeholder="请输入姓名" />
-        </view>
-        <view class="size_box" />
-        <view class="card_line" style="justify-content: flex-start">
-          <text style="margin-right: 32rpx">手机号码</text>
-          <input type="text" placeholder="请输入手机号" />
-        </view>
-        <view class="size_box" />
-        <view class="card_line">
-          <text>预约时间</text>
-          <view
-            @click="
-              () => {
-                subscribeInfo.time = getTimestamp();
-                subscribeInfo.timeShow = true;
-              }
-            "
-            style="display: flex; align-items: center; color: rgba(0, 0, 0, 0.4)"
-          >
-            <text>{{ formatTime(subscribeInfo.time) }}</text>
-            <u--icon name="arrow-right" size="32rpx"></u--icon>
-          </view>
-        </view>
-        <view class="size_box" />
-        <view class="card_line">
-          <text>预约服务</text>
-          <view @click="subscribeInfo.serviceShow = true" style="display: flex; align-items: center; color: rgba(0, 0, 0, 0.4)">
-            <text>{{ subscribeInfo.service }}</text>
-            <u--icon name="arrow-right" size="32rpx"></u--icon>
-          </view>
-        </view>
+    <u-navbar @leftClick="leftClick" title="预约接送服务"  titleStyle="font-size:36rpx"  placeholder safeAreaInsetTop></u-navbar>
+    <view style="position: relative;flex: 1;">
+      <view style="padding: 32rpx;">
+				<view class="card" style="background: linear-gradient(180deg, #fcf0f3 0%, #ffffff 26%, #ffffff 100%)">
+				    <view class="card_line" style="min-height: 96rpx">
+				      <text>预约地点</text>
+				      <view style="display: flex; align-items: center" @click="openMap">
+				        <text>{{ subscribeInfo.address }}</text>
+				        <image src="../../static/images/order/location.png" mode="widthFix" style="width: 24rpx; margin-left: 12rpx"> </image>
+				      </view>
+				    </view>
+				    <view class="size_box" />
+				    <view class="card_line" style="justify-content: flex-start">
+				      <text style="margin-right: 32rpx">预约姓名</text>
+				      <input type="text" placeholder="请输入姓名" />
+				    </view>
+				    <view class="size_box" />
+				    <view class="card_line" style="justify-content: flex-start">
+				      <text style="margin-right: 32rpx">手机号码</text>
+				      <input type="text" placeholder="请输入手机号" />
+				    </view>
+				    <view class="size_box" />
+				    <view class="card_line">
+				      <text>预约时间</text>
+				      <view
+				        @click="
+				          () => {
+				            subscribeInfo.time = getTimestamp();
+				            subscribeInfo.timeShow = true;
+				          }
+				        "
+				        style="display: flex; align-items: center; color: rgba(0, 0, 0, 0.4)"
+				      >
+				        <text>{{ formatTime(subscribeInfo.time) }}</text>
+				        <u--icon name="arrow-right" size="32rpx"></u--icon>
+				      </view>
+				    </view>
+				    <view class="size_box" />
+				    <view class="card_line">
+				      <text>预约服务</text>
+				      <view @click="subscribeInfo.serviceShow = true" style="display: flex; align-items: center; color: rgba(0, 0, 0, 0.4)">
+				        <text>{{ subscribeInfo.service }}</text>
+				        <u--icon name="arrow-right" size="32rpx"></u--icon>
+				      </view>
+				    </view>
+				  </view>
+					<ChooseEmploy :isShow='isShowServiceList' :open='openServiceList' :close='serviceListClose'></ChooseEmploy>
+					<InsuranceTips />
+				</view>
       </view>
-			<ChooseEmploy :isShow='isShowServiceList' :open='openServiceList' :close='serviceListClose'></ChooseEmploy>
-			<InsuranceTips />
-    </view>
+		<PriceBtn :price='180' />
   </view>
 	<u-datetime-picker v-model="subscribeInfo.time" :formatter="formatter" :minDate="nowTime"
 		@cancel="subscribeInfo.timeShow = false" @confirm="onChangeTime" :show="subscribeInfo.timeShow"
@@ -61,6 +64,7 @@ import dayjs from "dayjs";
 import { onShow, onUnload } from "@dcloudio/uni-app";
 import InsuranceTips from "../../components/insurance_tips/insurance_tips.vue";
 import ChooseEmploy from "../../components/choose_employee/choose_employee.vue";
+import PriceBtn from '../../components/price_btn/price_btn.vue'
 const chooseLocation = requirePlugin("chooseLocation");
 const key = "GZABZ-OGULD-YPK4O-HWK6T-4B6KV-NBFJX"; //使用在腾讯位置服务申请的key
 const referer = "城市生活"; //调用插件的app的名

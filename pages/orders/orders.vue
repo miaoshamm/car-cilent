@@ -1,44 +1,12 @@
 <template>
-  //
-  <view style="min-height: 100vh; background: #f6f7f8; padding: 0 16rpx; padding-top: 32rpx">
-    <OrderCard />
-    <OrderCard />
-    <OrderCard />
-    <OrderCard />
-    <u-tabbar
-      style="height: 128rpx; border-top: 4px solid #eee"
-      :border="false"
-      activeColor="#DFA0B1"
-      :value="value1"
-      :fixed="true"
-      :placeholder="true"
-      :safeAreaInsetBottom="false"
-    >
-      <u-tabbar-item text="首页" @click="click1">
-        <template #active-icon>
-          <image style="width: 44rpx; height: 40rpx; margin: 0 0 6rpx" src="/static/images/tabbar/index-active.png"> </image>
-        </template>
-        <template #inactive-icon>
-          <image style="width: 44rpx; height: 40rpx; margin: 0 0 6rpx" src="/static/images/tabbar/index.png"></image>
-        </template>
-      </u-tabbar-item>
-      <u-tabbar-item text="我的订单" @click="click1">
-        <template #active-icon>
-          <image style="width: 36rpx; height: 40rpx; margin: 0 0 6rpx" src="/static/images/tabbar/orders-active.png"> </image>
-        </template>
-        <template #inactive-icon>
-          <image style="width: 36rpx; height: 40rpx; margin: 0 0 6rpx" src="/static/images/tabbar/orders.png"></image>
-        </template>
-      </u-tabbar-item>
-      <u-tabbar-item text="个人中心" @click="click1">
-        <template #active-icon>
-          <image style="width: 32rpx; height: 42rpx; margin: 0 0 6rpx" src="/static/images/tabbar/account-active.png"> </image>
-        </template>
-        <template #inactive-icon>
-          <image style="width: 32rpx; height: 42rpx; margin: 0 0 6rpx" src="/static/images/tabbar/account.png"></image>
-        </template>
-      </u-tabbar-item>
-    </u-tabbar>
+  <view style="min-height: 100vh; background: #f6f7f8; padding: 0 16rpx; padding-top: 32rpx;display: flex;flex-direction: column;">
+		<u-navbar  title="我的订单" :left-icon="false" titleStyle="font-size:36rpx"  placeholder safeAreaInsetTop></u-navbar>
+		<view style="flex: 1;">
+			<OrderCard />
+			<OrderCard />
+			<OrderCard />
+			<OrderCard />
+		</view>
     <Tabbar :value="1" />
   </view>
 </template>
@@ -49,4 +17,4 @@ import OrderCard from "../../components/order_card/order_card.vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
 </script>
 
-<style lang="less" scoped></style>
+<style lang="scss" scoped></style>

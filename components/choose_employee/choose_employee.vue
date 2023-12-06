@@ -15,7 +15,7 @@
 	</view>
 	<view class="choose_employ" v-if='isShow'>
 		<view class="main">
-			<view class="card_line" :style="{backgroundColor:serviceIndex === index && '#EAFAEA'}" v-for="(_,index) in 8">
+			<view  @click="()=>chooseService(index)" class="card_line" :style="{backgroundColor:serviceIndex === index && '#EAFAEA'}" v-for="(_,index) in 8">
 				<view style="display: flex; height: 96rpx">
 					<view style="width: 96rpx;height: 96rpx;">
 						<up-image width="96rpx" height="96rpx" src="https://cdn.uviewui.com/uview/album/1.jpg"
@@ -27,7 +27,7 @@
 					</view>
 				</view>
 				<label class="radio">
-					<radio color="#449656" @click="()=>chooseService(index)" :checked=" serviceIndex === index" />
+					<radio v-if=" serviceIndex === index " color="#449656" :checked=" serviceIndex === index" />
 				</label>
 			</view>
 		</view>
