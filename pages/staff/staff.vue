@@ -1,9 +1,10 @@
 <template>
   <view v-show="info.status === 'noauth'">
     <view class="wrapper wrapper-p">
-      <view class="title" v-show="info.infoStatus === 'wait'">职工认证信息</view>
+			<view class="title" v-show="info.infoStatus === 'normal'">使用优惠前，请先进行职工认证</view>
       <view class="title" v-show="info.infoStatus === 'examine'">已经尽快信息审核中...</view>
-      <view class="title" v-show="info.infoStatus === 'error'">信息有误，请修改后重新上传</view>
+			<view class="title" v-show="info.infoStatus === 'error'">信息有误，请修改后重新上传</view>
+			<view class="title" v-show="info.infoStatus === 'wait'">职工认证信息</view>
       <License :licensePlate="licensePlate" />
       <view class="car-info">
         <u--form class="car-form" labelPosition="left" :model="model1" :rules="rules" labelWidth="120">
@@ -32,11 +33,11 @@
           <view class="box certificate">
             <u-form-item label="工作证" prop="info.phone" borderBottom>
               <view class="box-img">
-                <view class="box-img-info">
+                <view class="box-img-info" @click="uploadInfo('front')">
                   <image src="../../static/images/common/card-photo1.png"></image>
                   <text>正面照</text>
                 </view>
-                <view class="box-img-info">
+                <view class="box-img-info" @click="uploadInfo('back')">
                   <image src="../../static/images/common/card-photo2.png"></image>
                   <text>反面照</text>
                 </view>
@@ -46,7 +47,7 @@
           <view class="box certificate">
             <u-form-item label="行驶证" prop="info.phone" borderBottom>
               <view class="box-img">
-                <view class="box-img-info">
+                <view class="box-img-info" @click="uploadInfo('run')">
                   <image src="../../static/images/common/card-photo1.png"></image>
                   <text>行驶证</text>
                 </view>
@@ -57,8 +58,7 @@
       </view>
     </view>
     <view class="check-btn" v-show="info.infoStatus != 'examine'">
-      <u-button text="上传认证" color="#449656" @click="info.uploadShow = true"></u-button>
-			<!-- <u-button text="重新认证" color="#449656" @click="info.uploadShow = true"></u-button> -->
+      <u-button :text="info.infoStatus === 'wait' ? '重新认证' : '上传认证'" color="#449656" @click="info.uploadShow = true"></u-button>
     </view>
   </view>
   <view v-show="info.status === 'auth'">
@@ -97,6 +97,8 @@
 <script setup>
 import { ref } from "vue";
 import License from "@/components/license_plate_selection/license_plate_selection.vue";
+import {onReady,onUnload} from "@dcloudio/uni-app"
+
 let licensePlate = ref("皖GHHHHHN");
 // 信息
 const info = ref({
@@ -108,8 +110,8 @@ const info = ref({
   modelId: 0,
   modelShow: false,
   uploadShow: false,
-  status: "auth",
-  infoStatus: "wait",
+  status: "noauth",
+  infoStatus: "normal",
 });
 
 const modelColumns = ref([
@@ -125,6 +127,15 @@ const modelColumns = ref([
   ],
 ]);
 
+// 上传
+const uploadInfo = (type) => {
+	uni.chooseImage({
+		success() {
+			
+		}
+	})
+}
+
 // 选择车型
 const checkModel = (item) => {
   info.value.model = item.value[0].label;
@@ -135,11 +146,22 @@ const checkModel = (item) => {
 // 查看信息
 const showInfo = () => {
   info.value.status = "noauth";
+	info.value.infoStatus = 'wait';
 };
 
+// 认证
 const upload = () => {
-  info.value.uploadShow = false;
+	info.value.infoStatus = 'examine'
+	info.value.uploadShow = false;
+	uni.setStorageSync('auth','auth')
 };
+
+onReady(() => {
+	info.value.status = uni.getStorageSync('auth') ? 'auth' : 'noauth'
+})
+onUnload(() => {
+	uni.removeStorageSync('auth')
+})
 </script>
 
 <style lang="less">

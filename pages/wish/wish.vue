@@ -57,7 +57,7 @@
       </view>
       <Insurance type="wish" />
     </view>
-    <PriceBtn :price="45" url="/pages/wish/wish_pay/wish_pay" />
+    <PriceBtn type="pay" :price="45" url="/pages/wish/wish_pay/wish_pay" />
     <u-datetime-picker
       :formatter="formatter"
       :minDate="nowTime"
@@ -66,6 +66,7 @@
       :show="info.timeShow"
       mode="datetime"
 			confirmColor="#449656"
+			ref="datetimePickerRef"
     ></u-datetime-picker>
     <u-picker confirmColor="#449656" @cancel="info.modelShow = false" @confirm="checkModel" :show="info.modelShow" :columns="modelColumns" keyName="label"></u-picker>
   </view>
@@ -85,6 +86,7 @@ import { onReady } from "@dcloudio/uni-app";
 let licensePlate = ref("皖GHHHHHN");
 let serviceShow = ref(false);
 const nowTime = Date.now();
+const datetimePickerRef = ref(null);
 // 信息
 const info = ref({
   phone: "",
@@ -116,6 +118,7 @@ const modelColumns = ref([
     },
   ],
 ]);
+
 
 // 选择时间
 const checkTime = (time) => {

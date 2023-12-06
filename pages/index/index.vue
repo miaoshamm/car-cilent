@@ -132,6 +132,7 @@ const list = ref([
     name: "/static/images/index/grid2.png",
     title: "代客泊车",
     small: "临江大道",
+		url: "/pages/parking_hospital/parking_hospital",
   },
   {
     name: "/static/images/index/grid3.png",
