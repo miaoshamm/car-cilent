@@ -8,7 +8,7 @@
     <view class="main">
       <u-notice-bar bgColor="#F6F7F8" icon="/static/images/index/notice.svg" text="这是一条公告，这是一条公告，这是一条公告，这是，"></u-notice-bar>
       <view class="swiper">
-        <u-swiper indicator indicatorMode="line" circular :list="banner" @click="bannerClick"></u-swiper>
+        <u-swiper keyName="bannerImageUrl" indicator indicatorMode="line" circular :list="banner" @click="bannerClick"></u-swiper>
       </view>
       <view class="grid">
         <u-grid :border="false" col="5">
@@ -116,11 +116,10 @@
 <script setup>
 import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
-const banner = ref([
-  "https://cdn.uviewui.com/uview/swiper/swiper1.png",
-  "https://cdn.uviewui.com/uview/swiper/swiper2.png",
-  "https://cdn.uviewui.com/uview/swiper/swiper3.png",
-]);
+import {onLoad} from "@dcloudio/uni-app"
+import {getBanner} from "@/api"
+
+const banner = ref([]);
 const list = ref([
   {
     name: "/static/images/index/grid1.png",
@@ -196,6 +195,22 @@ const model = ref({
 		`,
 });
 
+const getBannerList = async () => {
+	try{
+		const result = await getBanner()
+		if(result.code == 200){
+			banner.value = result.data
+		}
+	}catch(e){
+		//TODO handle the exception
+	}
+}
+
+// 获取banner
+const getInfo = () => {
+	getBannerList()
+}
+
 const goService = (url) => {
   uni.navigateTo({
     url,
@@ -206,6 +221,10 @@ const closeModel = () => {
 };
 
 const bannerClick = () => {};
+
+onLoad(() => {
+	getInfo()
+})
 </script>
 
 <style lang="scss" scoped>

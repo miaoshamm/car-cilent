@@ -1,7 +1,7 @@
 import {request} from "@/utils/request.js"
 
 // 获取公告信息
-const getNotice = () => {
+export const getNotice = () => {
 	return request({
 		url:'/notice/findNotice',
 		method:"GET"
@@ -9,7 +9,7 @@ const getNotice = () => {
 }
 
 // 服务人员接车录入车辆信息
-const putCarInfo = (data) => {
+export const putCarInfo = (data) => {
 	return request({
 		url:"/parkCarRecord/receiveParkCarInfo",
 		method:"POST",
@@ -18,7 +18,7 @@ const putCarInfo = (data) => {
 }
 
 // 服务人员泊车车辆信息
-const putCarRecordInfo = (data) => {
+export const putCarRecordInfo = (data) => {
 	return request({
 		url:"/parkCarRecord/toParkCarInfo",
 		method:"POST",
@@ -27,7 +27,7 @@ const putCarRecordInfo = (data) => {
 }
 
 // 职工服务人员查询打卡
-const getServicer = (userNo) => {
+export const getServicer = (userNo) => {
 	return request({
 		url:`/servicer/findOrderByCustom/${userNo}`,
 		method:"GET"
@@ -35,7 +35,7 @@ const getServicer = (userNo) => {
 }
 
 // 职工服务人员查询打卡
-const getOrderByServicer = (servicerId) => {
+export const getOrderByServicer = (servicerId) => {
 	return request({
 		url:`/servicer/findOrderByServicer?servicerId=${servicerId}`,
 		method:"GET"
@@ -43,7 +43,7 @@ const getOrderByServicer = (servicerId) => {
 }
 
 // 职工服务人员查询打卡
-const getServicerByType = (roleType) => {
+export const getServicerByType = (roleType) => {
 	return request({
 		url:`/servicer/findServicerByType?roleType=${roleType}`,
 		method:"GET"
@@ -51,7 +51,7 @@ const getServicerByType = (roleType) => {
 }
 
 // 职工服务人员上班打卡
-const getPunchIn = (userNo) => {
+export const getPunchIn = (userNo) => {
 	return request({
 		url:`/servicer/punchIn/${userNo}`,
 		method:"GET"
@@ -59,7 +59,7 @@ const getPunchIn = (userNo) => {
 }
 
 // 职工服务人员下班打卡
-const getPunchOut = (userNo) => {
+export const getPunchOut = (userNo) => {
 	return request({
 		url:`/servicer/punchOut/${userNo}`,
 		method:"GET"
@@ -67,7 +67,7 @@ const getPunchOut = (userNo) => {
 }
 
 // 服务人员确认出发
-const getPunchOut = (orderNo,userNo) => {
+export const ServicerDestination = (orderNo,userNo) => {
 	return request({
 		url:`/servicer/toDestination?orderNo=${orderNo}&userNo=${userNo}`,
 		method:"GET"
@@ -75,7 +75,7 @@ const getPunchOut = (orderNo,userNo) => {
 }
 
 // 用户角色验证
-const validateRole = (data) => {
+export const validateRole = (data) => {
 	return request({
 		url:`/servicer/validateRole`,
 		method:"POST",
@@ -84,7 +84,7 @@ const validateRole = (data) => {
 }
 
 // 提交假期申请
-const userAbsent = (data) => {
+export const userAbsent = (data) => {
 	return request({
 		url:`/userAbsent/askAbsent`,
 		method:"POST",
@@ -93,7 +93,7 @@ const userAbsent = (data) => {
 }
 
 // 查看假期申请
-const getAbsent = (userNo) => {
+export const getAbsent = (userNo) => {
 	return request({
 		url:`/userAbsent/findAbsent/${userNo}`,
 		method:"GET"
@@ -101,7 +101,7 @@ const getAbsent = (userNo) => {
 }
 
 // 获取横幅信息
-const getBanner = () => {
+export const getBanner = () => {
 	return request({
 		url:`/banner/findBanner`,
 		method:"GET"
@@ -109,7 +109,7 @@ const getBanner = () => {
 }
 
 // 获取并返回用户openid
-const getOpenId = () => {
+export const getOpenId = () => {
 	return request({
 		url:`/user/getOpenId`,
 		method:"POST"
@@ -117,7 +117,7 @@ const getOpenId = () => {
 }
 
 // 获取并返回用户Phone
-const getPhone = () => {
+export const getPhone = () => {
 	return request({
 		url:`/user/getPhone`,
 		method:"GET"
@@ -125,7 +125,7 @@ const getPhone = () => {
 }
 
 // 用户取消订单
-const cancelOrder = () => {
+export const cancelOrder = () => {
 	return request({
 		url:`/userOrder/cancelOrder`,
 		method:"GET"
@@ -133,7 +133,7 @@ const cancelOrder = () => {
 }
 
 // 查看交接车辆信息
-const getHandOverCarInfo = (orderNo) => {
+export const getHandOverCarInfo = (orderNo) => {
 	return request({
 		url:`/userOrder/findHandOverCarInfo/${orderNo}`,
 		method:"GET"
@@ -141,7 +141,7 @@ const getHandOverCarInfo = (orderNo) => {
 }
 
 // 用户查看当前订单信息明细
-const getOrderPaymentRecord = (orderNo) => {
+export const getOrderPaymentRecord = (orderNo) => {
 	return request({
 		url:`/userOrder/findOrderPaymentRecord?orderNo=${orderNo}`,
 		method:"GET"
@@ -149,7 +149,7 @@ const getOrderPaymentRecord = (orderNo) => {
 }
 
 // 根据订单编号获取维保地点信息
-const getPreserveLocation = (orderNo) => {
+export const getPreserveLocation = (orderNo) => {
 	return request({
 		url:`/userOrder/findPreserveLocation?orderNo=${orderNo}`,
 		method:"GET"
@@ -157,7 +157,7 @@ const getPreserveLocation = (orderNo) => {
 }
 
 // 用户预约泊车订单
-const reservationParkOrder = (data) => {
+export const reservationParkOrder = (data) => {
 	return request({
 		url:`/userOrder/reservationParkOrder`,
 		method:"POST",
@@ -166,7 +166,7 @@ const reservationParkOrder = (data) => {
 }
 
 // 用户预约车辆维保订单
-const reservationPreserveOrder = (data) => {
+export const reservationPreserveOrder = (data) => {
 	return request({
 		url:`/userOrder/reservationPreserveOrder`,
 		method:"POST",
@@ -175,7 +175,7 @@ const reservationPreserveOrder = (data) => {
 }
 
 // 用户预约接送服务
-const reservationTravelOrder = (data) => {
+export const reservationTravelOrder = (data) => {
 	return request({
 		url:`/userOrder/reservationTravelOrder`,
 		method:"POST",
@@ -184,7 +184,7 @@ const reservationTravelOrder = (data) => {
 }
 
 // 获取用户评价信息
-const getUserEvaluate = () => {
+export const getUserEvaluate = () => {
 	return request({
 		url:`/userEvaluate/findUserEvaluate`,
 		method:"GET"
@@ -192,7 +192,7 @@ const getUserEvaluate = () => {
 }
 
 // 根据用户id获取车辆信息
-const getUserEvaluate = (id) => {
+export const getUserCar = (id) => {
 	return request({
 		url:`/userCar/findUserCar/${id}`,
 		method:"GET"
@@ -200,7 +200,7 @@ const getUserEvaluate = (id) => {
 }
 
 // 获取管理员信息
-const getAmdin = () => {
+export const getAmdin = () => {
 	return request({
 		url:`/admin/getAmdin`,
 		method:"GET"
@@ -208,7 +208,7 @@ const getAmdin = () => {
 }
 
 // 获取指定车辆维保信息以及其赠送服务信息
-const getCarDonateService = (id) => {
+export const getCarDonateService = (id) => {
 	return request({
 		url:`/carServices/findCarDonateService/${id}`,
 		method:"GET"
@@ -216,7 +216,7 @@ const getCarDonateService = (id) => {
 }
 
 // 获取车辆维保服务信息
-const getCarServices = () => {
+export const getCarServices = () => {
 	return request({
 		url:`/carServices/findCarServices`,
 		method:"GET"
