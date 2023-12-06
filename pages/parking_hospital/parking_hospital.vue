@@ -1,7 +1,7 @@
 <template>
 	<view style="min-height: 100vh; background: #f6f7f8; display: flex; flex-direction: column;">
 		<u-navbar :autoBack='true' title="预约代客泊车" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
-		<view style="flex: 1; padding: 32rpx;">
+		<view style="flex: 1; padding: 32rpx;position: relative;">
 			<LicensePlateSelection licensePlate='粤1234554' />
 			<view class="card" style="margin-top: 19rpx;">
 				<view class="card_line" style="justify-content: flex-start">
@@ -38,24 +38,19 @@
 					<input type="text" placeholder="请输入车辆颜色" placeholderStyle="font-size:28rpx" />
 				</view>
 				<view class="size_box" />
-				<view class="card_line" style="justify-content: space-between">
+				<view class="card_line" @click="openChooseCarType" style="justify-content: space-between">
 					<text class="label" style="margin-right: 32rpx">车辆型号</text>
 					<view class="check">
-						<text class="check-text">选择车型</text>
+						<text class="check-text">{{subscribeInfo.carType}}</text>
 						<u--icon name="arrow-right" size="32rpx" color="rgba(0,0,0,.26)"></u--icon>
 					</view>
 				</view>
 				<view class="size_box" />
-				<view class="card-driver">
-					<view class="driver-info">
-						<image src="@/static/images/wish/service.png" mode=""></image>
-						<view class="driver-text">
-							<text>刘师傅</text>
-							<text>驾驶经验 - 10 年</text>
-						</view>
-					</view>
-					<u--icon name="arrow-right" size="32rpx" color="rgba(0,0,0,.26)"></u--icon>
-				</view>
+				<ChooseEmployee :isShow='isSHowChooseDriver' :open='()=>{
+					isSHowChooseDriver = true;
+				}' :close='()=>{
+					isSHowChooseDriver = false;
+				}'/>
 			</view>
 		</view>
 	</view>
@@ -63,10 +58,12 @@
 	<u-datetime-picker ref="datetimePickerRef" confirmColor="#449656" v-model="subscribeInfo.time" :formatter="formatter"
 		:minDate="nowTime" @cancel="subscribeInfo.timeShow = false" @confirm="onChangeTime" :show="subscribeInfo.timeShow"
 		mode="datetime"></u-datetime-picker>
+		<u-picker :show='subscribeInfo.isShowCarType' :closeOnClickOverlay='true' :columns="carTypeColumns" @confirm="carTypeChange" @cancel="subscribeInfo.isShowCarType = false"></u-picker>
 </template>
 
 <script setup>
 	import LicensePlateSelection from '../../components/license_plate_selection/license_plate_selection.vue'
+	import ChooseEmployee from '../../components/choose_employee/choose_employee.vue'
 	import {
 		ref,
 		reactive
@@ -76,7 +73,7 @@
 		onReady
 	} from "@dcloudio/uni-app";
 	import PriceBtn from "@/components/price_btn/price_btn.vue";
-
+	const isSHowChooseDriver = ref(false);
 	const datetimePickerRef = ref(null);
 	const nowTime = Date.now();
 	const subscribeInfo = ref({
@@ -84,10 +81,19 @@
 		phone: "",
 		time: "选择预约时间",
 		service: "选择预约服务",
+		carType:'选择车型',
 		timeShow: false,
 		serviceShow: false,
-		isHelpGet: false
+		isHelpGet: false,
+		isShowCarType:false
 	});
+	const carTypeColumns = reactive([
+	  ['中国', '美国', '日本']
+	]);
+	
+	const openChooseCarType=()=>{
+		subscribeInfo.value.isShowCarType = true;
+	}
 
 	const onChangeTime = (e) => {
 		subscribeInfo.value.time = e.value;
@@ -95,6 +101,11 @@
 	};
 	const helpGetChange = (value) => {
 		subscribeInfo.value.isHelpGet = value;
+	}
+	const carTypeChange=(value)=>{
+		console.log(value,'value');
+		subscribeInfo.value.carType = value.value[0];
+		subscribeInfo.value.isShowCarType = false;
 	}
 	//格式化时间戳
 	const formatTime = (value) => {
