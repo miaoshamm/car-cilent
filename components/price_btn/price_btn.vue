@@ -1,7 +1,7 @@
 <template>
   <view class="pay-box">
     <text class="price">￥{{ props.price.toFixed(2) }}</text>
-    <u-button text="立即支付" color="#DFA0B1" @click="goPay"></u-button>
+    <u-button text="立即支付" color="#449656" @click="goPay"></u-button>
   </view>
 </template>
 
@@ -9,7 +9,14 @@
 import { defineProps } from "vue";
 const props = defineProps({
   price: Number,
+	url: String
 });
+
+const goPay = () => {
+	uni.navigateTo({
+		url:props.url
+	})
+}
 </script>
 
 <style lang="less"></style>

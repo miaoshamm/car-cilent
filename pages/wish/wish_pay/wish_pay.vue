@@ -99,10 +99,10 @@
     <Insurance />
   </view>
   <view class="check-btn">
-    <u-button plain text="查看维保地点" color="#DFA0B1"></u-button>
+    <u-button plain text="查看维保地点" color="#449656"></u-button>
   </view>
   <!-- <view class="check-btn">
-		<u-button text="返回首页" color="#DFA0B1"></u-button>
+		<u-button text="返回首页" color="#449656"></u-button>
 	</view> -->
 </template>
 
