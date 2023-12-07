@@ -3,7 +3,7 @@
     <u-navbar @leftClick="leftClick" title="预约接送服务"  titleStyle="font-size:36rpx"  placeholder safeAreaInsetTop></u-navbar>
     <view style="position: relative;flex: 1;">
       <view style="padding: 32rpx;">
-				<view class="card" style="background: linear-gradient(180deg, #fcf0f3 0%, #ffffff 26%, #ffffff 100%)">
+				<view class="card" style="background: linear-gradient(180deg, #ECFBEC 0%, #FFFFFF 26%, #FFFFFF 100%)">
 				    <view class="card_line" style="min-height: 96rpx">
 				      <text>预约地点</text>
 				      <view style="display: flex; align-items: center" @click="openMap">
@@ -46,11 +46,14 @@
 				      </view>
 				    </view>
 				  </view>
-					<ChooseEmploy :isShow='isShowServiceList' :open='openServiceList' :close='serviceListClose'></ChooseEmploy>
+					<view style="background-color: white;padding: 0 32rpx;border-radius: 16rpx;">
+						<ChooseEmploy :isShow='isShowServiceList' :open='openServiceList' :close='serviceListClose'></ChooseEmploy>
+					</view>
+					
 					<InsuranceTips />
 				</view>
       </view>
-		<PriceBtn :price='180' />
+		<PriceBtn type='pay' :price='180' url='/pages/order_detail_pick_up/order_detail_pick_up' />
   </view>
 	<u-datetime-picker v-model="subscribeInfo.time" :formatter="formatter" :minDate="nowTime"
 		@cancel="subscribeInfo.timeShow = false" @confirm="onChangeTime" :show="subscribeInfo.timeShow"
@@ -108,7 +111,7 @@ const leftClick = () => {
 
 onShow(() => {
   const location = chooseLocation.getLocation();
-  subscribeInfo.value.address = location?.name;
+  subscribeInfo.value.address =location.name ?  location.name : subscribeInfo.value.address ;
 });
 onUnload(() => {
   chooseLocation.setLocation(null);
@@ -155,7 +158,7 @@ const formatter = (type, value) => {
 .card {
   border-radius: 16rpx;
   background-color: white;
-  padding-left: 32rpx;
+  padding:0 32rpx;
 
   .size_box {
     background-color: #e7e7e7;
@@ -167,7 +170,6 @@ const formatter = (type, value) => {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 32rpx;
   }
 }
 </style>

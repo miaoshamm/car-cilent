@@ -1,6 +1,6 @@
 <template>
 	<view class="menu" @click="menuClick">
-		<text style="font-size: 36rpx;"><slot></slot>{{props.title}}</text>
+		<text style="font-size: 32rpx;"><slot></slot>{{props.title}}</text>
 		<view class="right">
 			<text>{{props.description}}</text>
 			<u-icon name="arrow-right" color="#C0C3CD" size="32rpx"></u-icon>
@@ -12,7 +12,8 @@
 	const props = defineProps({
 		title:String,
 		pageUrl:String,
-		description:String
+		description:String,
+		onClick:Function
 	});
 	const menuClick=()=>{
 		if(props.pageUrl){

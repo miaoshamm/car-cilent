@@ -7,7 +7,8 @@
       "^u-([^-].*)": "uview-plus/components/u-$1/u-$1.vue"
     }
   },
-  "pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+  "pages": [
+    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
     {
       "path": "pages/index/index",
       "style": {
@@ -20,7 +21,7 @@
       "style": {
         "navigationBarTitleText": "我的订单",
         "enablePullDownRefresh": false,
-				"navigationStyle": "custom"
+        "navigationStyle": "custom"
       }
     },
     {
@@ -66,10 +67,10 @@
       }
     },
     {
-      "path": "pages/order_detail/order_detail",
+      "path": "pages/order_detail_parking/order_detail_parking",
       "style": {
-        "navigationBarTitleText": "订单详情",
-				"navigationStyle": "custom",
+        "navigationBarTitleText": "泊车订单详情",
+        "navigationStyle": "custom",
         "enablePullDownRefresh": false
       }
     },
@@ -84,7 +85,7 @@
       "path": "pages/pick_up/pick_up",
       "style": {
         "navigationBarTitleText": "预约接送服务",
-				"navigationStyle": "custom",
+        "navigationStyle": "custom",
         "enablePullDownRefresh": false
       }
     },
@@ -96,29 +97,34 @@
       }
     },
     {
-    	"path" : "pages/staff/staff",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "职工入口",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/staff/staff",
+      "style": {
+        "navigationBarTitleText": "职工入口",
+        "enablePullDownRefresh": false
+      }
     },
     {
-    	"path" : "pages/parking_hospital/parking_hospital",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "预约代客泊车",
-				"navigationStyle": "custom",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/parking_hospital/parking_hospital",
+      "style": {
+        "navigationBarTitleText": "预约代客泊车",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false
+      }
     },
     {
-    	"path" : "pages/servicer_orders/servicer_orders",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/servicer_orders/servicer_orders",
+      "style": {
+        "navigationBarTitleText": "",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/order_detail_pick_up/order_detail_pick_up",
+      "style": {
+        "navigationBarTitleText": "接送订单详情",
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
+      }
     }
   ],
   "globalStyle": {
@@ -141,9 +147,9 @@
       {
         "pagePath": "pages/account/account"
       },
-			{
-				"pagePath": "pages/servicer_orders/servicer_orders"
-			}
+      {
+        "pagePath": "pages/servicer_orders/servicer_orders"
+      }
     ]
   }
 }

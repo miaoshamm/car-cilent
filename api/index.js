@@ -152,10 +152,11 @@ export const getBanner = () => {
 }
 
 // 获取并返回用户openid
-export const getOpenId = () => {
+export const getOpenId = (data) => {
 	return request({
 		url:`/user/getOpenId`,
-		method:"POST"
+		method:"POST",
+		data
 	})
 }
 
@@ -179,7 +180,8 @@ export const cancelOrder = () => {
 export const getHandOverCarInfo = (orderNo) => {
 	return request({
 		url:`/userOrder/findHandOverCarInfo/${orderNo}`,
-		method:"GET"
+		method:"GET",
+		
 	})
 }
 

@@ -38,6 +38,7 @@
 	const status = uni.getStorageSync('userStatus')
 	
 	const click1 = (index) => {
+		console.log(index);
 		let url = ""
 		if (index === 0) {
 			url = "/pages/index/index"

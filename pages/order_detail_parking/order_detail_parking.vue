@@ -251,7 +251,7 @@
 		display: flex;
 		flex-direction: column;
 		background-color: white;
-		padding-left: 32rpx;
+		padding: 0 32rpx;
 
 		.card_line {
 			height: 96rpx;
@@ -259,7 +259,6 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding-right: 32rpx;
 		}
 
 		.size_box {

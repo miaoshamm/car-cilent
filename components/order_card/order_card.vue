@@ -8,8 +8,8 @@
 			<text>代客泊车</text>
 			</view>
 			<view class="card_status" v-if=" cardType !== 'evaluate' ">
-				<text v-if=" cardType === 'order'" style="color: #81335E;font-size: 32rpx;">等待付款</text>
-				<text v-if="cardType === 'invoice'" style="color: #81335E;font-size: 32rpx;">已开票</text>
+				<text v-if=" cardType === 'order'" style="color: #449656;font-size: 32rpx;">等待付款</text>
+				<text v-if="cardType === 'invoice'" style="color: #449656;font-size: 32rpx;">已开票</text>
 			</view>
 		</view>
 		<view class="size_box"></view>
@@ -51,7 +51,7 @@ import { ref } from 'vue';
 	const cardType = props.type ? props.type : 'order';
 	const navigateDetail=()=>{
 		uni.navigateTo({
-			url:'/pages/order_detail/order_detail'
+			url:'/pages/order_detail_parking/order_detail_parking'
 		})
 	}
 </script>

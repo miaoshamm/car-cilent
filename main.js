@@ -1,16 +1,16 @@
 import App from './App'
 import uviewPlus from 'uview-plus'
-import { createPinia } from 'pinia'
+import * as Pinia from 'pinia';
 
 // #ifdef VUE3
 import { createSSRApp } from 'vue'
 export function createApp() {
   const app = createSSRApp(App)
-	const pinia = createPinia()
-	app.use(pinia)
+	app.use(Pinia.createPinia());
 	app.use(uviewPlus)
   return {
-    app
+    app,
+		Pinia
   }
 }
 // #endif

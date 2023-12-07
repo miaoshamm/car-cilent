@@ -10,7 +10,7 @@
 	        <text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - 10年</text>
 	      </view>
 	    </view>
-	    <u-icon name="arrow-right" size="32rpx"></u-icon>
+	    <u-icon name="arrow-right" size="32rpx" color="rgba(0, 0, 0, 0.4)"></u-icon>
 	  </view>
 	</view>
 	<view class="choose_employ" v-if='isShow'>
@@ -56,7 +56,6 @@
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 0 32rpx;
 		}
 	}
 	.choose_employ {

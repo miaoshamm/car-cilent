@@ -1,5 +1,5 @@
 <template>
-	<u-loading-page :loading="loading" style="z-index: 999;"></u-loading-page>
+  <u-loading-page :loading="loading" style="z-index: 999"></u-loading-page>
   <u-modal @confirm="closeModel" confirmColor="#449656" :show="model.show" :title="model.title" :content="model.content"></u-modal>
   <view style="min-height: 100vh; background: #f6f7f8">
     <!-- 顶部导航 -->
@@ -50,8 +50,8 @@
         <view class="grid">
           <u-grid :border="false" col="3">
             <u-grid-item v-for="(listItem, listIndex) in driver" :key="listIndex">
-							<image :src="listItem.userAvatar" mode=""></image>
-              <text class="grid-driver">{{ listItem.userName}}</text>
+              <image :src="listItem.userAvatar" mode=""></image>
+              <text class="grid-driver">{{ listItem.userName }}</text>
               <text class="grid-driver-small">驾龄：{{ listItem.drivingAge }}年</text>
             </u-grid-item>
           </u-grid>
@@ -73,14 +73,9 @@
         <view class="maintenance-box" v-for="item in carServiceList" :key="item.id">
           <image :src="item.serviceImageUrl" mode=""></image>
           <view class="tenance-box-ri">
-            <text class="title">{{item.serviceName}}</text>
-            <up-text
-              :lines="2"
-              size="13"
-              color="#666"
-              :text="item.serviceDescription"
-            ></up-text>
-            <text class="price">¥{{item.servicePrice}}</text>
+            <text class="title">{{ item.serviceName }}</text>
+            <up-text :lines="2" size="13" color="#666" :text="item.serviceDescription"></up-text>
+            <text class="price">¥{{ item.servicePrice }}</text>
           </view>
         </view>
       </view>
@@ -92,10 +87,10 @@
 <script setup>
 import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
-import {onLoad} from "@dcloudio/uni-app"
-import {getBanner,getNotice,getServicerByType,getUserEvaluate,getCarServices} from "@/api"
-
-let loading = ref(true)
+import { onLoad } from "@dcloudio/uni-app";
+import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices } from "@/api";
+uni.setStorageSync('userStatus','user');
+let loading = ref(true);
 let isSubscribe = ref(false);
 let banner = ref([]);
 let notice = ref([]);
@@ -113,7 +108,7 @@ let list = ref([
     name: "/static/images/index/grid2.png",
     title: "代客泊车",
     small: "临江大道",
-		url: "/pages/parking_hospital/parking_hospital",
+    url: "/pages/parking_hospital/parking_hospital",
   },
   {
     name: "/static/images/index/grid3.png",
@@ -147,39 +142,39 @@ let model = ref({
 
 // 获取数据
 const getInfo = async () => {
-	try{
-		loading.value = true
-		const bannerList = await getBanner()
-		const noticeList = await getNotice()
-		const servicer = await getServicerByType('VALET')
-		const userEvaluate = await getUserEvaluate()
-		const carService = await getCarServices()
-		
-		if(bannerList.code == 200){
-			banner.value = bannerList.data
-		}
-		if(noticeList.code == 200){
-			const arr = []
-			noticeList.data.forEach(item => {
-				arr.push(item.noticeContent)
-			})
-			notice.value = arr
-		}
-		if(servicer.code == 200){
-			driver.value = servicer.data
-		}
-		if(userEvaluate.code == 200){
-			evaluate.value = userEvaluate.data
-		}
-		if(carService.code == 200){
-			carServiceList.value = carService.data
-		}
-		loading.value = false
-		model.value.show = true
-	}catch(e){
-		//TODO handle the exception
-	}
-}
+  try {
+    loading.value = true;
+    const bannerList = await getBanner();
+    const noticeList = await getNotice();
+    const servicer = await getServicerByType("VALET");
+    const userEvaluate = await getUserEvaluate();
+    const carService = await getCarServices();
+
+    if (bannerList.code == 200) {
+      banner.value = bannerList.data;
+    }
+    if (noticeList.code == 200) {
+      const arr = [];
+      noticeList.data.forEach((item) => {
+        arr.push(item.noticeContent);
+      });
+      notice.value = arr;
+    }
+    if (servicer.code == 200) {
+      driver.value = servicer.data;
+    }
+    if (userEvaluate.code == 200) {
+      evaluate.value = userEvaluate.data;
+    }
+    if (carService.code == 200) {
+      carServiceList.value = carService.data;
+    }
+    loading.value = false;
+    model.value.show = true;
+  } catch (e) {
+    //TODO handle the exception
+  }
+};
 
 const goService = (url) => {
   uni.navigateTo({
@@ -188,19 +183,24 @@ const goService = (url) => {
 };
 const closeModel = () => {
   model.value.show = false;
+  uni.login({
+    success: async (res) => {
+      console.log(res.code);
+    },
+  });
 };
 
 const bannerClick = () => {};
 
 // 重定向
 onLoad(() => {
-	if(uni.getStorageSync('userStatus') === 'servicer'){
-		return uni.switchTab({
-			url:'/pages/servicer_orders/servicer_orders'
-		})
-	}
-	getInfo()
-})
+  if (uni.getStorageSync("userStatus") === "servicer") {
+    return uni.switchTab({
+      url: "/pages/servicer_orders/servicer_orders",
+    });
+  }
+  getInfo();
+});
 </script>
 
 <style lang="scss" scoped>
