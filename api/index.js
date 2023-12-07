@@ -1,5 +1,48 @@
 import {request} from "@/utils/request.js"
 
+// 获取COS临时秘钥
+export const getCOSSecurityToken = (ext,category) => {
+	return request({
+		url:`/common/getCOSSecurityToken?ext=${ext}&category=${category}`,
+		method:"GET"
+	})
+}
+
+// 通知支付成功（内部使用）
+export const notifyPay = (appId,data) => {
+	return request({
+		url:`/wechat/notifyPay/${appId}`,
+		method:"POST",
+		data
+	})
+}
+
+// 微信统一下单
+export const unifiedOrder = (data) => {
+	return request({
+		url:'/wechat/unifiedOrder',
+		method:"POST",
+		data
+	})
+}
+
+// 微信小程序手机号
+export const getWePhone = () => {
+	return request({
+		url:'/wechat/getPhoneNumber',
+		method:"GET"
+	})
+}
+
+// 微信登录
+export const login = (data) => {
+	return request({
+		url:'/wechat/login',
+		method:"POST",
+		data
+	})
+}
+
 // 获取公告信息
 export const getNotice = () => {
 	return request({
