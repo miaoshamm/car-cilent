@@ -21,7 +21,7 @@
       <UserMenu>在线客服</UserMenu>
       <UserMenu>切换角色</UserMenu>
     </view>
-    <Tabbar :value="2" />
+    <Tabbar :value="index" />
   </view>
 </template>
 
@@ -29,6 +29,7 @@
 import { ref } from "vue";
 import UserMenu from "../../components/user_menu/user_menu.vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
+const index = uni.getStorageSync('userStatus') === 'servicer' ? 1 : 2
 </script>
 
 <style lang="less" scoped>

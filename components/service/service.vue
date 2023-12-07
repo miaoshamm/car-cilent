@@ -1,7 +1,7 @@
 <template>
 	<view class="wrapper-p wrapper-t">
 		<u-checkbox-group v-model="checkboxValue1" iconPlacement="right" @change="checkboxChange">
-			<view :style="{flex:1,background:checkboxValue1.indexOf(item.name) != -1 ? '#EAFAEA' : ''}" v-for="item in list" :key="item.id">
+			<view :style="{flex:1,background:checkboxValue1.indexOf(item.name) != -1 ? '#EAFAEA' : ''}" v-for="item in infoList" :key="item.id">
 				<view class="check-box">
 					<view class="service">
 						<image src="/static/images/wish/service.png" mode=""></image>
@@ -34,35 +34,17 @@
 <script setup>
 	import {
 		ref,
-		defineProps
+		defineProps,
+		watch
 	} from "vue";
 	import {
 		onLoad
 	} from "@dcloudio/uni-app";
 
-	const checkboxValue1 = ref([]);
-	const list = ref([{
-		id:1,
-		title:"精选服务",
-		price:45,
-		img:"/static/images/wish/service.png",
-		name:"check1",
-		children:[
-			{
-				name:"更换机油",
-				img:"/static/images/wish/service.png"
-			}
-		]
-	},
-	{
-		id:2,
-		title:"精选服务",
-		price:45,
-		img:"/static/images/wish/service.png",
-		name:"check2",
-		children:[]
-	}])
-
+	const props = defineProps(['list']);
+	
+	watch(() => props.list.value,() => console.log('wtach',props.list))
+	
 	const checkboxChange = (n) => {
 		checkboxValue1.value = n
 	};

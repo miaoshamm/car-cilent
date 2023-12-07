@@ -1,10 +1,14 @@
 ::v-deep .u-cell__body.data-v-b4243719{
-	padding: 24rpx 0 !important;
+	padding: 0 0 24rpx!important;
 }
 
 ::v-deep .u-checkbox-group--row.data-v-504cd728{
 	flex-flow: nowrap !important;
 	flex-direction: column !important;
+}
+
+::v-deep .u-fade-enter-active.data-v-0573594d, .u-fade-leave-active.data-v-0573594d{
+	z-index: 999;
 }
 	
 .grid {
@@ -34,10 +38,15 @@
 	
 }
 
+::v-deep .u-tabbar--fixed.data-v-d5be2d5d{
+	z-index: 999 !important;
+}
+
 ::v-deep .u-tabbar__content__item-wrapper.data-v-d5be2d5d{
 	height: 128rpx;
 	border-top: 4rpx solid #eee;
 	box-shadow: 0px -8px 20px 0px rgba(0, 0, 0, 0.06);
+	z-index: 100;
 }
 
 .wrapper{

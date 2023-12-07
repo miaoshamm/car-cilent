@@ -1,9 +1,10 @@
 <template>
+	<u-loading-page :loading="info.loading"></u-loading-page>
   <u-navbar @leftClick="leftClick" safeAreaInsetTop title="预约车辆维保"></u-navbar>
-  <view v-show="!serviceShow">
+  <view v-show="!info.serviceShow">
     <view class="wrapper" style="padding-top: 200rpx">
-      <view @click="check">
-        <License :licensePlate="licensePlate" />
+      <view>
+        <License @plateNumber="getPlateNumber" />
       </view>
       <view class="car-info">
         <u--form class="car-form" labelPosition="left" :model="model1" :rules="rules" labelWidth="120">
@@ -28,10 +29,10 @@
             </u-form-item>
             <u-form-item borderBottom v-for="item in checkList" :key="item.id">
               <view class="service">
-                <image src="/static/images/wish/service.png" mode=""></image>
+                <image :src="item.serviceImageUrl" mode=""></image>
                 <view class="text">
-                  <text class="name">精洗</text>
-                  <text class="price">¥ 45.00</text>
+                  <text class="name">{{item.serviceName}}</text>
+                  <text class="price">¥ {{item.servicePrice.toFixed(2)}}</text>
                 </view>
               </view>
               <template #right>
@@ -57,7 +58,7 @@
       </view>
       <Insurance type="wish" />
     </view>
-    <PriceBtn type="pay" :price="45" url="/pages/wish/wish_pay/wish_pay" />
+    <PriceBtn type="pay" :price="info.total" url="/pages/wish/wish_pay/wish_pay" />
     <u-datetime-picker
       :formatter="formatter"
       :minDate="nowTime"
@@ -70,7 +71,7 @@
     ></u-datetime-picker>
     <u-picker confirmColor="#449656" @cancel="info.modelShow = false" @confirm="checkModel" :show="info.modelShow" :columns="modelColumns" keyName="label"></u-picker>
   </view>
-  <Service v-show="serviceShow" />
+  <Service v-show="info.serviceShow" :list="serviceList" />
 </template>
 
 <script setup>
@@ -80,11 +81,11 @@ import Insurance from "@/components/insurance_tips/insurance_tips.vue";
 import PriceBtn from "@/components/price_btn/price_btn.vue";
 import Service from "@/components/service/service.vue";
 import dayjs from "dayjs";
-import { onReady } from "@dcloudio/uni-app";
+import { onReady,onLoad } from "@dcloudio/uni-app";
+import {getCarServices} from "@/api";
 
 // 车牌号
 let licensePlate = ref("皖GHHHHHN");
-let serviceShow = ref(false);
 const nowTime = Date.now();
 const datetimePickerRef = ref(null);
 // 信息
@@ -95,16 +96,14 @@ const info = ref({
   modelId: 0,
   timeShow: false,
   modelShow: false,
+	plateNumber:"",
+	total:0,
+	loading:false,
+	serviceShow:false
 });
 // 选择服务列表
-const checkList = ref([
-  {
-    id: 1,
-    name: "",
-    image: "",
-    price: "",
-  },
-]);
+const checkList = ref([]);
+const serviceList = ref([]);
 
 const modelColumns = ref([
   [
@@ -119,6 +118,27 @@ const modelColumns = ref([
   ],
 ]);
 
+// 获取所有服务
+const allService = async () => {
+	try{
+		info.value.loading = true
+		const result = await getCarServices()
+		if(result.code == 200){
+			info.value.loading = false
+			serviceList.value = result.data
+			checkList.value = [result.data[0] ?? null]
+			info.value.total = checkList.value.reduce((total,item) => {
+				return item.servicePrice + total
+			},0)
+		}
+	}catch(e){
+	}
+}
+
+// 获取车牌
+const getPlateNumber = (res) => {
+	info.value.plateNumber = res
+}
 
 // 选择时间
 const checkTime = (time) => {
@@ -134,8 +154,8 @@ const checkModel = (item) => {
 
 // 导航跳转
 const leftClick = () => {
-  if (serviceShow.value) {
-    serviceShow.value = false;
+  if (info.value.serviceShow) {
+    info.value.serviceShow = false;
   } else {
     uni.navigateBack();
   }
@@ -143,7 +163,7 @@ const leftClick = () => {
 
 // 显示选项
 const goService = () => {
-  serviceShow.value = true;
+  info.value.serviceShow = true;
 };
 
 // 格式化
@@ -166,14 +186,6 @@ const formatter = (type, value) => {
   return value;
 };
 
-const check = () => {
-  wx.chooseLicensePlate({
-    success(res) {
-      licensePlate.value = res.plateNumber;
-    },
-  });
-};
-
 // 支付
 const goPay = () => {
   uni.navigateTo({
@@ -185,6 +197,10 @@ onReady(() => {
   // 微信小程序需要用此写法
   datetimePickerRef.value.setFormatter(formatter);
 });
+
+onLoad(() => {
+	allService()
+})
 </script>
 
 <style lang="less"></style>

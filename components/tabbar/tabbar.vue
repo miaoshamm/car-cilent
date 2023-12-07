@@ -1,7 +1,7 @@
 <template>
 	<u-tabbar :border="false" activeColor="#449656" :value="value1"
 		:fixed="true" :placeholder="true" :safeAreaInsetBottom="false">
-		<u-tabbar-item text="首页" @click="click1">
+		<u-tabbar-item text="首页" @click="click1" v-if="status === 'user'">
 			<template #active-icon>
 				<image style="width: 44rpx;height: 40rpx;margin: 0 0 6rpx" src="/static/images/tabbar/index-active.png">
 				</image>
@@ -33,10 +33,9 @@
 
 <script setup>
 	import { ref,defineProps } from 'vue';
-	const props = defineProps({
-		value:Number
-	})
+	const props = defineProps(['value'])
 	const value1 = props.value
+	const status = uni.getStorageSync('userStatus')
 	
 	const click1 = (index) => {
 		let url = ""
@@ -44,8 +43,14 @@
 			url = "/pages/index/index"
 		} else if (index === 1) {
 			url = "/pages/orders/orders"
-		} else {
+		} else{
 			url = "/pages/account/account"
+		}
+		if(index === 0 && status === 'servicer'){
+			url = '/pages/servicer_orders/servicer_orders'
+		}
+		if(index === 1 && status === 'servicer'){
+			url = '/pages/account/account'
 		}
 		uni.switchTab({
 			url

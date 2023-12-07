@@ -20,11 +20,7 @@
 	import {
 		defineProps
 	} from "vue";
-	const props = defineProps({
-		price: Number,
-		url: String,
-		type:String
-	});
+	const props = defineProps(['price','url','type']);
 	
 	const goPay = () => {
 		uni.navigateTo({

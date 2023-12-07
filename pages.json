@@ -111,6 +111,14 @@
 				"navigationStyle": "custom",
     		"enablePullDownRefresh" : false
     	}
+    },
+    {
+    	"path" : "pages/servicer_orders/servicer_orders",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "",
+    		"enablePullDownRefresh" : false
+    	}
     }
   ],
   "globalStyle": {
@@ -132,7 +140,10 @@
       },
       {
         "pagePath": "pages/account/account"
-      }
+      },
+			{
+				"pagePath": "pages/servicer_orders/servicer_orders"
+			}
     ]
   }
 }

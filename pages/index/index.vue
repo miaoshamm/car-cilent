@@ -1,4 +1,5 @@
 <template>
+	<u-loading-page :loading="loading" style="z-index: 999;"></u-loading-page>
   <u-modal @confirm="closeModel" confirmColor="#449656" :show="model.show" :title="model.title" :content="model.content"></u-modal>
   <view style="min-height: 100vh; background: #f6f7f8">
     <!-- 顶部导航 -->
@@ -19,7 +20,7 @@
           </u-grid-item>
         </u-grid>
       </view>
-      <view class="subscribe">
+      <view class="subscribe" v-if="isSubscribe">
         <view class="sub-le">
           <text class="sub-le-title">预约车辆：粤 AA63221</text>
           <text class="sub-le-small">预约泊车时间：2023 年 11 月 22 日 00:00</text>
@@ -94,12 +95,14 @@ import Tabbar from "@/components/tabbar/tabbar.vue";
 import {onLoad} from "@dcloudio/uni-app"
 import {getBanner,getNotice,getServicerByType,getUserEvaluate,getCarServices} from "@/api"
 
-const banner = ref([]);
-const notice = ref([]);
-const driver = ref([]);
-const evaluate = ref([]);
-const carServiceList = ref([]);
-const list = ref([
+let loading = ref(true)
+let isSubscribe = ref(false);
+let banner = ref([]);
+let notice = ref([]);
+let driver = ref([]);
+let evaluate = ref([]);
+let carServiceList = ref([]);
+let list = ref([
   {
     name: "/static/images/index/grid1.png",
     title: "代客泊车",
@@ -131,8 +134,8 @@ const list = ref([
     url: "/pages/staff/staff",
   },
 ]);
-const model = ref({
-  show: true,
+let model = ref({
+  show: false,
   title: "协议声明",
   content: `
 		本人同意依据本确认单将车辆交于广东城市实业有限公司代客泊车服务，并愿意在提车前支付相关泊车费、代客泊车费等费用。在此声明，车辆在移交广东城市实业有限公司之前，本人已提醒车主自行收起贵重物品，并将车内物品妥善保管。如有任何遗失，车主将自行承担相应责任。
@@ -145,6 +148,7 @@ const model = ref({
 // 获取数据
 const getInfo = async () => {
 	try{
+		loading.value = true
 		const bannerList = await getBanner()
 		const noticeList = await getNotice()
 		const servicer = await getServicerByType('VALET')
@@ -170,6 +174,8 @@ const getInfo = async () => {
 		if(carService.code == 200){
 			carServiceList.value = carService.data
 		}
+		loading.value = false
+		model.value.show = true
 	}catch(e){
 		//TODO handle the exception
 	}
@@ -186,7 +192,13 @@ const closeModel = () => {
 
 const bannerClick = () => {};
 
+// 重定向
 onLoad(() => {
+	if(uni.getStorageSync('userStatus') === 'servicer'){
+		return uni.switchTab({
+			url:'/pages/servicer_orders/servicer_orders'
+		})
+	}
 	getInfo()
 })
 </script>
@@ -261,7 +273,7 @@ onLoad(() => {
   .supermarket {
     padding: 30rpx 24rpx 24rpx;
     border-radius: 24rpx;
-    margin: 18rpx 0 0;
+    margin: 28rpx 0 0;
     position: relative;
 
     .super-bg {
