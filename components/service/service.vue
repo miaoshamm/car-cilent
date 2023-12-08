@@ -1,32 +1,28 @@
 <template>
 	<view class="wrapper-p wrapper-t">
-		<u-checkbox-group v-model="checkboxValue1" iconPlacement="right" @change="checkboxChange">
-			<view :style="{flex:1,background:checkboxValue1.indexOf(item.name) != -1 ? '#EAFAEA' : ''}" v-for="item in infoList" :key="item.id">
+		<u-checkbox-group v-model="checkboxValue" iconPlacement="right" @change="checkboxChange">
+			<view :style="{flex:1,background:checkboxValue.indexOf(item.id) != -1 ? '#EAFAEA' : '' }" v-for="item in props.list" :key="item.id">
 				<view class="check-box">
 					<view class="service">
-						<image src="/static/images/wish/service.png" mode=""></image>
+						<image :src="item.serviceImageUrl" mode=""></image>
 						<view class="text">
-							<text class="name">精洗服务</text>
-							<text class="price">¥ 45.00</text>
+							<text class="name">{{item.serviceName}}</text>
+							<text class="price">¥ {{item.servicePrice.toFixed(2)}}</text>
 						</view>
 					</view>
-					<u-checkbox :name="item.name" shape="circle" activeColor="#449656"></u-checkbox>
+					<u-checkbox :name="item.id" shape="circle" activeColor="#449656" :disabled="mutexValue && mutexValue.indexOf(item.id) != -1"></u-checkbox>
 				</view>
-				<view class="gift" v-show="item.children.length != 0">
+				<view class="gift" v-show="item.carDonateServiceVoList">
 					<view class="title">包含赠送项目</view>
-					<view class="service">
-						<image src="/static/images/wish/service.png" mode=""></image>
-						<text class="name">更换机油</text>
-					</view>
-					<view class="service">
-						<image src="/static/images/wish/service.png" mode=""></image>
-						<text class="name">更换机油</text>
+					<view class="service" v-for="item2 in carDonateServiceVoList">
+						<image :src="item2.serviceImageUrl" mode=""></image>
+						<text class="name">{{item.serviceName}}</text>
 					</view>
 				</view>
 			</view>
 		</u-checkbox-group>
 		<view class="check-btn">
-			<u-button text="确认选择" color="#449656"></u-button>
+			<u-button text="确认选择" color="#449656" @click="confirm"></u-button>
 		</view>
 	</view>
 </template>
@@ -35,22 +31,41 @@
 	import {
 		ref,
 		defineProps,
-		watch
+		defineEmits
 	} from "vue";
 	import {
 		onLoad
 	} from "@dcloudio/uni-app";
-
+	
+	let checkboxValue = ref("")
+	let mutexValue = ref(null)
 	const props = defineProps(['list']);
+	const emit = defineEmits(['confirm','show']);
+	const infoList = ref([])
 	
-	watch(() => props.list.value,() => console.log('wtach',props.list))
+	// 确认选择
+	const confirm = () => {
+		const result = props.list.filter(item => {
+			return checkboxValue.value.indexOf(item.id) != -1
+		})
+		emit('confirm',result)
+		emit('show',false)
+	}
 	
-	const checkboxChange = (n) => {
-		checkboxValue1.value = n
+	// 改变选项时
+	const checkboxChange = (check) => {
+		checkboxValue.value = check
+		mutexValue.value = ""
+		// 拿到当前选中的选项的互斥项目
+		props.list.forEach(item => {
+			if(check.indexOf(item.id) != -1){
+				mutexValue.value += item.mutexService
+			}
+		})
 	};
 </script>
 
-<style lang="scss" scoped>	
+<style lang="scss" scoped>
 	.check-box {
 		display: flex;
 		justify-content: space-between;

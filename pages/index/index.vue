@@ -1,5 +1,4 @@
 <template>
-  <u-loading-page :loading="loading" style="z-index: 999"></u-loading-page>
   <u-modal @confirm="closeModel" confirmColor="#449656" :show="model.show" :title="model.title" :content="model.content"></u-modal>
   <view style="min-height: 100vh; background: #f6f7f8">
     <!-- 顶部导航 -->
@@ -87,8 +86,8 @@
 <script setup>
 import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
-import { onLoad } from "@dcloudio/uni-app";
-import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices } from "@/api";
+import { onShow } from "@dcloudio/uni-app";
+import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices,login } from "@/api";
 uni.setStorageSync('userStatus','user');
 let loading = ref(true);
 let isSubscribe = ref(false);
@@ -185,7 +184,10 @@ const closeModel = () => {
   model.value.show = false;
   uni.login({
     success: async (res) => {
-      console.log(res.code);
+			const result = await login({authCode:res.code})
+			if(result.code == 200){
+				uni.setStorageSync('accessToken',result.data.token)
+			}
     },
   });
 };
@@ -193,7 +195,7 @@ const closeModel = () => {
 const bannerClick = () => {};
 
 // 重定向
-onLoad(() => {
+onShow(() => {
   if (uni.getStorageSync("userStatus") === "servicer") {
     return uni.switchTab({
       url: "/pages/servicer_orders/servicer_orders",
