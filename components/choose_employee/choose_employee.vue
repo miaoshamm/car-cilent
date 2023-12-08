@@ -3,11 +3,11 @@
 	  <view class="card_line" style="height: 144rpx">
 	    <view style="display: flex; height: 96rpx">
 				<view style="width: 96rpx;height: 96rpx;">
-					<up-image width="96rpx" height="96rpx" src="https://cdn.uviewui.com/uview/album/1.jpg" shape="circle"></up-image>
+					<up-image width="96rpx" height="96rpx" :src="selectServicer.userAvatar" shape="circle"></up-image>
 				</view>
 	      <view style="display: flex; flex-direction: column; margin-left: 16rpx">
-	        <text style="font-size: 32rpx">刘师傅</text>
-	        <text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - 10年</text>
+	        <text style="font-size: 32rpx">{{selectServicer.userName}}</text>
+	        <text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - {{selectServicer.drivingAge}}年</text>
 	      </view>
 	    </view>
 	    <u-icon name="arrow-right" size="32rpx" color="rgba(0, 0, 0, 0.4)"></u-icon>
@@ -15,19 +15,19 @@
 	</view>
 	<view class="choose_employ" v-if='isShow'>
 		<view class="main">
-			<view  @click="()=>chooseService(index)" class="card_line" :style="{backgroundColor:serviceIndex === index && '#EAFAEA'}" v-for="(_,index) in 8">
+			<view  @click="()=>chooseService(info)" class="card_line" :style="{backgroundColor:selectServicer.userNo === info.userNo && '#EAFAEA'}" v-for="(info,index) in serviceList">
 				<view style="display: flex; height: 96rpx">
 					<view style="width: 96rpx;height: 96rpx;">
-						<up-image width="96rpx" height="96rpx" src="https://cdn.uviewui.com/uview/album/1.jpg"
+						<up-image width="96rpx" height="96rpx" :src="info.userAvatar"
 							shape="circle"></up-image>
 					</view>
 					<view style="display: flex; flex-direction: column; margin-left: 16rpx">
-						<text style="font-size: 32rpx">刘师傅{{index}}</text>
-						<text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - 10年</text>
+						<text style="font-size: 32rpx">{{info.userName}}</text>
+						<text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - {{info.drivingAge}}年</text>
 					</view>
 				</view>
 				<label class="radio">
-					<radio v-if=" serviceIndex === index " color="#449656" :checked=" serviceIndex === index" />
+					<radio v-if=" selectServicer.userNo === info.userNo " color="#449656" :checked=" selectServicer.userNo === info.userNo" />
 				</label>
 			</view>
 		</view>
@@ -38,14 +38,23 @@
 </template>
 
 <script setup>
-	const {open,isShow,close} = defineProps({isShow:String,close:Function,open:Function()})
+	import {getServicerByType} from '../../api/index.js'
+	import {onShow} from '@dcloudio/uni-app'
+	const {open,isShow,close,servicerType} = defineProps({isShow:String,close:Function,open:Function,servicerType:String})
 	import {
 		ref
 	} from 'vue';
-	const serviceIndex = ref(0);
-	const chooseService = (index) => {
-		serviceIndex.value = index;
+	const chooseService = (info) => {
+		selectServicer.value = info;
 	}
+	const serviceList = ref([]);
+	const selectServicer = ref();
+	onShow(async ()=>{
+		getServicerByType(servicerType).then(res=>{
+			serviceList.value = res.data;
+			selectServicer.value = res.data[0]
+		})
+	})
 </script>
 
 <style lang="scss" scoped>
