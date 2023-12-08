@@ -6,9 +6,11 @@
 			<view style="padding: 32rpx;">
 				<view class="card" style="background: linear-gradient(180deg, #ECFBEC 0%, #FFFFFF 26%, #FFFFFF 100%)">
 					<view class="card_line" style="min-height: 96rpx">
-						<text>预约地点</text>
-						<view style="display: flex; align-items: center" @click="openMap">
-							<text>{{ subscribeInfo.address }}</text>
+						<text style="width: 130rpx;">预约地点</text>
+						<view
+							style="display:flex; align-items: center;min-height: 96rpx;flex: 1;justify-content: flex-end;overflow: hidden;"
+							@click="openMap">
+							<text>{{ subscribeInfo.location.name }}</text>
 							<image src="../../static/images/order/location.png" mode="widthFix"
 								style="width: 24rpx; margin-left: 12rpx"> </image>
 						</view>
@@ -16,12 +18,12 @@
 					<view class="size_box" />
 					<view class="card_line" style="justify-content: flex-start">
 						<text style="margin-right: 32rpx">预约姓名</text>
-						<input type="text" placeholder="请输入姓名" />
+						<input type="text" placeholder="请输入姓名" v-model="subscribeInfo.name" />
 					</view>
 					<view class="size_box" />
 					<view class="card_line" style="justify-content: flex-start">
 						<text style="margin-right: 32rpx">手机号码</text>
-						<input type="text" placeholder="请输入手机号" />
+						<input type="text" placeholder="请输入手机号" v-model="subscribeInfo.phone" />
 					</view>
 					<view class="size_box" />
 					<view class="card_line">
@@ -47,21 +49,26 @@
 					</view>
 				</view>
 				<view style="background-color: white;padding: 0 32rpx;border-radius: 16rpx;">
-					<ChooseEmploy :isShow='isShowServiceList' :open='openServiceList' :close='serviceListClose' servicerType='TRANSFER'></ChooseEmploy>
+					<ChooseEmploy :isShow='isShowServiceList' :open='openServiceList' :close='serviceListClose'
+						servicerType='TRANSFER' @change='serviceInfoChange'></ChooseEmploy>
 				</view>
 				<InsuranceTips />
 			</view>
 		</view>
-		<PriceBtn type='pay' :price='subscribeInfo.price' url='/pages/order_detail_pick_up/order_detail_pick_up' :payAfterHandle='placeOrder' />
+		<PriceBtn type='pay' :price='subscribeInfo.price' url='/pages/order_detail_pick_up/order_detail_pick_up'
+			:payAfterHandle='placeOrder' />
 	</view>
 	<u-datetime-picker v-model="subscribeInfo.time" :formatter="formatter" :minDate="nowTime"
 		@cancel="subscribeInfo.timeShow = false" @confirm="onChangeTime" :show="subscribeInfo.timeShow"
 		mode="datetime"></u-datetime-picker>
-	<u-picker :show="subscribeInfo.serviceShow" :columns="columns" @confirm="serviceChange"
+	<u-picker :show="subscribeInfo.serviceShow" :columns="columns" @confirm="serviceTypeChange"
 		@cancel="subscribeInfo.serviceShow = false"></u-picker>
 </template>
 
 <script setup>
+	import {
+		reservationTravelOrder
+	} from '../../api/index.js'
 	import {
 		ref,
 		reactive
@@ -74,19 +81,22 @@
 	import InsuranceTips from "../../components/insurance_tips/insurance_tips.vue";
 	import ChooseEmploy from "../../components/choose_employee/choose_employee.vue";
 	import PriceBtn from '../../components/price_btn/price_btn.vue'
+	// var utc = require('@dayjs/plugin/utc');
+	// dayjs.extend(utc) ;
 	const chooseLocation = requirePlugin("chooseLocation");
 	const key = "GZABZ-OGULD-YPK4O-HWK6T-4B6KV-NBFJX"; //使用在腾讯位置服务申请的key
 	const referer = "城市生活"; //调用插件的app的名
 	const isShowServiceList = ref(false);
-	const subscribeInfo = ref({
-		address: "选取位置",
+	const subscribeInfo = reactive({
 		name: "",
 		phone: "",
-		price:0,
+		price: 0,
 		time: "选择预约时间",
 		service: "选择预约服务",
 		timeShow: false,
 		serviceShow: false,
+		location: {},
+		servicerInfo:{}
 	});
 	const openMap = () => {
 		uni.navigateTo({
@@ -94,12 +104,12 @@
 		});
 	};
 	const onChangeTime = (e) => {
-		subscribeInfo.value.time = e.value;
-		subscribeInfo.value.timeShow = false;
+		subscribeInfo.time = e.value;
+		subscribeInfo.timeShow = false;
 	};
-	const serviceChange = (e) => {
-		subscribeInfo.value.service = e.value[0];
-		subscribeInfo.value.serviceShow = false;
+	const serviceTypeChange = (e) => {
+		subscribeInfo.service = e.value[0];
+		subscribeInfo.serviceShow = false;
 	};
 	const openServiceList = () => {
 		isShowServiceList.value = true;
@@ -114,14 +124,31 @@
 			uni.navigateBack();
 		}
 	};
-	const placeOrder=()=>{
-		console.log('下单成功');
+	const serviceInfoChange=(value)=>{
+		subscribeInfo.servicerInfo = value;
+	}
+	const placeOrder = async () => {
+		console.log(subscribeInfo.location);
+		const orderInfo = await reservationTravelOrder({
+			address: subscribeInfo.location.address,
+			addressType: "ORDER",
+			latitude: subscribeInfo.location.latitude,
+			longitude: subscribeInfo.location.longitude,
+			name: subscribeInfo.name,
+			phone: subscribeInfo.phone,
+			reservationTime: dayjs(subscribeInfo.time).toDate(),
+			servicerId:subscribeInfo.servicerInfo.userNo
+		});
+		console.log(orderInfo);
 	}
 
 
 	onShow(() => {
 		const location = chooseLocation.getLocation();
-		subscribeInfo.value.address = location ? location?.name : '选取位置';
+		console.log(location, 'location');
+		subscribeInfo.location = location ? location : {
+			name: '选取位置'
+		};
 	});
 	onUnload(() => {
 		chooseLocation.setLocation(null);

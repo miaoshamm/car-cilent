@@ -3,7 +3,7 @@
 	  <view class="card_line" style="height: 144rpx">
 	    <view style="display: flex; height: 96rpx">
 				<view style="width: 96rpx;height: 96rpx;">
-					<up-image width="96rpx" height="96rpx" :src="selectServicer.userAvatar" shape="circle"></up-image>
+					<up-image width="96rpx" height="96rpx" :src="selectServicer?.userAvatar" shape="circle"></up-image>
 				</view>
 	      <view style="display: flex; flex-direction: column; margin-left: 16rpx">
 	        <text style="font-size: 32rpx">{{selectServicer.userName}}</text>
@@ -18,7 +18,7 @@
 			<view  @click="()=>chooseService(info)" class="card_line" :style="{backgroundColor:selectServicer.userNo === info.userNo && '#EAFAEA'}" v-for="(info,index) in serviceList">
 				<view style="display: flex; height: 96rpx">
 					<view style="width: 96rpx;height: 96rpx;">
-						<up-image width="96rpx" height="96rpx" :src="info.userAvatar"
+						<up-image width="96rpx" height="96rpx" :src="info?.userAvatar"
 							shape="circle"></up-image>
 					</view>
 					<view style="display: flex; flex-direction: column; margin-left: 16rpx">
@@ -40,12 +40,14 @@
 <script setup>
 	import {getServicerByType} from '../../api/index.js'
 	import {onShow} from '@dcloudio/uni-app'
-	const {open,isShow,close,servicerType} = defineProps({isShow:String,close:Function,open:Function,servicerType:String})
+	const {open,isShow,close,servicerType} = defineProps({isShow:String,close:Function,open:Function,servicerType:String,getService:Function})
+	const emits = defineEmits(['change']);
 	import {
 		ref
 	} from 'vue';
 	const chooseService = (info) => {
 		selectServicer.value = info;
+		emits('change',info);
 	}
 	const serviceList = ref([]);
 	const selectServicer = ref();
@@ -53,6 +55,7 @@
 		getServicerByType(servicerType).then(res=>{
 			serviceList.value = res.data;
 			selectServicer.value = res.data[0]
+			emits('change',res.data[0]);
 		})
 	})
 </script>

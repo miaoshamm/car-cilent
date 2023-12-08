@@ -72,6 +72,8 @@
 	import {
 		onReady
 	} from "@dcloudio/uni-app";
+	import brandsList from '../../static/json/brands.json'
+	console.log(brandsList);
 	import PriceBtn from "@/components/price_btn/price_btn.vue";
 	const isSHowChooseDriver = ref(false);
 	const datetimePickerRef = ref(null);
@@ -88,7 +90,7 @@
 		isShowCarType:false
 	});
 	const carTypeColumns = reactive([
-	  ['中国', '美国', '日本']
+	  brandsList
 	]);
 	
 	const openChooseCarType=()=>{

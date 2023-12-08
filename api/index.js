@@ -221,6 +221,7 @@ export const reservationPreserveOrder = (data) => {
 
 // 用户预约接送服务
 export const reservationTravelOrder = (data) => {
+	console.log(data,'data');
 	return request({
 		url:`/userOrder/reservationTravelOrder`,
 		method:"POST",
