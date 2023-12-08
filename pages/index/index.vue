@@ -89,7 +89,6 @@ import Tabbar from "@/components/tabbar/tabbar.vue";
 import { onShow } from "@dcloudio/uni-app";
 import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices,login } from "@/api";
 uni.setStorageSync('userStatus','user');
-let loading = ref(true);
 let isSubscribe = ref(false);
 let banner = ref([]);
 let notice = ref([]);
@@ -129,7 +128,7 @@ let list = ref([
   },
 ]);
 let model = ref({
-  show: false,
+  show: true,
   title: "协议声明",
   content: `
 		本人同意依据本确认单将车辆交于广东城市实业有限公司代客泊车服务，并愿意在提车前支付相关泊车费、代客泊车费等费用。在此声明，车辆在移交广东城市实业有限公司之前，本人已提醒车主自行收起贵重物品，并将车内物品妥善保管。如有任何遗失，车主将自行承担相应责任。
@@ -142,7 +141,6 @@ let model = ref({
 // 获取数据
 const getInfo = async () => {
   try {
-    loading.value = true;
     const bannerList = await getBanner();
     const noticeList = await getNotice();
     const servicer = await getServicerByType("VALET");
@@ -168,8 +166,6 @@ const getInfo = async () => {
     if (carService.code == 200) {
       carServiceList.value = carService.data;
     }
-    loading.value = false;
-    model.value.show = true;
   } catch (e) {
     //TODO handle the exception
   }
@@ -181,12 +177,12 @@ const goService = (url) => {
   });
 };
 const closeModel = () => {
-  model.value.show = false;
   uni.login({
     success: async (res) => {
 			const result = await login({authCode:res.code})
 			if(result.code == 200){
 				uni.setStorageSync('accessToken',result.data.token)
+				model.value.show = false;
 			}
     },
   });
@@ -201,6 +197,9 @@ onShow(() => {
       url: "/pages/servicer_orders/servicer_orders",
     });
   }
+	if(uni.getStorageSync('accessToken')){
+		model.value.show = false
+	}
   getInfo();
 });
 </script>
