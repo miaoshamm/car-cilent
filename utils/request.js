@@ -4,6 +4,11 @@ const nodeUrl = "https://node-base-test.zhuyu.chat"
 export const request = ({url,method,data}) => {
 	let lastUrl = ''
 	let header = {}
+	
+	// uni.showLoading({
+	// 	title:'加载中...'
+	// })
+	
 	if(uni.getStorageSync("accessToken")){
 		header = {
 			Authorization:uni.getStorageSync("accessToken")
@@ -21,6 +26,7 @@ export const request = ({url,method,data}) => {
 			data,
 			header,
 			success(res) {
+				uni.hideLoading()
 				if(res.data.code === 401){
 					uni.clearStorageSync()
 					uni.reLaunch({
@@ -30,6 +36,7 @@ export const request = ({url,method,data}) => {
 				resolve(res.data)
 			},
 			fail(err) {
+				uni.hideLoading()
 				reject(err)
 			}
 		})

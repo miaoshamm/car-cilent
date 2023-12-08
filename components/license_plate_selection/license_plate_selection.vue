@@ -26,13 +26,22 @@
 <script setup>
 	import {
 		ref,
-		defineEmits
+		defineEmits,
+		defineProps
 	} from 'vue';
+	import {onLoad} from "@dcloudio/uni-app"
 
+	const props = defineProps(['licensePlate'])
 	const emit = defineEmits(['plateNumber'])
 	let licensePlate = ref("")
 	let showSubscribe = ref(false)
 	let showPlate = ref(false)
+	
+	onLoad(() => {
+		if(props.licensePlate){
+			licensePlate.value = props.licensePlate
+		}
+	})
 
 	// 获取车牌
 	const check = () => {
