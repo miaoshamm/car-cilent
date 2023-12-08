@@ -18,7 +18,7 @@
 					<view class="size_box" />
 					<view class="card_line" style="justify-content: flex-start">
 						<text style="margin-right: 32rpx">预约姓名</text>
-						<input type="text" placeholder="请输入姓名" v-model="subscribeInfo.name" />
+						<input type="text" placeholder="请输入姓名" v-model="subscribeInfo.userName" />
 					</view>
 					<view class="size_box" />
 					<view class="card_line" style="justify-content: flex-start">
@@ -55,7 +55,7 @@
 				<InsuranceTips />
 			</view>
 		</view>
-		<PriceBtn type='pay' :price='subscribeInfo.price' url='/pages/order_detail_pick_up/order_detail_pick_up'
+		<PriceBtn type='pay' :price='subscribeInfo.price' url='/pages/order_detail_pick_up/order_detail_pick_up?order_no=20231124174920376'
 			:payAfterHandle='placeOrder' />
 	</view>
 	<u-datetime-picker v-model="subscribeInfo.time" :formatter="formatter" :minDate="nowTime"
@@ -88,7 +88,7 @@
 	const referer = "城市生活"; //调用插件的app的名
 	const isShowServiceList = ref(false);
 	const subscribeInfo = reactive({
-		name: "",
+		userName: "",
 		phone: "",
 		price: 0,
 		time: "选择预约时间",
@@ -128,14 +128,14 @@
 		subscribeInfo.servicerInfo = value;
 	}
 	const placeOrder = async () => {
-		console.log(subscribeInfo.location);
 		const orderInfo = await reservationTravelOrder({
 			address: subscribeInfo.location.address,
 			addressType: "ORDER",
 			latitude: subscribeInfo.location.latitude,
 			longitude: subscribeInfo.location.longitude,
-			name: subscribeInfo.name,
+			name: subscribeInfo.location.name,
 			phone: subscribeInfo.phone,
+			userName:subscribeInfo.userName,
 			reservationTime: dayjs(subscribeInfo.time).toDate(),
 			servicerId:subscribeInfo.servicerInfo.userNo
 		});
@@ -145,7 +145,6 @@
 
 	onShow(() => {
 		const location = chooseLocation.getLocation();
-		console.log(location, 'location');
 		subscribeInfo.location = location ? location : {
 			name: '选取位置'
 		};

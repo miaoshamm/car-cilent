@@ -89,7 +89,7 @@ import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
 import { onLoad } from "@dcloudio/uni-app";
 import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices } from "@/api";
-uni.setStorageSync('userStatus','user');
+// uni.setStorageSync('userStatus','user');
 let loading = ref(true);
 let isSubscribe = ref(false);
 let banner = ref([]);

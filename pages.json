@@ -114,7 +114,8 @@
     {
       "path": "pages/servicer_orders/servicer_orders",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "城市生活",
+				"navigationStyle": "custom",
         "enablePullDownRefresh": false
       }
     },

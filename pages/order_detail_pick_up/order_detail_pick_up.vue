@@ -72,6 +72,24 @@
 <script setup>
 	import ChooseEmployee from '../../components/choose_employee/choose_employee.vue'
 	import InsuranceTips from '../../components/insurance_tips/insurance_tips.vue'
+	import {onLoad } from '@dcloudio/uni-app'
+	import {getOrderPaymentRecord} from '../../api/index.js'
+	import {ref} from 'vue'
+	const orderInfo = ref();
+	
+	
+	
+	
+	
+	
+	onLoad((options)=>{
+		console.log(options.order_no);
+		getOrderPaymentRecord({
+			orderNo:options.order_no
+		}).then(res=>{
+			console.log('res',res);
+		})
+	})
 </script>
 
 <style lang="scss">

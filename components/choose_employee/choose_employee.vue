@@ -6,8 +6,8 @@
 					<up-image width="96rpx" height="96rpx" :src="selectServicer?.userAvatar" shape="circle"></up-image>
 				</view>
 	      <view style="display: flex; flex-direction: column; margin-left: 16rpx">
-	        <text style="font-size: 32rpx">{{selectServicer.userName}}</text>
-	        <text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - {{selectServicer.drivingAge}}年</text>
+	        <text style="font-size: 32rpx">{{selectServicer?.userName}}</text>
+	        <text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - {{selectServicer?.drivingAge}}年</text>
 	      </view>
 	    </view>
 	    <u-icon name="arrow-right" size="32rpx" color="rgba(0, 0, 0, 0.4)"></u-icon>
@@ -23,7 +23,7 @@
 					</view>
 					<view style="display: flex; flex-direction: column; margin-left: 16rpx">
 						<text style="font-size: 32rpx">{{info.userName}}</text>
-						<text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - {{info.drivingAge}}年</text>
+						<text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - {{info?.drivingAge}}年</text>
 					</view>
 				</view>
 				<label class="radio">

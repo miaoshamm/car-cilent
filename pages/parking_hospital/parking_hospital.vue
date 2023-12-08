@@ -46,7 +46,7 @@
 					</view>
 				</view>
 				<view class="size_box" />
-				<ChooseEmployee :isShow='isSHowChooseDriver' :open='()=>{
+				<ChooseEmployee servicerType='VALET' :isShow='isSHowChooseDriver' :open='()=>{
 					isSHowChooseDriver = true;
 				}' :close='()=>{
 					isSHowChooseDriver = false;
