@@ -4,7 +4,7 @@
 		<view class="wrapper wrapper-t">
 			<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
 			<view class="car-info">
-				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="100">
+				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" labelWidth="100">
 					<view class="box">
 						<u-form-item label="手机号码" prop="phone" borderBottom>
 							<u--input v-model="info.phone" border="none" placeholder="请输入手机号"></u--input>
@@ -93,72 +93,42 @@
 		carTypeName: "", //车型
 		userName: "", //预约姓名
 		carColor: "", //车辆颜色
-		washService:[],	//维保服务
+		washService: [], //维保服务
 		total: 0, //支付总价
 	});
-	// 验证
-	const rules = {
-		'phone':{
-			type:"string",
-			required:true,
-			message:"请输入手机号"
-		},
-		'userName':{
-			type:"string",
-			required:true,
-			message:"请输入预约姓名"
-		},
-		'carColor':{
-			type:"string",
-			required:true,
-			message:"请输入车辆颜色"
-		},
-		'carTypeName':{
-			type:"array",
-			required:true,
-			message:"请选择车型"
-		},
-		'reservationTime':{
-			type:"string",
-			required:true,
-			message:"请选择预约时间"
-		}
-	}
 	// 选择服务列表
 	const serviceList = ref([]);
-	const modelColumns = ref([]);
 	const timeShow = ref(false);
+	const modelColumns = ref([]);
 	const modelShow = ref(false);
 	const serviceShow = ref(false);
 	const uForm = ref(null)
 
 	// 下单
-	const createOrder = (res) => {		
+	const createOrder = async (res) => {
 		if (res === 'success') {
 			uni.navigateTo({
 				url: `/pages/wish/wish_pay/wish_pay?orderNo=20231209112457841246`
 			})
 			return
-			uForm.value.validate().then(async res => {
-				const arr = []
-				info.value.carTypeName = info.value.carTypeName[0]
-				info.value.washService.forEach(item => {
-					arr.push(item.id)
-				})
-				info.value.washService = arr.join(',')
-				info.value.orderType = "PRESERVE"
-				info.value.userId = 1001
-				const result = await reservationPreserveOrder(info.value)
-				if(result.code == 200){
-					uni.navigateTo({
-						url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.message}`
-					})
-				}
+			const arr = []
+			info.value.carTypeName = info.value.carTypeName[0]
+			info.value.washService.forEach(item => {
+				arr.push(item.id)
 			})
-		}else{
+			info.value.washService = arr.join(',')
+			info.value.orderType = "PRESERVE"
+			info.value.userId = JSON.parse(uni.getStorageSync("userInfo")).id
+			const result = await reservationPreserveOrder(info.value)
+			if (result.code == 200) {
+				uni.navigateTo({
+					url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.message}`
+				})
+			}
+		} else {
 			uni.showToast({
-				icon:"error",
-				title:'下单失败'
+				icon: "error",
+				title: '下单失败'
 			})
 		}
 	}
@@ -166,7 +136,7 @@
 	// 确认选择服务
 	const serviceConfirm = (list) => {
 		info.value.washService = list
-		info.value.total = checkList.value.reduce((total, item) => {
+		info.value.total = list.reduce((total, item) => {
 			return item.servicePrice + total
 		}, 0)
 	}
@@ -200,7 +170,7 @@
 		info.value.reservationTime = dayjs(time.value).format("YYYY-MM-DD hh:mm:ss");
 		timeShow.value = false;
 	};
-	
+
 	// 选择车型
 	const checkModel = (item) => {
 		info.value.carTypeName = item.value;
