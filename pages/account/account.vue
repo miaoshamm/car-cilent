@@ -10,12 +10,17 @@
 			<view style="background-color: #FFFFFF;border-top-left-radius:16rpx ;border-top-right-radius:16rpx ;">
 				<view class="user">
 					<view class="avatar">
-						<up-image width="96rpx" height="96rpx" src="https://cdn.uviewui.com/uview/album/1.jpg"
-							shape="circle"></up-image>
+						<view style="width: 96rpx;height: 96rpx;border-radius: 50%;overflow: hidden;">
+							<button open-type="chooseAvatar" style="height: 100%;width: 100%;" @chooseavatar="onChooseAvatar">
+								<image v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" mode="widthFix"></image>
+								<open-data v-else type="userAvatarUrl" style="height: 100%;width: 100%;"></open-data>
+							</button>
+						</view>
 					</view>
 					<view class="user_info">
-						<text class="name">微信昵称</text>
-						<text class="phone">151****7894 </text>
+						<text @click="isShowNickNameModal = true">{{userInfo?.nickName}}</text>
+						<text v-if="userInfo.phone" class="phone">{{userInfo?.phone}}</text>
+						<button v-else open-type="getPhoneNumber" @getphonenumber='handlePhone'>一键获取手机号</button>
 					</view>
 				</view>
 				<view class="size_box"></view>
@@ -43,18 +48,27 @@
 			<u-input v-model="key"></u-input>
 		</template>
 	</u-modal>
+	<u-modal :show="isShowNickNameModal" title="修改昵称" showCancelButton @confirm='onChangeNickName' @cancel="isShowNickNameModal = false">
+		<template #default>
+			<input type="nickname" v-model="nickName" style="width: 100%;"  placeholder="请输入昵称"/>
+		</template>
+	</u-modal>
 </template>
 
 <script setup>
 	import {
 		ref
 	} from "vue";
+	import {getPhone,putUserInfo} from '../../api/index.js'
 	import UserMenu from "../../components/user_menu/user_menu.vue";
 	import Tabbar from "@/components/tabbar/tabbar.vue";
 	const isShowRoleModal = ref(false);
+	const isShowNickNameModal = ref(false);
 	const status =ref(uni.getStorageSync("userStatus")) ;
 	const key = ref();
+	const nickName = ref('');
 	const index = status.value === "servicer" ? 1 : 2;
+	const userInfo =ref(JSON.parse(uni.getStorageSync('userInfo')))
 	const openRoleModal = ()=>{
 		isShowRoleModal.value = true;
 	}
@@ -75,6 +89,32 @@
 		})
 		isShowRoleModal.value = false
 	}
+	const handlePhone=async (e)=>{
+		if(e.detail.code){
+			const phoneInfo = await getPhone(e.detail.code);
+			const phone = phoneInfo.message;
+			let obj = JSON.parse(uni.getStorageSync('userInfo'));
+			obj.phone = phone;
+			putUserInfo(obj);
+			uni.setStorageSync('userInfo',JSON.stringify(obj))
+			userInfo.value = obj;
+		}
+	}
+	const onChooseAvatar=(e)=>{
+		const avatarUrl = e.detail.avatarUrl;
+		let obj = JSON.parse(uni.getStorageSync('userInfo'));
+		obj.avatarUrl = avatarUrl;
+		userInfo.value = obj;
+		putUserInfo(obj);
+		uni.setStorageSync('userInfo',JSON.stringify(obj))
+	}
+	const onChangeNickName =(e)=>{
+		console.log(nickName.value,'nickname');
+		console.log(e);
+		userInfo.value.nickName = nickName.value;
+		putUserInfo(userInfo.value);
+		isShowNickNameModal.value = false;
+	}
 </script>
 
 <style lang="less" scoped>
@@ -84,22 +124,22 @@
 		.user {
 			height: 96rpx;
 			display: flex;
-			align-items: center;
+			// align-items: center;
 			padding: 48rpx 32rpx;
 
 			.avatar {
 				margin-right: 16rpx;
+				
 			}
 
 			.user_info {
 				display: flex;
 				flex-direction: column;
+				padding:  6rpx 0;
 				justify-content: space-between;
-
 				.name {
 					font-size: 32rpx;
 				}
-
 				.phone {
 					font-size: 28rpx;
 					color: rgba(0, 0, 0, 0.4);
@@ -111,5 +151,19 @@
 			height: 8rpx;
 			background: #e7e7e7;
 		}
+	}
+	button{
+		background-color: transparent;
+		border: none;
+		padding: 0;
+		font-size: 28rpx;
+		color: #449656;
+		margin: 0;
+		display: flex;
+		height: 32rpx;
+		align-items: center;
+	}
+	button::after {
+	   border: none;
 	}
 </style>

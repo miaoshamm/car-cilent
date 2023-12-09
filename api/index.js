@@ -126,10 +126,10 @@ export const getOpenId = (data) => {
 }
 
 // 获取并返回用户Phone
-export const getPhone = () => {
+export const getPhone = (code) => {
 	return request({
-		url:`/user/getPhone`,
-		method:"GET"
+		url:`/user/getPhone?code=${code}`,
+		method:"GET",
 	})
 }
 
@@ -233,3 +233,21 @@ export const getCarServices = () => {
 		method:"GET"
 	})
 }
+
+//获取用户信息
+export const getUserInfo = () => {
+	return request({
+		url:`/user/getLoginUser`,
+		method:"GET"
+	})
+}
+
+//修改用户信息
+export const putUserInfo = (data) => {
+	return request({
+		url:`/user/updateUserInfo`,
+		method:"POST",
+		data
+	})
+}
+
