@@ -14,7 +14,7 @@
 				</view>
 				<view class="gift" v-show="item.carDonateServiceVoList">
 					<view class="title">包含赠送项目</view>
-					<view class="service" v-for="item2 in carDonateServiceVoList">
+					<view class="service" v-for="item2 in item.carDonateServiceVoList">
 						<image :src="item2.serviceImageUrl" mode=""></image>
 						<text class="name">{{item.serviceName}}</text>
 					</view>

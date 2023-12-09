@@ -1,5 +1,22 @@
 import {request} from "@/utils/request.js"
 
+// 职工首次认证
+export const employeeCertification = (data) => {
+	return request({
+		url:`/servicer/employeeCertification`,
+		method:"POST",
+		data
+	})
+}
+
+// 用户取消订单
+export const cancelOrder = (userId,orderId) => {
+	return request({
+		url:`/userOrder/cancelOrder?userId=${userId}&orderId=${orderId}`,
+		method:"GET"
+	})
+}
+
 // 获取协议
 export const getUserAgreement = (type) => {
 	return request({
@@ -139,14 +156,6 @@ export const getPhone = (code) => {
 	return request({
 		url:`/user/getPhone?code=${code}`,
 		method:"GET",
-	})
-}
-
-// 用户取消订单
-export const cancelOrder = () => {
-	return request({
-		url:`/userOrder/cancelOrder`,
-		method:"GET"
 	})
 }
 

@@ -1,84 +1,75 @@
 <template>
   <view class="wrapper wrapper-p">
-    <view class="title">请稍等，正在确定维保地点</view>
-    <License :licensePlate="licensePlate" type="subscribe" />
+    <view class="title" v-show="info.status === 'PAID'">请稍等，正在确定维保地点</view>
+		<view class="title" v-show="info.status === 'RESERVATION'">请前往维保地点...</view>
+		<view class="title" v-show="info.status === 'COMPLETE'">维保服务结束，订单已完成</view>
+    <License v-if="info.orderExtraVo?.carNo" :orderId="info.orderNo" :licensePlate="info.orderExtraVo?.carNo" type="subscribe" />
     <view class="box">
       <view class="box-info">
         <text>维保地点</text>
-        <text>湖南省临湘市白马山庄142号</text>
+        <text>{{info.geographicLocationVo?.address ? info.geographicLocationVo?.address : "..."}}</text>
       </view>
-      <view class="box-info" style="flex-direction: column">
+      <view class="box-info" style="flex-direction: column" v-if="info.geographicLocationVo?.addressImageUrl">
         <text class="box-img-title">门头图片</text>
         <view class="box-img">
-          <image src="/static/images/wish/car.png" mode=""></image>
-          <image src="/static/images/wish/car.png" mode=""></image>
-          <image src="/static/images/wish/car.png" mode=""></image>
-          <image src="/static/images/wish/car.png" mode=""></image>
+          <image v-for="(item,index) in info.geographicLocationVo?.addressImageUrl" :key="index" :src="item" mode=""></image>
         </view>
       </view>
     </view>
     <view class="box">
       <view class="box-info">
         <text>手机号码</text>
-        <text>17666666666</text>
+        <text>{{info.orderExtraVo?.reservationPhone}}</text>
       </view>
       <view class="box-info">
         <text>预约姓名</text>
-        <text>黄小二</text>
+        <text>{{info.orderExtraVo?.reservationName}}</text>
       </view>
       <view class="box-info">
         <text>维保时间</text>
-        <text>11 月 21 日 19:00</text>
+        <text>{{info.reservationTime}}</text>
       </view>
     </view>
     <view class="box">
       <view class="box-info">
         <text>车辆颜色</text>
-        <text>红色</text>
+        <text>{{info.orderExtraVo?.carColor}}</text>
       </view>
       <view class="box-info">
         <text>车辆型号</text>
-        <text>比亚迪</text>
+        <text>{{info.orderExtraVo?.carTypeName}}</text>
       </view>
       <view class="box-info" style="flex-direction: column">
         <text>预约维保服务</text>
         <view class="box-service">
-          <view class="service-info">
-            <image src="@/static/images/wish/service.png"></image>
-            <text class="service-name">精洗</text>
-          </view>
-          <view class="service-info">
-            <image src="@/static/images/wish/service.png"></image>
-            <text class="service-name">精洗</text>
+          <view class="service-info" v-for="item in info.carServicesVos" :key="item.id">
+            <image :src="item.serviceImageUrl"></image>
+            <text class="service-name">{{item.serviceName}}</text>
           </view>
         </view>
       </view>
     </view>
     <view class="box">
-      <view class="box-info">
-        <text>精洗服务费</text>
-        <text>+¥45</text>
-      </view>
-      <view class="box-info">
-        <text>抛光服务费</text>
-        <text>+¥35</text>
+      <view class="box-info" v-for="item in info.carServicesVos" :key="item.id">
+        <text>{{item.serviceName}}服务费</text>
+        <text>+¥{{item.servicePrice}}</text>
       </view>
       <view class="box-info">
         <text>实付款</text>
-        <text style="color: #ea0000; font-size: 32rpx; font-weight: 700">¥80</text>
+        <text style="color: #ea0000; font-size: 32rpx; font-weight: 700">¥{{total}}</text>
       </view>
     </view>
     <view class="box">
       <view class="box-info">
         <text>订单编号</text>
-        <text>101231798123123</text>
+        <text>{{info.orderNo}}</text>
       </view>
       <view class="box-info">
         <text>订单时间</text>
         <text>2023-11-22 12:22:00</text>
       </view>
     </view>
-    <view class="box">
+    <view class="box" v-show="info.status === 'COMPLETE'">
       <view class="box-info">
         <text>开发票</text>
         <view class="check">
@@ -87,7 +78,7 @@
         </view>
       </view>
     </view>
-    <view class="box">
+    <view class="box" v-show="info.status === 'COMPLETE'">
       <view class="box-info">
         <text>评价服务</text>
         <view class="check">
@@ -98,12 +89,12 @@
     </view>
     <Insurance />
   </view>
-  <view class="check-btn">
+  <view class="check-btn" v-show="info.status === 'RESERVATION'">
     <u-button plain text="查看维保地点" color="#449656"></u-button>
   </view>
-  <!-- <view class="check-btn">
+  <view class="check-btn" v-show="info.status === 'COMPLETE'">
 		<u-button text="返回首页" color="#449656"></u-button>
-	</view> -->
+	</view>
 </template>
 
 <script setup>
@@ -113,15 +104,20 @@ import {getOrderPaymentRecord} from "@/api"
 
 import Insurance from "@/components/insurance_tips/insurance_tips.vue";
 import License from "@/components/license_plate_selection/license_plate_selection.vue";
-let licensePlate = ref("");
+import dayjs from "dayjs";
 const info = ref({})
+const total = ref("")
 
 const getInfo = async (orderNo) => {
 	try{
 		const result = await getOrderPaymentRecord(orderNo)
 		if(result.code == 200){
+			result.data.reservationTime = dayjs(result.data.reservationTime).format("YYYY-MM-DD HH:mm")
 			info.value = result.data
-			licensePlate.value = info.value.orderExtraVo.carNo
+			// 计算实付款
+			if(result.data.carServicesVos.length){
+				total.value = result.data.carServicesVos.reduce((total,item) => total + item.servicePrice,0)
+			}
 		}
 	}catch(e){
 		//TODO handle the exception
@@ -164,6 +160,7 @@ onLoad((options) => {
         image {
           width: 96rpx;
           height: 96rpx;
+					border-radius: 50%;
         }
         .service-name {
           margin: 8rpx 0 0;

@@ -1,21 +1,48 @@
 <template>
-  <u-modal @confirm="closeModel" confirmColor="#449656" :show="model.show" :title="model.title" :content="model.content"></u-modal>
+  <u-modal
+    @confirm="closeModel"
+    confirmColor="#449656"
+    :show="model.show"
+    :title="model.title"
+  >
+    <view v-html="model.content"></view>
+  </u-modal>
   <view style="min-height: 100vh; background: #f6f7f8">
     <!-- 顶部导航 -->
     <view class="nav">
       <text class="nav-title">城市生活</text>
     </view>
     <view class="main">
-      <u-notice-bar direction="column" bgColor="#F6F7F8" icon="/static/images/index/notice.svg" :text="notice"></u-notice-bar>
+      <u-notice-bar
+        direction="column"
+        bgColor="#F6F7F8"
+        icon="/static/images/index/notice.svg"
+        :text="notice"
+      ></u-notice-bar>
       <view class="swiper">
-        <u-swiper keyName="bannerImageUrl" indicator indicatorMode="line" circular :list="banner" @click="bannerClick"></u-swiper>
+        <u-swiper
+          keyName="bannerImageUrl"
+          indicator
+          indicatorMode="line"
+          circular
+          :list="banner"
+          @click="bannerClick"
+        ></u-swiper>
       </view>
       <view class="grid">
         <u-grid :border="false" col="5">
-          <u-grid-item v-for="(listItem, listIndex) in list" :key="listIndex" @click="goService(listItem.url)">
+          <u-grid-item
+            v-for="(listItem, listIndex) in list"
+            :key="listIndex"
+            @click="goService(listItem.url)"
+          >
             <u-icon :name="listItem.name" :size="48"></u-icon>
             <text class="grid-text">{{ listItem.title }}</text>
-            <text class="grid-text-small" :style="{ opacity: listItem.small != '洗车服务' ? 1 : 0 }">{{ listItem.small }}</text>
+            <text
+              class="grid-text-small"
+              :style="{ opacity: listItem.small != '洗车服务' ? 1 : 0 }"
+              >{{ listItem.small }}</text
+            >
           </u-grid-item>
         </u-grid>
       </view>
@@ -27,7 +54,11 @@
         <text class="sub-detail">查看详情</text>
       </view>
       <view class="supermarket">
-        <image class="super-bg" src="../../static/images/index/card-bg.png" mode=""></image>
+        <image
+          class="super-bg"
+          src="../../static/images/index/card-bg.png"
+          mode=""
+        ></image>
         <view class="super-box">
           <view class="super-title">线上生活超市</view>
           <view class="super-content">
@@ -37,14 +68,24 @@
             <view class="super-content-ri">
               <view class="super-cotent-title">司美全网最低价</view>
               <view class="super-cotent-small">夏天来了，肉肉藏不住</view>
-              <u-button :disabled="true" text="即将上线" shape="circle" color="#449656"></u-button>
+              <u-button
+                :disabled="true"
+                text="即将上线"
+                shape="circle"
+                color="#449656"
+              ></u-button>
             </view>
           </view>
         </view>
       </view>
       <view class="driver">
         <view class="cell-title">
-          <u-cell :border="false" :isLink="true" title="精选司机" value="立即泊车"></u-cell>
+          <u-cell
+            :border="false"
+            :isLink="true"
+            title="精选司机"
+            value="立即泊车"
+          ></u-cell>
         </view>
         <view class="grid">
           <u-grid :border="false" col="3">
@@ -57,7 +98,10 @@
         </view>
         <view class="review" v-for="item in evaluate" :key="item.id">
           <view class="review-title">
-            <up-avatar :size="32" src="http://run.czjscktd.com/help-thing/lkr.jpg"></up-avatar>
+            <up-avatar
+              :size="32"
+              src="http://run.czjscktd.com/help-thing/lkr.jpg"
+            ></up-avatar>
             <text>刘德华</text>
           </view>
           <view class="review-content">
@@ -67,13 +111,24 @@
       </view>
       <view class="maintenance">
         <view class="cell-title">
-          <u-cell :border="false" :isLink="true" title="精选维保服务" va lue="立即保养"></u-cell>
+          <u-cell
+            :border="false"
+            :isLink="true"
+            title="精选维保服务"
+            va
+            lue="立即保养"
+          ></u-cell>
         </view>
         <view class="maintenance-box" v-for="item in carServiceList" :key="item.id">
           <image :src="item.serviceImageUrl" mode=""></image>
           <view class="tenance-box-ri">
             <text class="title">{{ item.serviceName }}</text>
-            <up-text :lines="2" size="13" color="#666" :text="item.serviceDescription"></up-text>
+            <up-text
+              :lines="2"
+              size="13"
+              color="#666"
+              :text="item.serviceDescription"
+            ></up-text>
             <text class="price">¥{{ item.servicePrice }}</text>
           </view>
         </view>
@@ -87,7 +142,16 @@
 import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices, login, getUserAgreement,getUserInfo } from "@/api";
+import {
+  getBanner,
+  getNotice,
+  getServicerByType,
+  getUserEvaluate,
+  getCarServices,
+  login,
+  getUserAgreement,
+	getUserInfo
+} from "@/api";
 let isSubscribe = ref(false);
 let banner = ref([]);
 let notice = ref([]);
@@ -189,7 +253,7 @@ const closeModel = () => {
         uni.setStorageSync("accessToken", result.data.token);
         const userInfo = await getUserInfo();
         uni.setStorageSync("userInfo", JSON.stringify(userInfo.data));
-				model.value.show = false;
+        model.value.show = false;
         getInfo();
       }
     },
@@ -380,6 +444,7 @@ onLoad(() => {
       image {
         width: 208rpx;
         height: 256rpx;
+				border-radius: 24rpx;
       }
 
       .tenance-box-ri {
