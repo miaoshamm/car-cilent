@@ -1,5 +1,5 @@
 <template>
-	<view class="card">
+	<view class="card" @click="goDetail">
 		<view class="top">
 			<view style="display: flex;align-items: center;">
 				<image src="../../static/images/index/grid1.png" mode="widthFix" style="width: 64rpx;"></image>
@@ -48,7 +48,11 @@
 </template>
 
 <script setup>
-
+const goDetail=()=>{
+	uni.navigateTo({
+		url:'/pages/order_detail_parking/order_detail_parking'
+	})
+}
 </script>
 
 <style lang="scss" scoped>

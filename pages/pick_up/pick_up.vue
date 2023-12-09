@@ -55,14 +55,13 @@
 				<InsuranceTips />
 			</view>
 		</view>
-		<PriceBtn type='pay' :price='subscribeInfo.price' url='/pages/order_detail_pick_up/order_detail_pick_up?order_no=20231124174920376'
-			:payAfterHandle='placeOrder' />
+		<PriceBtn type='pay' :price='subscribeInfo.price' @callback='payCallback' />
 	</view>
 	<u-datetime-picker v-model="subscribeInfo.time" :formatter="formatter" :minDate="nowTime"
 		@cancel="subscribeInfo.timeShow = false" @confirm="onChangeTime" :show="subscribeInfo.timeShow"
 		mode="datetime"></u-datetime-picker>
-	<u-picker :show="subscribeInfo.serviceShow" :columns="columns" @confirm="serviceTypeChange"
-		@cancel="subscribeInfo.serviceShow = false"></u-picker>
+	<u-picker :show="subscribeInfo.serviceShow" keyName='label' :columns="columns" @confirm="serviceTypeChange"
+		@cancel="subscribeInfo.serviceShow = false" :closeOnClickOverlay='true'></u-picker>
 </template>
 
 <script setup>
@@ -81,22 +80,22 @@
 	import InsuranceTips from "../../components/insurance_tips/insurance_tips.vue";
 	import ChooseEmploy from "../../components/choose_employee/choose_employee.vue";
 	import PriceBtn from '../../components/price_btn/price_btn.vue'
-	// var utc = require('@dayjs/plugin/utc');
-	// dayjs.extend(utc) ;
 	const chooseLocation = requirePlugin("chooseLocation");
 	const key = "GZABZ-OGULD-YPK4O-HWK6T-4B6KV-NBFJX"; //使用在腾讯位置服务申请的key
 	const referer = "城市生活"; //调用插件的app的名
 	const isShowServiceList = ref(false);
+	const userInfo = JSON.parse(uni.getStorageSync('userInfo'));
 	const subscribeInfo = reactive({
 		userName: "",
 		phone: "",
 		price: 0,
 		time: "选择预约时间",
 		service: "选择预约服务",
+		serviceType:'',
 		timeShow: false,
 		serviceShow: false,
 		location: {},
-		servicerInfo:{}
+		servicerInfo: {}
 	});
 	const openMap = () => {
 		uni.navigateTo({
@@ -108,7 +107,8 @@
 		subscribeInfo.timeShow = false;
 	};
 	const serviceTypeChange = (e) => {
-		subscribeInfo.service = e.value[0];
+		subscribeInfo.service = e.value[0].label;
+		subscribeInfo.serviceType = e.value[0].id;
 		subscribeInfo.serviceShow = false;
 	};
 	const openServiceList = () => {
@@ -124,22 +124,30 @@
 			uni.navigateBack();
 		}
 	};
-	const serviceInfoChange=(value)=>{
+	const serviceInfoChange = (value) => {
 		subscribeInfo.servicerInfo = value;
 	}
 	const placeOrder = async () => {
 		const orderInfo = await reservationTravelOrder({
 			address: subscribeInfo.location.address,
-			addressType: "ORDER",
+			addressType: "TRANSFER",
 			latitude: subscribeInfo.location.latitude,
 			longitude: subscribeInfo.location.longitude,
 			name: subscribeInfo.location.name,
 			phone: subscribeInfo.phone,
-			userName:subscribeInfo.userName,
-			reservationTime: dayjs(subscribeInfo.time).toDate(),
-			servicerId:subscribeInfo.servicerInfo.userNo
+			userName: subscribeInfo.userName,
+			reservationTime: dayjs(subscribeInfo.time).format('YYYY-MM-DD HH:mm:ss'),
+			servicerId: subscribeInfo.servicerInfo.userNo,
+			userId: userInfo.id,
+			orderType: subscribeInfo.serviceType
 		});
-		console.log(orderInfo);
+		uni.navigateTo({
+			url:`/pages/order_detail_pick_up/order_detail_pick_up?order_no=${orderInfo.message}`
+		})
+	}
+
+	const payCallback = () => {
+		placeOrder()
 	}
 
 
@@ -168,9 +176,18 @@
 		return timestamp;
 	};
 	//服务项目
-	const columns = reactive([
-		["接送", "只接", "只送"]
-	]);
+	const columns = reactive(
+		[[{
+			id: 'TRANSFER',
+			label: '接送'
+		}, {
+			id: 'TRANSFER_PICK_UP',
+			label: '只接'
+		}, {
+			id: 'TRANSFER_DROP_OFF',
+			label: '只送'
+		}]]
+	);
 	// 格式化
 	const formatter = (type, value) => {
 		if (type === "year") {

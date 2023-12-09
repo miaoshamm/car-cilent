@@ -18,7 +18,8 @@
 			<view class="input_card">{{licensePlate[4]}}</view>
 			<view class="input_card">{{licensePlate[5]}}</view>
 			<view class="input_card">{{licensePlate[6]}}</view>
-			<view class="input_card_new" style="font-size: 32rpx;">{{licensePlate[7]}}</view>
+			<view v-if="licensePlate[7]" class="input_card_new" style="font-size: 32rpx;">{{licensePlate[7]}}</view>
+			<view v-else class="input_card_new" >新能源</view>
 		</view>
 	</view>
 </template>
@@ -36,7 +37,6 @@
 	let licensePlate = ref("")
 	
 	onLoad(() => {
-		console.log(props.licensePlate,'-------');
 		if(props.licensePlate){
 			licensePlate.value = props.licensePlate
 		}

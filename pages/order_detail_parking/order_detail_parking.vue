@@ -5,7 +5,7 @@
 			<text style="color: #449656; font-size: 36rpx;font-weight: bold;">申请开票</text>
 			<up--form :ref='formRef'>
 				<view class="invoice_card"
-					style="margin-top: 19rpx; background: linear-gradient(180deg, #FCF0F3 0%, #FFFFFF 26%, #FFFFFF 100%);">
+					style="margin-top: 19rpx; background: linear-gradient(180deg, #ECFBEC 0%, #FFFFFF 26%, #FFFFFF 100%);">
 					<view class="line">
 						<text style="font-size: 32rpx;">发票详情</text>
 					</view>
@@ -66,7 +66,7 @@
 				<view style="font-size: 28rpx;color: rgba(0, 0, 0, 0.4);text-align: center;line-height: 80rpx;">
 					填写邮箱后，发票会自动发送到邮箱里
 				</view>
-				<button style="background-color: #DFA0B1;height: 88rpx;line-height: 88rpx;color: white;font-size: 32rpx;"
+				<button style="background-color: #449656;height: 88rpx;line-height: 88rpx;color: white;font-size: 32rpx;"
 					@click="handleInvoice">开票</button>
 			</up--form>
 		</view>
@@ -82,24 +82,24 @@
 				</view>
 				<view class="size_box"></view>
 				<view class="card_line">
-					<view class="card_line_title">手机号码</view>
-					<view class="card_line_content">15190616041</view>
+					<view class="card_line_title">预约姓名</view>
+					<view class="card_line_content">黄小二</view>
 				</view>
 				<view class="size_box"></view>
 				<view class="card_line">
-					<view class="card_line_title">手机号码</view>
-					<view class="card_line_content">15190616041</view>
+					<view class="card_line_title">预约时间</view>
+					<view class="card_line_content">11 月 21 日 19:00</view>
 				</view>
 				<view class="size_box"></view>
 				<view class="card_line">
-					<view class="card_line_title">手机号码</view>
-					<view class="card_line_content">15190616041</view>
+					<view class="card_line_title">预约服务</view>
+					<view class="card_line_content">帮存帮取</view>
 				</view>
 			</view>
 			<view style="margin-top: 7rpx;" class="card">
 				<view class="card_line">
 					<view class="card_line_title">车辆颜色</view>
-					<view class="card_line_content">15190616041</view>
+					<view class="card_line_content">红色</view>
 				</view>
 				<view class="size_box"></view>
 				<view class="card_line">
@@ -109,8 +109,7 @@
 				<view class="size_box"></view>
 				<view class="card_line" style="height: 144rpx;">
 					<view style="display: flex;height: 96rpx;">
-						<up-image width="96rpx" height="96rpx" src="https://cdn.uviewui.com/uview/album/1.jpg"
-							shape="circle"></up-image>
+						<image style="width: 96rpx;border-radius: 50%;height: 96rpx;"   src="https://cdn.uviewui.com/uview/album/1.jpg"></image>
 						<view style="display: flex;flex-direction: column;margin-left: 16rpx;">
 							<text style="font-size: 32rpx;">刘师傅</text>
 							<text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4);margin-top: 8rpx;">驾驶年龄 - 10年</text>
@@ -188,7 +187,7 @@
 	<view>
 		<u-popup :show="show" @close="close" @open="open" :round="16">
 			<view
-				style="background: linear-gradient(180deg, #FCF0F3 0%, #FFFFFF 26%, #FFFFFF 100%);border-radius: 16rpx 1rpx 0 0;">
+				style="background: linear-gradient(180deg, #ECFBEC 0%, #FFFFFF 26%, #FFFFFF 100%);border-radius: 16rpx 1rpx 0 0;">
 				<h1 style="height: 96rpx;line-height: 96rpx;padding: 0 32rpx;border-bottom: 1rpx solid #E7E7E7;">评价服务</h1>
 				<view style="height: 384rpx;padding:16rpx;">
 					<u--textarea placeholder="预设文本" count :maxlength='500' height="352rpx" border='none'></u--textarea>
@@ -236,7 +235,6 @@
 		})
 	}
 	const leftClick=()=>{
-		console.log('12312313');
 		if(isInvoice.value){
 			isInvoice.value = false;
 		}else{
@@ -332,6 +330,7 @@
 
 			.title {
 				font-size: 28rpx;
+				color: black;
 			}
 		}
 	}

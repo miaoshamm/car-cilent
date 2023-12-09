@@ -35,8 +35,11 @@
 	import { ref,defineProps } from 'vue';
 	const props = defineProps(['value'])
 	const value1 = props.value
-	const status = uni.getStorageSync('userStatus')
-	
+	let status = uni.getStorageSync('userStatus')
+	if(!status){
+		uni.setStorageSync('userStatus','user')
+		status = 'user'
+	}
 	const click1 = (index) => {
 		console.log(index);
 		let url = ""

@@ -87,7 +87,7 @@
 	const datetimePickerRef = ref(null);
 	// 信息
 	const info = ref({
-		carNo: "桂FVE898", //车牌号
+		carNo: "", //车牌号
 		phone: "", //手机号
 		reservationTime: "", //预约时间
 		carTypeName: "", //车型

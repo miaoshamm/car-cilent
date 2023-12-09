@@ -54,7 +54,7 @@
 			</view>
 		</view>
 	</view>
-	<PriceBtn type="subscribe" :price="45" url="/pages/wish/wish_pay/wish_pay" />
+	<PriceBtn @callback="goDetail"  type="subscribe" :price="45" url="/pages/wish/wish_pay/wish_pay" />
 	<u-datetime-picker ref="datetimePickerRef" confirmColor="#449656" v-model="subscribeInfo.time" :formatter="formatter"
 		:minDate="nowTime" @cancel="subscribeInfo.timeShow = false" @confirm="onChangeTime" :show="subscribeInfo.timeShow"
 		mode="datetime"></u-datetime-picker>
@@ -96,7 +96,13 @@
 	const openChooseCarType=()=>{
 		subscribeInfo.value.isShowCarType = true;
 	}
-
+	
+	
+	const goDetail=()=>{
+		uni.navigateTo({
+			url:'/pages/order_detail_parking/order_detail_parking'
+		})
+	}
 	const onChangeTime = (e) => {
 		subscribeInfo.value.time = e.value;
 		subscribeInfo.value.timeShow = false;

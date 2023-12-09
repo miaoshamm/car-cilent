@@ -87,64 +87,11 @@
 import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
 import { onLoad } from "@dcloudio/uni-app";
-import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices, login, getUserAgreement } from "@/api";
+import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices, login, getUserAgreement,getUserInfo } from "@/api";
 let isSubscribe = ref(false);
-let banner = ref([
-  {
-    id: 1002,
-    bannerName: "开业",
-    bannerJumpLink: null,
-    bannerDescription: null,
-    bannerImageUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231209/IMG_20231209_122657_343626.png",
-  },
-]);
+let banner = ref([]);
 let notice = ref([]);
-let driver = ref([
-  {
-    id: 1004,
-    userNo: "A1001",
-    userAvatar: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
-    userName: "张师傅",
-    userRoleVo: null,
-    drivingAge: 5,
-    servicerPhone: "3123",
-    sketch: "12312",
-    drivingUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png",
-  },
-  {
-    id: 1004,
-    userNo: "A1001",
-    userAvatar: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
-    userName: "张师傅",
-    userRoleVo: null,
-    drivingAge: 5,
-    servicerPhone: "3123",
-    sketch: "12312",
-    drivingUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png",
-  },
-  {
-    id: 1004,
-    userNo: "A1001",
-    userAvatar: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
-    userName: "张师傅",
-    userRoleVo: null,
-    drivingAge: 5,
-    servicerPhone: "3123",
-    sketch: "12312",
-    drivingUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png",
-  },
-  {
-    id: 1004,
-    userNo: "A1001",
-    userAvatar: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
-    userName: "张师傅",
-    userRoleVo: null,
-    drivingAge: 5,
-    servicerPhone: "3123",
-    sketch: "12312",
-    drivingUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png",
-  },
-]);
+let driver = ref([]);
 let evaluate = ref([]);
 let carServiceList = ref([]);
 let list = ref([
@@ -188,15 +135,15 @@ let model = ref({
 // 获取数据
 const getInfo = async () => {
   try {
-    // const bannerList = await getBanner();
+    const bannerList = await getBanner();
     const noticeList = await getNotice();
-    // const servicer = await getServicerByType("VALET");
+    const servicer = await getServicerByType("VALET");
     const userEvaluate = await getUserEvaluate();
     const carService = await getCarServices();
 
-    // if (bannerList.code == 200) {
-    //   banner.value = bannerList.data;
-    // }
+    if (bannerList.code == 200) {
+      banner.value = bannerList.data;
+    }
     if (noticeList.code == 200) {
       const arr = [];
       noticeList.data.forEach((item) => {
@@ -204,9 +151,9 @@ const getInfo = async () => {
       });
       notice.value = arr;
     }
-    // if (servicer.code == 200) {
-    //   driver.value = servicer.data;
-    // }
+    if (servicer.code == 200) {
+      driver.value = servicer.data;
+    }
     if (userEvaluate.code == 200) {
       evaluate.value = userEvaluate.data;
     }
@@ -242,7 +189,7 @@ const closeModel = () => {
         uni.setStorageSync("accessToken", result.data.token);
         const userInfo = await getUserInfo();
         uni.setStorageSync("userInfo", JSON.stringify(userInfo.data));
-        model.value.show = false;
+				model.value.show = false;
         getInfo();
       }
     },

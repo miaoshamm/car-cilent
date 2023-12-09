@@ -36,11 +36,11 @@
 				<view class="size_box" />
 				<view class="card_line">
 					<text class="card_line_title">预约时间</text>
-					<text>11 月 21 日 19:00</text>
+					<text>{{dayjs(orderInfo?.reservationTime).format('MM月DD日 HH:mm')}}</text>
 				</view>
 				<view class="card_line">
 					<text class="card_line_title">预约服务</text>
-					<text>接送</text>
+					<text>{{typeObj[orderInfo?.orderType]}}</text>
 				</view>
 			</view>
 			<ChooseEmployee></ChooseEmployee>
@@ -57,11 +57,11 @@
 			<view class="card" style="margin-top: 8rpx;">
 				<view class="card_line">
 					<text class="card_line_title">订单编号</text>
-					<text>101231798123123</text>
+					<text>{{orderInfo?.orderNo}}</text>
 				</view>
 				<view class="card_line">
 					<text class="card_line_title">订单时间</text>
-					<text >2023-11-22 12:22:00</text>
+					<text>{{dayjs(orderInfo?.createdTime).format('YYYY-MM-DD HH:mm:sss')}}</text>
 				</view>
 			</view>
 			<InsuranceTips />
@@ -72,22 +72,32 @@
 <script setup>
 	import ChooseEmployee from '../../components/choose_employee/choose_employee.vue'
 	import InsuranceTips from '../../components/insurance_tips/insurance_tips.vue'
-	import {onLoad } from '@dcloudio/uni-app'
-	import {getOrderPaymentRecord} from '../../api/index.js'
-	import {ref} from 'vue'
+	import {
+		onLoad
+	} from '@dcloudio/uni-app'
+	import {
+		getOrderPaymentRecord
+	} from '../../api/index.js'
+	import dayjs from 'dayjs'
+	import {
+		ref
+	} from 'vue'
 	const orderInfo = ref();
-	
-	
-	
-	
-	
-	
-	onLoad((options)=>{
-		console.log(options.order_no);
-		getOrderPaymentRecord({
-			orderNo:options.order_no
-		}).then(res=>{
-			console.log('res',res);
+	const typeObj = {
+		TRANSFER: '接送',
+		TRANSFER_PICK_UP: '只接',
+		TRANSFER_DROP_OFF: '只送',
+	}
+
+
+
+
+
+	onLoad((options) => {
+		console.log(options);
+		getOrderPaymentRecord(options.order_no).then(res => {
+			console.log('res', res);
+			orderInfo.value = res.data;
 		})
 	})
 </script>
