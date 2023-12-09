@@ -3,7 +3,7 @@
 		<u-navbar title="预约详情" :auto-back="true" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
 		<view class="main" style="flex:1;background-color: #F6F7F8;">
 			<view style="height: 32rpx;" />
-			<text style="color: #449656;font-size: 36rpx;font-weight: bold;">预约成功，等待交接</text>
+			<text style="color: #449656;font-size: 36rpx;font-weight: bold;">{{statusObj[orderInfo?.status]}}</text>
 			<view class="card"
 				style="background: linear-gradient(180deg, #ECFBEC 0%, #FFFFFF 26%, #FFFFFF 100%);margin-top: 16rpx;">
 				<view class="card_line" style="height: 82rpx;">
@@ -88,6 +88,19 @@
 		TRANSFER_PICK_UP: '只接',
 		TRANSFER_DROP_OFF: '只送',
 	}
+	const statusObj = {
+	  RESERVATION: "预约成功,等待交接",
+	  RECEIVED: "已接单",
+	  ARRIVED: "已到达",
+	  PARK_PROCESS: "停车中",
+	  CAR_ASK_OF: "车辆自取中",
+	  CANCELED: "订单取消",
+	  PENDING_PAYMENT: "待支付",
+	  PAID: "已支付",
+	  COMING_IN: "前往接送点",
+	  TO_DESTINATION: "前往目的地",
+	  COMPLETE: "完成"
+	};
 
 
 

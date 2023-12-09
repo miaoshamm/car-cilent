@@ -80,6 +80,9 @@
 	import InsuranceTips from "../../components/insurance_tips/insurance_tips.vue";
 	import ChooseEmploy from "../../components/choose_employee/choose_employee.vue";
 	import PriceBtn from '../../components/price_btn/price_btn.vue'
+	import {
+		request
+	} from '../../utils/request.js';
 	const chooseLocation = requirePlugin("chooseLocation");
 	const key = "GZABZ-OGULD-YPK4O-HWK6T-4B6KV-NBFJX"; //使用在腾讯位置服务申请的key
 	const referer = "城市生活"; //调用插件的app的名
@@ -91,7 +94,7 @@
 		price: 0,
 		time: "选择预约时间",
 		service: "选择预约服务",
-		serviceType:'',
+		serviceType: '',
 		timeShow: false,
 		serviceShow: false,
 		location: {},
@@ -137,12 +140,12 @@
 			phone: subscribeInfo.phone,
 			userName: subscribeInfo.userName,
 			reservationTime: dayjs(subscribeInfo.time).format('YYYY-MM-DD HH:mm:ss'),
-			servicerId: subscribeInfo.servicerInfo.userNo,
+			servicerId: subscribeInfo.servicerInfo.id,
 			userId: userInfo.id,
 			orderType: subscribeInfo.serviceType
 		});
 		uni.navigateTo({
-			url:`/pages/order_detail_pick_up/order_detail_pick_up?order_no=${orderInfo.message}`
+			url: `/pages/order_detail_pick_up/order_detail_pick_up?order_no=${orderInfo.message}`
 		})
 	}
 
@@ -151,11 +154,23 @@
 	}
 
 
-	onShow(() => {
+	onShow(async () => {
 		const location = chooseLocation.getLocation();
-		subscribeInfo.location = location ? location : {
-			name: '选取位置'
-		};
+		console.log(location);
+		if (location) {
+			const locationLength = await uni.request({
+				url: `https://apis.map.qq.com/ws/distance/v1/matrix?from=${location.latitude+','+location.longitude}&to=23.118306,113.364176&mode=driving&key=GZABZ-OGULD-YPK4O-HWK6T-4B6KV-NBFJX`,
+				method: "GET",
+				header:'Content-Type:application/json'
+			})
+			if(locationLength.data.result.rows[0].elements[0].distance < 5000) {
+					subscribeInfo.location = location ;
+			}else{
+				subscribeInfo.location = '距离超出，重新选择' ;
+			}
+
+		}
+		
 	});
 	onUnload(() => {
 		chooseLocation.setLocation(null);
@@ -177,16 +192,18 @@
 	};
 	//服务项目
 	const columns = reactive(
-		[[{
-			id: 'TRANSFER',
-			label: '接送'
-		}, {
-			id: 'TRANSFER_PICK_UP',
-			label: '只接'
-		}, {
-			id: 'TRANSFER_DROP_OFF',
-			label: '只送'
-		}]]
+		[
+			[{
+				id: 'TRANSFER',
+				label: '接送'
+			}, {
+				id: 'TRANSFER_PICK_UP',
+				label: '只接'
+			}, {
+				id: 'TRANSFER_DROP_OFF',
+				label: '只送'
+			}]
+		]
 	);
 	// 格式化
 	const formatter = (type, value) => {
