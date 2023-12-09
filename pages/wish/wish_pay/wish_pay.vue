@@ -1,7 +1,7 @@
 <template>
   <view class="wrapper wrapper-p">
     <view class="title">请稍等，正在确定维保地点</view>
-    <License :licensePlate="licensePlate" />
+    <License :licensePlate="licensePlate" type="subscribe" />
     <view class="box">
       <view class="box-info">
         <text>维保地点</text>
@@ -108,10 +108,29 @@
 
 <script setup>
 import { ref } from "vue";
+import {onLoad} from "@dcloudio/uni-app"
+import {getOrderPaymentRecord} from "@/api"
 
 import Insurance from "@/components/insurance_tips/insurance_tips.vue";
 import License from "@/components/license_plate_selection/license_plate_selection.vue";
-let licensePlate = ref("皖GHHHHHN");
+let licensePlate = ref("");
+const info = ref({})
+
+const getInfo = async (orderNo) => {
+	try{
+		const result = await getOrderPaymentRecord(orderNo)
+		if(result.code == 200){
+			info.value = result.data
+			licensePlate.value = info.value.orderExtraVo.carNo
+		}
+	}catch(e){
+		//TODO handle the exception
+	}
+}
+
+onLoad((options) => {
+	getInfo(options.orderNo)
+})
 </script>
 
 <style lang="less" scoped>

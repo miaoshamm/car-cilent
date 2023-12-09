@@ -86,63 +86,64 @@
 <script setup>
 import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
-import { onShow } from "@dcloudio/uni-app";
-import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices, login,getUserInfo } from "@/api";
-uni.setStorageSync('userStatus','user');
+import { onLoad } from "@dcloudio/uni-app";
+import { getBanner, getNotice, getServicerByType, getUserEvaluate, getCarServices, login, getUserAgreement } from "@/api";
 let isSubscribe = ref(false);
-let banner = ref([{
-      "id": 1002,
-      "bannerName": "开业",
-      "bannerJumpLink": null,
-      "bannerDescription": null,
-      "bannerImageUrl": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231209/IMG_20231209_122657_343626.png"}
-    ]);
+let banner = ref([
+  {
+    id: 1002,
+    bannerName: "开业",
+    bannerJumpLink: null,
+    bannerDescription: null,
+    bannerImageUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231209/IMG_20231209_122657_343626.png",
+  },
+]);
 let notice = ref([]);
 let driver = ref([
-	{
-	      "id": 1004,
-	      "userNo": "A1001",
-	      "userAvatar": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
-	      "userName": "张师傅",
-	      "userRoleVo": null,
-	      "drivingAge": 5,
-	      "servicerPhone": "3123",
-	      "sketch": "12312",
-	      "drivingUrl": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png"
-	    },
-			{
-			      "id": 1004,
-			      "userNo": "A1001",
-			      "userAvatar": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
-			      "userName": "张师傅",
-			      "userRoleVo": null,
-			      "drivingAge": 5,
-			      "servicerPhone": "3123",
-			      "sketch": "12312",
-			      "drivingUrl": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png"
-			    },
-					{
-					      "id": 1004,
-					      "userNo": "A1001",
-					      "userAvatar": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
-					      "userName": "张师傅",
-					      "userRoleVo": null,
-					      "drivingAge": 5,
-					      "servicerPhone": "3123",
-					      "sketch": "12312",
-					      "drivingUrl": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png"
-					    },
-							{
-							      "id": 1004,
-							      "userNo": "A1001",
-							      "userAvatar": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
-							      "userName": "张师傅",
-							      "userRoleVo": null,
-							      "drivingAge": 5,
-							      "servicerPhone": "3123",
-							      "sketch": "12312",
-							      "drivingUrl": "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png"
-							    }
+  {
+    id: 1004,
+    userNo: "A1001",
+    userAvatar: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
+    userName: "张师傅",
+    userRoleVo: null,
+    drivingAge: 5,
+    servicerPhone: "3123",
+    sketch: "12312",
+    drivingUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png",
+  },
+  {
+    id: 1004,
+    userNo: "A1001",
+    userAvatar: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
+    userName: "张师傅",
+    userRoleVo: null,
+    drivingAge: 5,
+    servicerPhone: "3123",
+    sketch: "12312",
+    drivingUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png",
+  },
+  {
+    id: 1004,
+    userNo: "A1001",
+    userAvatar: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
+    userName: "张师傅",
+    userRoleVo: null,
+    drivingAge: 5,
+    servicerPhone: "3123",
+    sketch: "12312",
+    drivingUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png",
+  },
+  {
+    id: 1004,
+    userNo: "A1001",
+    userAvatar: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231207/IMG_20231207_095929_108441.png",
+    userName: "张师傅",
+    userRoleVo: null,
+    drivingAge: 5,
+    servicerPhone: "3123",
+    sketch: "12312",
+    drivingUrl: "http://zhuyu-test-1256652038.cos.ap-guangzhou.myqcloud.com/images/20231130/IMG_20231130_103635_530527.png",
+  },
 ]);
 let evaluate = ref([]);
 let carServiceList = ref([]);
@@ -181,12 +182,7 @@ let list = ref([
 let model = ref({
   show: true,
   title: "协议声明",
-  content: `
-		本人同意依据本确认单将车辆交于广东城市实业有限公司代客泊车服务，并愿意在提车前支付相关泊车费、代客泊车费等费用。在此声明，车辆在移交广东城市实业有限公司之前，本人已提醒车主自行收起贵重物品，并将车内物品妥善保管。如有任何遗失，车主将自行承担相应责任。
-		同时，本人承诺如在路途接送车过程中发生意外，我将无条件协助广东城市实业有限公司通过保险公司途径进行维修处理。我理解并同意，广东城市实业有限公司对于车辆的安全负有合理的义务，但车主也应自行保管好个人财物，以免造成不必要的损失。
-		此外，本人还同意遵守广东城市实业有限公司的相关规定和要求，包括但不限于停车时间限制、停车场规定等。如有违反，我愿意承担相应的法律责任和经济赔偿。
-		最后，本人郑重声明以上内容属实，并愿意承担因违反本声明所产生的一切后果。
-		`,
+  content: "",
 });
 
 // 获取数据
@@ -222,6 +218,17 @@ const getInfo = async () => {
   }
 };
 
+const getAgreement = async () => {
+  try {
+    const agreement = await getUserAgreement("WINDOW");
+    if (agreement.code == 200) {
+      model.value.content = agreement.data.agreementContent;
+    }
+  } catch (e) {
+    //TODO handle the exception
+  }
+};
+
 const goService = (url) => {
   uni.navigateTo({
     url,
@@ -233,9 +240,10 @@ const closeModel = () => {
       const result = await login({ authCode: res.code });
       if (result.code == 200) {
         uni.setStorageSync("accessToken", result.data.token);
-				const userInfo = await getUserInfo();
-				uni.setStorageSync('userInfo',JSON.stringify(userInfo.data));
+        const userInfo = await getUserInfo();
+        uni.setStorageSync("userInfo", JSON.stringify(userInfo.data));
         model.value.show = false;
+        getInfo();
       }
     },
   });
@@ -244,7 +252,7 @@ const closeModel = () => {
 const bannerClick = () => {};
 
 // 重定向
-onShow(() => {
+onLoad(() => {
   if (uni.getStorageSync("userStatus") === "servicer") {
     return uni.switchTab({
       url: "/pages/servicer_orders/servicer_orders",
@@ -252,8 +260,10 @@ onShow(() => {
   }
   if (uni.getStorageSync("accessToken")) {
     model.value.show = false;
+    getInfo();
+  } else {
+    getAgreement();
   }
-  getInfo();
 });
 </script>
 

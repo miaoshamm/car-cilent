@@ -1,5 +1,14 @@
 import {request} from "@/utils/request.js"
 
+// 获取协议
+export const getUserAgreement = (type) => {
+	return request({
+		url:`/userAgreement/findUserAgreement/${type}`,
+		method:"GET"
+	})
+}
+
+// 登录
 export const login = (data) => {
 	return request({
 		url:'/auth/login',

@@ -1,10 +1,10 @@
 <template>
 	<view class="card" @click="check">
 		<view class="card-le">
-			<text class="card-title">输入车牌</text>
-			<text class="card-title" v-show="showSubscribe">预约车辆</text>
-			<text class="card-title" v-show="showPlate">车牌号码</text>
-			<view class="card-le-btn" v-show="showSubscribe">
+			<text class="card-title" v-show="props.type === 'input'">输入车牌</text>
+			<text class="card-title" v-show="props.type === 'subscribe'">预约车辆</text>
+			<text class="card-title" v-show="props.type === 'info'">车牌号码</text>
+			<view class="card-le-btn" v-show="props.type === 'subscribe'">
 				<text>联系客服</text>
 				<text>取消预约</text>
 			</view>
@@ -31,13 +31,12 @@
 	} from 'vue';
 	import {onLoad} from "@dcloudio/uni-app"
 
-	const props = defineProps(['licensePlate'])
+	const props = defineProps(['licensePlate','type'])
 	const emit = defineEmits(['plateNumber'])
 	let licensePlate = ref("")
-	let showSubscribe = ref(false)
-	let showPlate = ref(false)
 	
 	onLoad(() => {
+		console.log(props.licensePlate,'-------');
 		if(props.licensePlate){
 			licensePlate.value = props.licensePlate
 		}
@@ -45,6 +44,7 @@
 
 	// 获取车牌
 	const check = () => {
+		if(props.type != 'input') return
 		wx.chooseLicensePlate({
 			success(res) {
 				emit('plateNumber', res.plateNumber)

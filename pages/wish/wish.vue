@@ -2,27 +2,27 @@
 	<u-navbar @leftClick="leftClick" safeAreaInsetTop title="预约车辆维保"></u-navbar>
 	<view v-show="!serviceShow">
 		<view class="wrapper wrapper-t">
-			<License :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
+			<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
 			<view class="car-info">
 				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="100">
 					<view class="box">
-						<u-form-item label="手机号码" prop="info.phone" borderBottom>
+						<u-form-item label="手机号码" prop="phone" borderBottom>
 							<u--input v-model="info.phone" border="none" placeholder="请输入手机号"></u--input>
 						</u-form-item>
-						<u-form-item label="预约姓名" prop="info.userName" borderBottom>
+						<u-form-item label="预约姓名" prop="userName" borderBottom>
 							<u--input v-model="info.userName" border="none" placeholder="请输入预约姓名"></u--input>
 						</u-form-item>
-						<u-form-item label="车辆颜色" prop="info.carColor" borderBottom>
+						<u-form-item label="车辆颜色" prop="carColor" borderBottom>
 							<u--input v-model="info.carColor" border="none" placeholder="请输入车辆颜色"></u--input>
 						</u-form-item>
-						<u-form-item label="维保时间" prop="info.reservationTime" borderBottom @click="timeShow = true">
+						<u-form-item label="维保时间" prop="reservationTime" borderBottom @click="timeShow = true">
 							<u--input disabled v-model="info.reservationTime" disabledColor="#ffffff" placeholder="请选择维保时间"
 								border="none"></u--input>
 							<template #right>
 								<u-icon name="arrow-right"></u-icon>
 							</template>
 						</u-form-item>
-						<u-form-item label="车辆型号" prop="info.carTypeName" borderBottom @click="modelShow = true">
+						<u-form-item label="车辆型号" prop="carTypeName" borderBottom @click="modelShow = true">
 							<u--input disabled v-model="info.carTypeName" disabledColor="#ffffff" placeholder="请选择车辆型号"
 								border="none"></u--input>
 							<template #right>
@@ -106,7 +106,7 @@
 		'userName':{
 			type:"string",
 			required:true,
-			message:"请输入用户名称"
+			message:"请输入预约姓名"
 		},
 		'carColor':{
 			type:"string",
@@ -114,7 +114,7 @@
 			message:"请输入车辆颜色"
 		},
 		'carTypeName':{
-			type:"string",
+			type:"array",
 			required:true,
 			message:"请选择车型"
 		},
@@ -133,14 +133,27 @@
 	const uForm = ref(null)
 
 	// 下单
-	const createOrder = (res) => {
+	const createOrder = (res) => {		
 		if (res === 'success') {
+			uni.navigateTo({
+				url: `/pages/wish/wish_pay/wish_pay?orderNo=20231209112457841246`
+			})
+			return
 			uForm.value.validate().then(async res => {
+				const arr = []
 				info.value.carTypeName = info.value.carTypeName[0]
-				const result = await reservationPreserveOrder(info.value)
-				uni.navigateTo({
-					url: '/pages/wish/wish_pay/wish_pay'
+				info.value.washService.forEach(item => {
+					arr.push(item.id)
 				})
+				info.value.washService = arr.join(',')
+				info.value.orderType = "PRESERVE"
+				info.value.userId = 1001
+				const result = await reservationPreserveOrder(info.value)
+				if(result.code == 200){
+					uni.navigateTo({
+						url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.message}`
+					})
+				}
 			})
 		}else{
 			uni.showToast({
