@@ -268,4 +268,11 @@ export const putUserInfo = (data) => {
 	})
 }
 
+//查看用户全部订单
+export const getOrderList = (userNo) => {
+	return request({
+		url:`/userOrder/findAllOrderByUser?userNo=${userNo}`,
+		method:"get",
+	})
+}
 

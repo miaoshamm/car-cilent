@@ -111,8 +111,6 @@ const onChooseAvatar = (e) => {
   uni.setStorageSync("userInfo", JSON.stringify(obj));
 };
 const onChangeNickName = (e) => {
-  console.log(nickName.value, "nickname");
-  console.log(e);
   userInfo.value.nickName = nickName.value;
   putUserInfo(userInfo.value);
   isShowNickNameModal.value = false;
