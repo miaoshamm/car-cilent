@@ -1,15 +1,21 @@
 {
   "dependencies": {
+    "@dcloudio/vite-plugin-uni": "^3.0.0-alpha-3090920231208001",
+    "@rollup/rollup-darwin-arm64": "^4.8.0",
     "clipboard": "^2.0.11",
+    "copy-webpack-plugin": "^11.0.0",
     "cos-wx-sdk-v5": "^1.4.13",
     "dayjs": "^1.11.10",
+    "fs-extra": "^11.2.0",
     "moment": "^2.29.4",
     "pinia": "^2.1.7",
     "pinia-plugin-persist": "^1.0.0",
     "pinia-plugin-persist-uni": "^1.2.0",
     "pinia-plugin-persistedstate": "^3.2.0",
     "qcloud-cos-sts": "^3.1.0",
-    "uview-plus": "^3.1.41"
+    "rollup": "^4.8.0",
+    "uview-plus": "^3.1.41",
+    "vite": "^5.0.7"
   },
   "devDependencies": {
     "sass": "^1.69.5",

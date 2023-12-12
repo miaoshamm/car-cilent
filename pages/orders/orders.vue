@@ -10,13 +10,13 @@
 
 <script setup>
 import { ref } from "vue";
-import {onLoad} from '@dcloudio/uni-app'
+import {onShow} from '@dcloudio/uni-app'
 import OrderCard from "../../components/order_card/order_card.vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
 import {getOrderList} from '../../api/index.js'
 const orderList = ref([]);
 const userInfo = JSON.parse(uni.getStorageSync('userInfo'))
-onLoad(async ()=>{
+onShow(async ()=>{
 	const orders = await getOrderList(userInfo.userNo) 
 	orderList.value = orders.data;
 })

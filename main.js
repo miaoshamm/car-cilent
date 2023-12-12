@@ -10,6 +10,7 @@ export function createApp() {
 	const pinia = Pinia.createPinia();
 	app.use(pinia);
 	app.use(uviewPlus)
+	wx.cloud.init();
   return {
     app,
 		Pinia

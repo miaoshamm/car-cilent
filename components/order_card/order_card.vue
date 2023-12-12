@@ -52,8 +52,9 @@ const cardType = props.type ? props.type : 'order';
 const orderInfo = props.orderInfo;
 console.log(orderTypes[orderInfo.orderType].icon);
 const navigateDetail = () => {
+	console.log(orderTypes[orderInfo.orderType].url);
 	uni.navigateTo({
-		url: `/pages/order_detail_parking/order_detail_parking?order_no=${orderInfo.orderNo}`
+		url: `${orderTypes[orderInfo.orderType].url+'?order_no='+orderInfo.orderNo}`
 	});
 };
 </script>
