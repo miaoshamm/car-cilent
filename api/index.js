@@ -292,3 +292,11 @@ export const getOrderList = (userNo) => {
 	})
 }
 
+// 申请开发票
+export const applyForInvoice = (data) => {
+	return request({
+		url:`/userInvoice/handleInvoice`,
+		method:"POST",
+		data
+	})
+}
