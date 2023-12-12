@@ -14,7 +14,7 @@ export const request = ({url,method,data}) => {
 			Authorization:uni.getStorageSync("accessToken")
 		}
 	}
-	if(url.search('wechat') != -1 || url.search('common') != -1){
+	if(url.search('common') != -1){
 		lastUrl = nodeUrl + url
 	}else{
 		lastUrl = baseUrl + url
