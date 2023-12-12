@@ -134,6 +134,30 @@
     		"navigationBarTitleText" : "地图",
     		"enablePullDownRefresh" : false
     	}
+    },
+    {
+    	"path" : "pages/account/company/company",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "公司简介",
+    		"enablePullDownRefresh" : false
+    	}
+    },
+    {
+    	"path" : "pages/account/holiday/holiday",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "请假休假",
+    		"enablePullDownRefresh" : false
+    	}
+    },
+    {
+    	"path" : "pages/account/royalty/royalty",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "订单提成",
+    		"enablePullDownRefresh" : false
+    	}
     }
   ],
   "globalStyle": {

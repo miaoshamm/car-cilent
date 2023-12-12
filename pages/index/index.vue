@@ -235,20 +235,6 @@ onLoad(() => {
 	font-weight: bold;
 }
 
-.nav {
-	height: 208rpx;
-	background: $bgColor;
-	display: flex;
-	align-items: center;
-
-	.nav-title {
-		font-size: 32rpx;
-		font-weight: 500;
-		color: #fff;
-		margin: 48rpx 0 0 60rpx;
-	}
-}
-
 .main {
 	border-top-left-radius: 32rpx;
 	border-top-right-radius: 32rpx;
