@@ -5,12 +5,13 @@
 			<view class="title" v-show="info.status === 'PROCESS'">已经尽快信息审核中...</view>
 			<view class="title" v-show="info.status === 'NOTPASS'">信息有误，请修改后重新上传</view>
 			<view class="title" v-show="info.status === 'PASS'">职工认证信息</view>
-			<License :licensePlate="licensePlate" type="input" />
+			<License :licensePlate="info.carNo" type="input" />
 			<view class="car-info">
 				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="120">
 					<view class="box">
-						<u-form-item label="手机号码" prop="phone" borderBottom>
-							<u--input v-model="info.phone" border="none" placeholder="请输入手机号"></u--input>
+						<u-form-item class="phone-info" label="手机号码" prop="workerPhone" borderBottom>
+							<u--input v-model="info.workerPhone" border="none" placeholder="请输入手机号"></u--input>
+							<button v-show="!info.status" class="get-phone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取手机号</button>
 						</u-form-item>
 						<u-form-item label="用户姓名" prop="userName" borderBottom>
 							<u--input v-model="info.userName" border="none" placeholder="请输入姓名"></u--input>
@@ -95,12 +96,11 @@
 			</view>
 		</view>
 	</view>
-	<u-modal showCancelButton confirmColor="#449656" :show="info.uploadShow" :content="!info.status ? '确定无误吗？' : '确定重新上传吗？'" @confirm="upload"
-		@cancel="info.uploadShow = false"></u-modal>
+	<u-modal showCancelButton confirmColor="#449656" :show="info.uploadShow"
+		:content="!info.status ? '确定无误吗？' : '确定重新上传吗？'" @confirm="upload" @cancel="info.uploadShow = false"></u-modal>
 	<u-picker confirmColor="#449656" @cancel="modelShow = false" @confirm="checkModel" :show="modelShow"
 		:columns="modelColumns"></u-picker>
 </template>
-
 <script setup>
 	import {
 		ref
@@ -113,14 +113,14 @@
 	import models from "@/static/json/brands.json"
 	import {
 		employeeCertification,
-		getEmployeeCertification
+		getEmployeeCertification,
+		getPhone
 	} from "@/api"
 	import {
 		wxUploadFile,
 		getSTSAuthorization
 	} from "@/utils/cos.js"
 
-	let licensePlate = ref("粤B66666");
 	const uForm = ref(null);
 	// 规则
 	const rules = {
@@ -158,7 +158,7 @@
 	// 信息
 	const info = ref({
 		carNo: "", //车牌号
-		phone: "", //手机号
+		workerPhone: "", //电话号码
 		userName: "", //姓名
 		workerDepartment: "", //所属部门
 		carTypeName: "", //车型
@@ -169,6 +169,18 @@
 	});
 	const modelColumns = ref([]);
 	const modelShow = ref(false);
+
+	// 获取手机号
+	const getPhoneNumber = async (res) => {
+		try {
+			const result = await getPhone(res.target.code)
+			if(result.code == 200){
+				info.value.workerPhone = result.data
+			}
+		} catch (e) {
+			//TODO handle the exception
+		}
+	}
 
 	// 上传
 	const uploadInfo = (type) => {
@@ -193,16 +205,24 @@
 	// 认证
 	const upload = async () => {
 		uForm.value.validate().then(async res => {
-			try{
-				let filePath = info.value.cardFrontUrl
-				let fileName = filePath.substr(filePath.lastIndexOf('/') + 1)
-				const result = await wxUploadFile(filePath, fileName)
-				// info.value.carTypeName = info.value.carTypeName[0]
-				// const result = await employeeCertification(info.value)
-				// if(result.code == 200){
-				// 	getCertification()
-				// }
-			}catch(e){
+			try {
+				// let filePath = info.value.cardFrontUrl
+				// let fileName = filePath.substr(filePath.lastIndexOf('/') + 1)
+				// const result = await wxUploadFile(filePath, (fileUrl) => {
+				// 	console.log(fileUrl);
+				// })
+				info.value.carNo = "粤B66666"
+				info.value.carTypeName = info.value.carTypeName[0]
+				info.value.cardFrontUrl = 'http://run.czjscktd.com/help-thing/lkr.jpg'
+				info.value.cardBackUrl = 'http://run.czjscktd.com/help-thing/lkr.jpg'
+				info.value.licenseUrl = 'http://run.czjscktd.com/help-thing/lkr.jpg'
+				info.value.userNo = JSON.parse(uni.getStorageSync("userInfo")).userNo
+				const result = await employeeCertification(info.value)
+				if (result.code == 200) {
+					getCertification()
+					modelShow.value = false
+				}
+			} catch (e) {
 				//TODO handle the exception
 			}
 		}).catch(err => {
@@ -213,10 +233,15 @@
 	// 获取职工认证状态
 	const getCertification = async () => {
 		try {
-			const userNo = uni.getStorageSync('userInfo') ? JSON.parse(uni.getStorageSync('userInfo')).userNo : ""
+			const userInfo = uni.getStorageSync('userInfo')
+			const userNo = userInfo ? JSON.parse(userInfo).userNo : ""
 			const result = await getEmployeeCertification(userNo)
-			if(result.code == 200){
+			if (result.code == 200) {
 				info.value = result.data
+				info.value.carColor = result.data.userCarVo.carColor
+				info.value.carNo = result.data.userCarVo.carNo
+				info.value.carTypeName = result.data.userCarVo.carTypeName
+				info.value.workerPhone = userInfo ? JSON.parse(userInfo).phone : ""
 			}
 		} catch (e) {
 			//TODO handle the exception
@@ -225,13 +250,22 @@
 
 	onReady(() => {
 		modelColumns.value.push(models)
-		const userInfo = uni.getStorageSync('userInfo')
-		info.value.phone = userInfo ? JSON.parse(userInfo).phone : ""
 		getCertification()
 	})
 </script>
 
-<style lang="less">
+<style lang="scss" scoped>
+	.box {
+		::v-deep .u-form-item__body__right__content__slot.data-v-b4fd400b{
+			display: flex !important;
+			flex-direction: row !important;
+		}
+	}
+
+	.get-phone {
+		color: $bgColor;
+	}
+
 	.card-auth {
 		background: #fff;
 		border-radius: 16rpx;

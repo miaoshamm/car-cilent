@@ -10,7 +10,38 @@
 ::v-deep .u-fade-enter-active.data-v-0573594d, .u-fade-leave-active.data-v-0573594d{
 	z-index: 999;
 }
-	
+
+.u-form-item__body__right__content__slot.data-v-b4fd400b{
+	align-items: center;
+}
+
+.u-tabbar__content__item-wrapper.data-v-d5be2d5d{
+	padding: 20rpx 0;
+}
+
+
+%box{
+	margin: 0 0 16rpx;
+	background: #fff;
+	padding: 0 32rpx;
+	border-radius: 16rpx;
+}
+
+// 导航
+.nav {
+	height: 208rpx;
+	background: $bgColor;
+	display: flex;
+	align-items: center;
+
+	.nav-title {
+		font-size: 32rpx;
+		font-weight: 500;
+		color: #fff;
+		margin: 48rpx 0 0 60rpx;
+	}
+}
+
 .grid {
 	image{
 		width: 200rpx;
@@ -64,17 +95,38 @@
 	padding-bottom: 140rpx;
 }
 
+.price{
+	font-size:40rpx;
+	color: $price;
+	font-weight: 700;
+	padding: 0 0 24rpx;
+}
+
+.box{
+	@extend %box;
+}
+
+.box-wrapper{
+	@extend %box;
+	background: linear-gradient(#ECFBEC 5%, #FFFFFF 30%);
+	.box-title{
+		font-size: 36rpx;
+		padding: 28rpx 0;
+		border-bottom: 1px solid $borderColor;
+	}
+	::v-deep .u-form-item__body.data-v-b4fd400b{
+		padding: 28rpx 0;
+	}
+	::v-deep .u-textarea.data-v-31706dd7{
+		padding: 0;
+	}
+}
+
 .car-info{
 	box-sizing: border-box;
 	margin: 16rpx 0 0;
 	.u-form-item__body.data-v-b4fd400b:not(:last-child){
 		padding: 28rpx 0;
-	}
-	.box{
-		margin: 0 0 16rpx;
-		background: #fff;
-		padding: 0 32rpx;
-		border-radius: 16rpx;
 	}
 	.certificate{
 		::v-deep .u-form-item__body.data-v-b4fd400b{
@@ -85,6 +137,7 @@
 			text-align: center;
 			justify-content: space-between;
 			margin: 24rpx 0 0;
+			width: 100%;
 			image{
 				width: 295rpx;
 				height: 160rpx;
@@ -153,6 +206,14 @@ button::after {
   border:none;
 }
 
-.u-tabbar__content__item-wrapper.data-v-d5be2d5d{
-	padding: 20rpx 0;
+button{
+	background-color: transparent;
+	padding: 0;
+	margin: 0;
+	font-size: 28rpx;
+	color: #449656;
+	height: 40rpx;
+	line-height: 40rpx;
 }
+
+

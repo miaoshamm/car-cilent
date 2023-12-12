@@ -5,7 +5,13 @@
 				<image src="../../static/images/index/grid1.png" mode="widthFix" style="width: 64rpx;"></image>
 				<text style="font-size: 32rpx;color: rgba(0, 0, 0, 0.9);margin-left: 16rpx;">代客泊车</text>
 			</view>
-			<text style="font-size: 32rpx;color: #43974C;">等待付款</text>
+			<text :style="{'font-size':'32rpx','color': props.type === 'royalty' ? '#3D3D3D' : '#43974C'}">
+				{{
+					props.type === 'royalty' ? 
+					"服务完成" : 
+					"等待付款"
+				}}
+			</text>
 		</view>
 		<view style="height: 1rpx;background-color: #e7e7e7;" />
 		<view class="info">
@@ -48,11 +54,14 @@
 </template>
 
 <script setup>
-const goDetail=()=>{
-	uni.navigateTo({
-		url:'/pages/order_detail_parking/order_detail_parking'
-	})
-}
+	import {defineProps} from "vue"
+	const props = defineProps(["type"])
+	
+	const goDetail=()=>{
+		uni.navigateTo({
+			url:'/pages/order_detail_parking/order_detail_parking'
+		})
+	}
 </script>
 
 <style lang="scss" scoped>

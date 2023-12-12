@@ -1,7 +1,7 @@
 <template>
 	<view class="wrapper wrapper-p">
-		<view class="title" v-show="info.status === 'PAID'">请稍等，正在确定维保地点</view>
-		<view class="title" v-show="info.status === 'RESERVATION'">请前往维保地点...</view>
+		<view class="title" v-show="!info.geographicLocationVo">请稍等，正在确定维保地点</view>
+		<view class="title" v-show="info.geographicLocationVo">请前往维保地点...</view>
 		<view class="title" v-show="info.status === 'COMPLETE'">维保服务结束，订单已完成</view>
 		<License v-if="info.orderExtraVo?.carNo" :orderId="info.orderNo" :licensePlate="info.orderExtraVo?.carNo"
 			type="subscribe" />
@@ -10,7 +10,7 @@
 				<text>维保地点</text>
 				<view class="box-location">
 					<text>{{info.geographicLocationVo?.address ? info.geographicLocationVo?.address : "..."}}</text>
-					<image src="../../../static/images/order/location.png" mode=""></image>
+					<image v-show="info.geographicLocationVo" src="../../../static/images/order/location.png" mode=""></image>
 				</view>
 			</view>
 			<view class="box-info" style="flex-direction: column" v-if="info.geographicLocationVo?.addressImageUrl">
@@ -32,7 +32,7 @@
 			</view>
 			<view class="box-info">
 				<text>维保时间</text>
-				<text>{{info.reservationTime}}</text>
+				<text>{{reservationTime}}</text>
 			</view>
 		</view>
 		<view class="box">
@@ -94,8 +94,8 @@
 		</view>
 		<Insurance />
 	</view>
-	<view class="check-btn" v-show="info.status === 'RESERVATION'">
-		<u-button plain text="查看维保地点" color="#449656"></u-button>
+	<view class="check-btn" v-show="info.geographicLocationVo">
+		<u-button plain text="查看维保地点" color="#449656" @click="goMap"></u-button>
 	</view>
 	<view class="check-btn" v-show="info.status === 'COMPLETE'">
 		<u-button text="返回首页" color="#449656"></u-button>
@@ -104,7 +104,8 @@
 
 <script setup>
 	import {
-		ref
+		ref,
+		computed
 	} from "vue";
 	import {
 		onLoad
@@ -112,25 +113,29 @@
 	import {
 		getOrderPaymentRecord
 	} from "@/api"
-
 	import Insurance from "@/components/insurance_tips/insurance_tips.vue";
 	import License from "@/components/license_plate_selection/license_plate_selection.vue";
 	import dayjs from "dayjs";
+	
+	// 属性--------------------
 	const info = ref({})
 	const total = ref("")
 
+	// 方法---------------------------
+	
 	// 跳转地点
 	const goMap = () => {
+		const {longitude,latitude} = info.value.geographicLocationVo
 		uni.navigateTo({
-			url: '/pages/map/map'
+			url: `/pages/map/map?longitude=${longitude}&latitude=${latitude}`
 		})
 	}
-
+	
+	// 获取信息
 	const getInfo = async (orderNo) => {
 		try {
 			const result = await getOrderPaymentRecord(orderNo)
 			if (result.code == 200) {
-				result.data.reservationTime = dayjs(result.data.reservationTime).format("YYYY-MM-DD HH:mm")
 				info.value = result.data
 				// 计算实付款
 				if (result.data.carServicesVos.length) {
@@ -141,9 +146,16 @@
 			//TODO handle the exception
 		}
 	}
-
+	
+	// 生命周期-----------------------
 	onLoad((options) => {
 		getInfo(options.orderNo)
+	})
+	
+	// 计算属性-----------------------
+	const reservationTime = computed(() => {
+		const time = result.data.reservationTime
+		return time ? dayjs(result.data.reservationTime).format("YYYY-MM-DD HH:mm") : ""
 	})
 </script>
 

@@ -1,19 +1,15 @@
 <template>
-	<view style="display: flex;flex-direction: column;height: 100vh;background-color: #449656;">
-		<u-navbar placeholder safeAreaInsetTop bg-color="#449656">
-			<template #left>
-				<text style="font-size:36rpx;font-weight: bold;color: white;margin-left: 16rpx;">城市生活</text>
-			</template>
-		</u-navbar>
-		<view style="height: 14rpx;" />
+	<view style="display: flex;flex-direction: column;height: 100vh;">
+		<!-- 顶部导航 -->
+		<view class="nav">
+			<text class="nav-title">城市生活</text>
+		</view>
 		<view class="main">
 			<view class="clockInCard">
 				<view class="left">
 					<view style="display: flex;flex-direction: column;">
 						<text style="font-size: 36rpx;">上班打卡</text>
-
 						<text style="font-size: 32rpx;color: #7787A2;margin-top: 8rpx;">7:30</text>
-
 					</view>
 					<view>
 						<text v-if="workTime"
@@ -98,6 +94,8 @@
 		border-top-right-radius: 32rpx;
 		overflow: hidden;
 		overflow-y: scroll;
+		position: relative;
+		top: -26rpx;
 
 		.clockInCard {
 			padding: 32rpx;
