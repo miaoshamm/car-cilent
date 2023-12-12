@@ -1,5 +1,21 @@
 import {request} from "@/utils/request.js"
 
+// 查看职工认证
+export const getEmployeeCertification = (userNo) => {
+	return request({
+		url:`/servicer/findEmployeeCertification/${userNo}`,
+		method:"GET"
+	})
+}
+
+// 获取COS临时秘钥
+export const getCOSSecurityToken = (ext,category) => {
+	return request({
+		url:`/common/getCOSSecurityToken?ext=${ext}&category=${category}`,
+		method:"GET"
+	})
+}
+
 // 职工首次认证
 export const employeeCertification = (data) => {
 	return request({

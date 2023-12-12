@@ -4,7 +4,7 @@
 		<view class="wrapper wrapper-t">
 			<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
 			<view class="car-info">
-				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" labelWidth="100">
+				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="100">
 					<view class="box">
 						<u-form-item label="手机号码" prop="phone" borderBottom>
 							<u--input v-model="info.phone" border="none" placeholder="请输入手机号"></u--input>
@@ -102,29 +102,45 @@
 	const modelColumns = ref([]);
 	const modelShow = ref(false);
 	const serviceShow = ref(false);
-	const uForm = ref(null)
+	const uForm = ref(null);
+	// 规则
+	const rules = {
+		"phone": {
+			// 自定义验证函数，见上说明
+			validator: (rule, value, callback) => {
+				// 上面有说，返回true表示校验通过，返回false表示不通过
+				// uni.$u.test.mobile()就是返回true或者false的
+				return uni.$u.test.mobile(value);
+			},
+			message: '手机号码不正确',
+			// 触发器可以同时用blur和change
+			trigger: ['change', 'blur'],
+		}
+	}
 
 	// 下单
-	const createOrder = async (res) => {
+	const createOrder = (res) => {
 		if (res === 'success') {
 			uni.navigateTo({
 				url: `/pages/wish/wish_pay/wish_pay?orderNo=20231209112457841246`
 			})
 			return
-			const arr = []
-			info.value.carTypeName = info.value.carTypeName[0]
-			info.value.washService.forEach(item => {
-				arr.push(item.id)
-			})
-			info.value.washService = arr.join(',')
-			info.value.orderType = "PRESERVE"
-			info.value.userId = JSON.parse(uni.getStorageSync("userInfo")).id
-			const result = await reservationPreserveOrder(info.value)
-			if (result.code == 200) {
-				uni.navigateTo({
-					url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.message}`
+			uForm.value.validate().then(async res => {
+				const arr = []
+				info.value.carTypeName = info.value.carTypeName[0]
+				info.value.washService.forEach(item => {
+					arr.push(item.id)
 				})
-			}
+				info.value.washService = arr.join(',')
+				info.value.orderType = "PRESERVE"
+				info.value.userId = JSON.parse(uni.getStorageSync("userInfo")).id
+				const result = await reservationPreserveOrder(info.value)
+				if (result.code == 200) {
+					uni.navigateTo({
+						url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.message}`
+					})
+				}
+			})
 		} else {
 			uni.showToast({
 				icon: "error",
@@ -215,6 +231,8 @@
 	onReady(() => {
 		// 微信小程序需要用此写法
 		datetimePickerRef.value.setFormatter(formatter);
+		const userInfo = uni.getStorageSync('userInfo')
+		info.value.phone = userInfo ? JSON.parse(userInfo).phone : ""
 	});
 
 	onLoad(() => {
