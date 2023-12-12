@@ -55,27 +55,22 @@
 			<view style="margin-top: 7rpx" class="card">
 				<view class="card_line">
 					<view class="card_line_title">泊车服务费</view>
-					<view class="card_line_content">+40</view>
+					<view class="card_line_content">+50</view>
 				</view>
-				<view class="size_box"></view>
-				<view class="card_line">
-					<view class="card_line_title">泊车服务费</view>
-					<view class="card_line_content">+40</view>
+				<view class="size_box" v-if="orderInfo?.paymentRecordVos.discount"></view>
+				<view class="card_line" v-if="orderInfo?.paymentRecordVos.discount">
+					<view class="card_line_title">首单折扣费</view>
+					<view class="card_line_content">+{{orderInfo?.paymentRecordVos?.discountMoney}}</view>
 				</view>
-				<view class="size_box"></view>
-				<view class="card_line">
-					<view class="card_line_title">泊车服务费</view>
-					<view class="card_line_content">+40</view>
-				</view>
-				<view class="size_box"></view>
-				<view class="card_line">
-					<view class="card_line_title">泊车服务费</view>
+				<view class="size_box" v-if="orderInfo?.paymentRecordVos.parkTime"></view>
+				<view class="card_line" v-if="orderInfo?.paymentRecordVos.parkTime">
+					<view class="card_line_title">停车费用</view>
 					<view class="card_line_content">+40</view>
 				</view>
 				<view class="size_box"></view>
 				<view class="card_line">
 					<view class="card_line_title">实付款</view>
-					<view class="card_line_content" style="color: #ea0000; font-weight: bold">¥80</view>
+					<view class="card_line_content" style="color: #ea0000; font-weight: bold">¥{{orderInfo?.orderPayMoney}}</view>
 				</view>
 			</view>
 			<view style="margin-top: 7rpx" class="card">
@@ -89,7 +84,7 @@
 					<view class="card_line_content" style="margin-left: 32rpx">{{dayjs(orderInfo?.createdTime).format('YYYY-MM-DD HH:mm:ss')}}</view>
 				</view>
 			</view>
-			<view class="service_item_card" style="margin-top: 19rpx">
+			<view class="service_item_card" style="margin-top: 19rpx" @click="goWish">
 				<view class="service_img">
 					<image src="../../static/images/index/maintenance.png" mode="aspectFill"></image>
 				</view>
@@ -98,7 +93,7 @@
 					<text class="description">为您的爱车提供最佳的外观和内部清洁效果789798454656578978978978797789798797</text>
 				</view>
 			</view>
-			<view class="service_item_card" style="margin-top: 19rpx">
+			<view class="service_item_card" style="margin-top: 19rpx" @click="goWish">
 				<view class="service_img">
 					<image src="../../static/images/index/maintenance.png" mode="aspectFill"></image>
 				</view>
@@ -174,6 +169,11 @@ onLoad(async () => {
 const callServicer =()=>{
 	wx.makePhoneCall({
 	  phoneNumber: orderInfo.value.servicerVo.servicerPhone
+	})
+}
+const goWish= ()=>{
+	uni.navigateTo({
+		url:`/pages/wish/wish?order_no=${order_no}` 
 	})
 }
 </script>

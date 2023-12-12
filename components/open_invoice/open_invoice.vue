@@ -102,19 +102,6 @@ const invoiceTypeChange = (e) => {
 	console.log(e);
 	invoiceInfo.value.isOnline = e.detail.value;
 };
-// const submit=async ()=>{
-// 	if(invoiceInfo.value.isOnline === 'PERSONAL'){
-// 		const  info = await  applyForInvoice({
-// 			isOnline:invoiceInfo.value.isOnline,
-// 			email:invoiceInfo.value.email,
-// 			phone:invoiceInfo.value.
-// 		});
-// 		console.log(info);
-// 	}else{
-
-// 	}
-// 	console.log(invoiceInfo.value);
-// }
 const submit = async () => {
 	if (invoiceInfo.value.isOnline === 'PERSONAL') {
 		const info = await applyForInvoice({
@@ -124,6 +111,7 @@ const submit = async () => {
 			userId:invoiceInfo.value.userId,
 			orderNo:order_no
 		});
+		console.log(info);
 	}else{
 		const info = await applyForInvoice(invoiceInfo.value)
 	}
