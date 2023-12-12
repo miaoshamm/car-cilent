@@ -12,11 +12,6 @@
   resolved "https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.5.1.tgz"
   integrity sha512-+KpckaAQyfbvshdDW5xQylLni1asvNSGme1JFs8I1+/H5pHEhqUKMEQD/qn3Nx5+/nycBq11qAEi8lk+LXI2dA==
 
-"@xmldom/xmldom@^0.8.6":
-  version "0.8.10"
-  resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.8.10.tgz#a1337ca426aa61cef9fe15b5b28e340a72f6fa99"
-  integrity sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw==
-
 ajv-keywords@^3.5.2:
   version "3.5.2"
   resolved "https://registry.npmmirror.com/ajv-keywords/-/ajv-keywords-3.5.2.tgz"
@@ -131,14 +126,6 @@ core-util-is@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
   integrity sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==
-
-cos-wx-sdk-v5@^1.4.13:
-  version "1.4.13"
-  resolved "https://registry.yarnpkg.com/cos-wx-sdk-v5/-/cos-wx-sdk-v5-1.4.13.tgz#34eee4dded0ae098f65b4e5efe2b433ed97b275b"
-  integrity sha512-cTrccf+9sfihCiRnj1BcHeYsQu7T6tXMrFVK2hnHPr/uJHv6Qui7hFHQyjngx0mJPsQEaq0jn7QmrwWL9nWwsA==
-  dependencies:
-    "@xmldom/xmldom" "^0.8.6"
-    mime "^2.4.6"
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -375,11 +362,6 @@ mime-types@^2.1.12, mime-types@~2.1.19:
   integrity sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==
   dependencies:
     mime-db "1.52.0"
-
-mime@^2.4.6:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/mime/-/mime-2.6.0.tgz#a2a682a95cd4d0cb1d6257e28f83da7e35800367"
-  integrity sha512-USPkMeET31rOMiarsBNIHZKLGgvKc/LrjofAnBlOttf5ajRvqiRA8QsenbcooctK6d6Ts6aqZXBA+XbkKthiQg==
 
 moment@^2.29.4:
   version "2.29.4"

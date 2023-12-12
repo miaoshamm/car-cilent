@@ -1,5 +1,14 @@
 import {request} from "@/utils/request.js"
 
+// 职工修改认证
+export const updateCertification = (data) => {
+	return request({
+		url:`/servicer/employeeUpdateCertification`,
+		method:"POST",
+		data
+	})
+}
+
 // 查看职工认证
 export const getEmployeeCertification = (userNo) => {
 	return request({

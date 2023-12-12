@@ -1,14 +1,6 @@
-import COS from "cos-wx-sdk-v5"
 import {
 	getCOSSecurityToken
 } from "@/api"
-
-const Bucket = "zhuyu-test-1256652038";
-const Region = 'ap-guangzhou';
-const cos = new COS({
-	SecretId: 'AKIDWznWEZiIpCYs45320taAh9Ram383i7JH',
-	SecretKey: 'GMFxUpyufCVaP7dw2uY0EG4i9LK5eonX',
-})
 
 // 对更多字符编码的 url encode 格式
 var camSafeUrlEncode = function(str) {
@@ -20,61 +12,67 @@ var camSafeUrlEncode = function(str) {
 		.replace(/\*/g, '%2A');
 };
 
-// 获取上传路径、上传凭证L
-const getUploadInfo = () => {
-	return new Promise(async (resolve, reject) => {
-		const result = await getCOSSecurityToken("png", "images")
-		if (result.code == 200) {
-			resolve(result.data)
-		}
-		reject(result.msg)
+const putFile = ({
+	prefix,
+	filePath,
+	key,
+	AuthData
+}) => {
+	return new Promise((resolve, reject) => {
+		// put上传需要读取文件的真实内容来上传
+		const wxfs = wx.getFileSystemManager();
+		wxfs.readFile({
+			filePath: filePath,
+			success(fileRes) {
+				var requestTask = wx.request({
+					url: prefix + '/' + key,
+					method: 'PUT',
+					header: {
+						Authorization: AuthData.authorization,
+						'x-cos-security-token': AuthData.securityToken,
+					},
+					data: fileRes.data,
+					success(res) {
+						var url = prefix + '/' + camSafeUrlEncode(key).replace(/%2F/g, '/');
+						if (res.statusCode === 200) {
+							resolve(url)
+						} else {
+							reject(res)
+						}
+					},
+					fail(res) {
+						reject(res)
+					},
+				});
+				requestTask.onProgressUpdate((res) => {
+					console.log('正在进度:', res);
+				});
+			},
+		});
 	})
 }
 
-export const wxUploadFile = async (filePath, callback) => {
-	const opt = await getUploadInfo()
-	var formData = {
-		key: opt.cosKey,
-	};
-	// 如果服务端用了临时密钥计算，需要传 x-cos-security-token
-	if (opt.securityToken) formData['x-cos-security-token'] = opt.securityToken;
-	uni.uploadFile({
-		url: 'https://' + opt.cosHost, //仅为示例，非真实的接口地址
-		filePath: filePath,
-		name: 'file',
-		formData: formData,
-		success: (res) => {
-			if (![200, 204].includes(res.statusCode)) return callback && callback(res);
-			var fileUrl = 'https://' + opt.cosHost + '/' + camSafeUrlEncode(opt.cosKey).replace(/%2F/g, '/');
-			callback && callback(null, fileUrl);
-		},
-		error(err) {
-			callback && callback(err);
-		},
-	});
-}
-
-// export const wxUploadFile = (filePath, fileName) => {
-// 	return new Promise(async (resolve, reject) => {
-// 		let info = await getUploadInfo()
-// 		cos.postObject({
-// 			Bucket: Bucket,
-// 			/* 必须 */
-// 			Region: Region,
-// 			/* 必须 */
-// 			Key: `/images/${fileName}`,
-// 			/* 必须 */
-// 			FilePath: filePath,
-// 			Headers: {
-// 				authorization: info.authorization,
-// 				'x-cos-security-token':info.securityToken
-// 			},
-// 			onProgress: function(info) {
-// 				console.log("[cos.postObject-seccess]", JSON.stringify(info));
-// 			}
-// 		}, function(err, data) {
-// 			console.log("[cos.postObject-err]", err || data);
-// 			resolve(data.headers.location)
-// 		});
-// 	})
-// }
+// 上传文件
+export const wxUploadFile = (filePath,category) => {
+	return new Promise(async (resolve, reject) => {
+		var extIndex = filePath.lastIndexOf('.');
+		var fileExt = extIndex >= -1 ? filePath.substr(extIndex + 1) : '';
+		const result = await getCOSSecurityToken(fileExt,category)
+		if (result.code == 200) {
+			const AuthData = result.data
+			const prefix = 'https://' + AuthData.cosHost;
+			const key = AuthData.cosKey;
+			try{
+				const url = await putFile({
+					prefix,
+					filePath,
+					key,
+					AuthData
+				});
+				resolve(url)
+			}catch(e){
+				reject(e)
+			}
+		}
+	})
+};
