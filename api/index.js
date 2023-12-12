@@ -309,3 +309,11 @@ export const applyForInvoice = (data) => {
 		data
 	})
 }
+
+//根据类型查看金额
+export const getTypePrice = (type) => {
+	return request({
+		url:`/priceManage/findPriceManageByType/${type}`,
+		method:"GET",
+	})
+}

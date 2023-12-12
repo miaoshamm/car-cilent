@@ -1,12 +1,13 @@
 <template>
   <view style="min-height: 100vh">
-		<!-- 顶部导航 -->
-		<view class="nav">
-			<text class="nav-title">城市生活</text>
-		</view>
+    <u-navbar placeholder safeAreaInsetTop bg-color="#449656">
+      <template #left>
+        <text style="font-size: 36rpx; font-weight: bold; color: white; margin-left: 16rpx">城市生活</text>
+      </template>
+    </u-navbar>
     <view class="main">
       <view style="height: 32rpx"></view>
-      <view style="background-color: #ffffff; border-top-left-radius: 32rpx; border-top-right-radius: 32rpx">
+      <view style="background-color: #ffffff; border-top-left-radius: 16rpx; border-top-right-radius: 16rpx">
         <view class="user">
           <view class="avatar">
             <view style="width: 96rpx; height: 96rpx; border-radius: 50%; overflow: hidden">
@@ -18,7 +19,7 @@
           </view>
           <view class="user_info">
             <text @click="isShowNickNameModal = true">{{ userInfo?.nickName }}</text>
-            <text v-if="userInfo.phone" class="phone">{{ phone }}</text>
+            <text v-if="userInfo.phone" class="phone">{{ userInfo?.phone }}</text>
             <button v-else open-type="getPhoneNumber" @getphonenumber="handlePhone">一键获取手机号</button>
           </view>
         </view>
@@ -32,11 +33,11 @@
           <UserMenu :onClick="openRoleModal">切换角色</UserMenu>
         </view>
         <view v-else>
-          <UserMenu pageUrl="/pages/account/royalty/royalty">订单提成</UserMenu>
-          <UserMenu pageUrl="/pages/account/holiday/holiday">请假休假</UserMenu>
+          <UserMenu>订单提成</UserMenu>
+          <UserMenu>请假休假</UserMenu>
           <UserMenu :onClick="openRoleModal">切换角色</UserMenu>
-          <UserMenu pageUrl="/pages/account/company/company">公司简介</UserMenu>
-          <UserMenu :onClick="openRoleModal">增加角色</UserMenu>
+          <UserMenu>公司简介</UserMenu>
+          <UserMenu>增加角色</UserMenu>
         </view>
       </view>
     </view>
@@ -55,47 +56,46 @@
 </template>
 
 <script setup>
-import { ref,computed } from "vue";
+import { ref } from "vue";
 import { getPhone, putUserInfo } from "../../api/index.js";
 import UserMenu from "../../components/user_menu/user_menu.vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
-
 const isShowRoleModal = ref(false);
 const isShowNickNameModal = ref(false);
+const isShowSwitchUserModal = ref(false);
+const isShowSwitchServiceModal = ref(false);
 const status = ref(uni.getStorageSync("userStatus"));
 const key = ref();
 const nickName = ref("");
 const index = status.value === "servicer" ? 1 : 2;
 const userInfo = ref(JSON.parse(uni.getStorageSync("userInfo")));
-
-const phone = computed(() => {
-	const number = userInfo.value.phone
-	return number.substr(0,3)+"****"+number.substr(7);
-})
-
 const openRoleModal = () => {
-  isShowRoleModal.value = true;
+  console.log(userKey);
+  userKey ? (isShowSwitchServiceModal.value = true) : (isShowRoleModal.value = true);
 };
 const roleModalColse = () => {
-  isShowRoleModal.value = false;
+  userKey ? (isShowSwitchServiceModal.value = false) : (isShowRoleModal.value = false);
 };
-const roleModalConfirm = () => {
-  if (key.value === "servicer") {
-    uni.setStorageSync("userStatus", key.value);
-    status.value = key.value;
-    uni.reLaunch({
-      url: "/pages/servicer_orders/servicer_orders",
-    });
+const roleModalConfirm = async () => {
+  if (userKey) {
+    switchServicer();
+    return;
   }
-  if (key.value === "user") {
-    uni.setStorageSync("userStatus", key.value);
-    status.value = key.value;
-    uni.reLaunch({
-      url: "/pages/index/index",
+  const info = await validateRole({
+    secretKey: key.value,
+    userNo: userInfo.value.userNo,
+  });
+  if (info.code === "200") {
+    uni.setStorageSync("userKey", true);
+    switchServicer();
+  } else {
+    uni.showToast({
+      icon: "none",
+      title: "密钥错误",
     });
+    roleModalColse();
   }
-
-  isShowRoleModal.value = false;
+  key.value = "";
 };
 const handlePhone = async (e) => {
   if (e.detail.code) {
@@ -121,13 +121,26 @@ const onChangeNickName = (e) => {
   putUserInfo(userInfo.value);
   isShowNickNameModal.value = false;
 };
+const openSwtchUserModal = () => {
+  isShowSwitchUserModal.value = true;
+};
+const switchUser = () => {
+  uni.setStorageSync("userStatus", "user");
+  uni.reLaunch({
+    url: "/pages/index/index",
+  });
+};
+const switchServicer = () => {
+  uni.setStorageSync("userStatus", "servicer");
+  uni.reLaunch({
+    url: "/pages/servicer_orders/servicer_orders",
+  });
+};
 </script>
 
 <style lang="less" scoped>
 .main {
   background: #449656;
-	position: relative;
-	top: -56rpx;
 
   .user {
     height: 96rpx;

@@ -1,7 +1,7 @@
 <template>
 	<view style="height: 100vh; background: #f6f7f8; display: flex; flex-direction: column" class="">
 		<u-navbar title="订单详情" @leftClick="leftClick" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
-		<view v-if="!isInvoice" :style="{flex: 1, padding: '32rpx 16rpx',position: 'relative',overflow:'auto'}">
+		<view v-if="!isInvoice" :style="{flex: 1, padding: '32rpx',position: 'relative',overflow:'auto'}">
 			<text style="color: #449656; font-size: 36rpx; font-weight: bold;">泊车服务已结束</text>
 			<view style="margin-top: 19rpx">
 				<LicensePlateSelection :licensePlate="orderInfo?.orderExtraVo?.carNo" />
