@@ -31,7 +31,7 @@
 							</template>
 						</u-form-item>
 						<u-form-item label="预约服务" prop="service" borderBottom @click="subscribeInfo.serviceShow = true">
-							<text>{{ subscribeInfo.service?subscribeInfo.service :'选择预约服务' }}</text>
+							<text>{{ subscribeInfo.service ? subscribeInfo.service : '选择预约服务' }}</text>
 							<template #right>
 								<u-icon name="arrow-right"></u-icon>
 							</template>
@@ -299,7 +299,9 @@ const formatter = (type, value) => {
 		justify-content: space-between;
 	}
 }
-::v-deep .u-form-item__body {
+::v-deep .u-form-item__body__right__content__slot.data-v-b4fd400b {
 	height: 76rpx;
+	display: flex !important;
+	flex-direction: row !important;
 }
 </style>

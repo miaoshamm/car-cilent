@@ -1,13 +1,11 @@
 <template>
   <view style="min-height: 100vh">
-    <u-navbar placeholder safeAreaInsetTop bg-color="#449656">
-      <template #left>
-        <text style="font-size: 36rpx; font-weight: bold; color: white; margin-left: 16rpx">城市生活</text>
-      </template>
-    </u-navbar>
+    <view class="nav">
+    			<text class="nav-title">城市生活</text>
+    		</view>
     <view class="main">
       <view style="height: 32rpx"></view>
-      <view style="background-color: #ffffff; border-top-left-radius: 16rpx; border-top-right-radius: 16rpx">
+      <view style="background-color: #ffffff; border-top-left-radius: 16rpx; border-top-right-radius: 32rpx">
         <view class="user">
           <view class="avatar">
             <view style="width: 96rpx; height: 96rpx; border-radius: 50%; overflow: hidden">
@@ -19,7 +17,7 @@
           </view>
           <view class="user_info">
             <text @click="isShowNickNameModal = true">{{ userInfo?.nickName }}</text>
-            <text v-if="userInfo.phone" class="phone">{{ userInfo?.phone }}</text>
+            <text v-if="userInfo.phone" class="phone">{{phone}}</text>
             <button v-else open-type="getPhoneNumber" @getphonenumber="handlePhone">一键获取手机号</button>
           </view>
         </view>
@@ -33,11 +31,11 @@
           <UserMenu :onClick="openRoleModal">切换角色</UserMenu>
         </view>
         <view v-else>
-          <UserMenu>订单提成</UserMenu>
-          <UserMenu>请假休假</UserMenu>
-          <UserMenu :onClick="openRoleModal">切换角色</UserMenu>
-          <UserMenu>公司简介</UserMenu>
-          <UserMenu>增加角色</UserMenu>
+          <UserMenu pageUrl='/pages/account/royalty/royalty'>订单提成</UserMenu>
+          <UserMenu pageUrl='/pages/account/holiday/holiday'>请假休假</UserMenu>
+          <UserMenu :onClick="openSwtchUserModal">切换角色</UserMenu>
+          <UserMenu pageUrl='/pages/account/company/company'>公司简介</UserMenu>
+          <UserMenu >增加角色</UserMenu>
         </view>
       </view>
     </view>
@@ -53,10 +51,12 @@
       <input type="nickname" v-model="nickName" style="width: 100%" placeholder="请输入昵称" />
     </template>
   </u-modal>
+	<u-modal :show="isShowSwitchUserModal" title="是否切换成用户" showCancelButton @confirm="switchUser" @cancel="isShowSwitchUserModal = false" ></u-modal>
+	<u-modal :show="isShowSwitchServiceModal" title="是否切换成服务人员" showCancelButton @confirm="roleModalConfirm" @cancel="isShowSwitchServiceModal = false" ></u-modal>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref ,computed} from "vue";
 import { getPhone, putUserInfo } from "../../api/index.js";
 import UserMenu from "../../components/user_menu/user_menu.vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
@@ -69,8 +69,12 @@ const key = ref();
 const nickName = ref("");
 const index = status.value === "servicer" ? 1 : 2;
 const userInfo = ref(JSON.parse(uni.getStorageSync("userInfo")));
+const userKey = uni.getStorageSync('userKey')
+const phone = computed(() => {
+	const number = userInfo.value.phone
+	return number.substr(0,3)+"****"+number.substr(7);
+})
 const openRoleModal = () => {
-  console.log(userKey);
   userKey ? (isShowSwitchServiceModal.value = true) : (isShowRoleModal.value = true);
 };
 const roleModalColse = () => {
@@ -136,11 +140,14 @@ const switchServicer = () => {
     url: "/pages/servicer_orders/servicer_orders",
   });
 };
+
 </script>
 
 <style lang="less" scoped>
 .main {
   background: #449656;
+	position: relative;
+	top: -56rpx;
 
   .user {
     height: 96rpx;

@@ -1,11 +1,11 @@
 <template>
-	<view style="min-height: 100vh; background: #f6f7f8; display: flex; flex-direction: column">
+	<view style="min-height: 100vh; background: #f6f7f8; display: flex; flex-direction: column" class="wrapper-p">
 		<u-navbar :autoBack="true" title="预约代客泊车" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
-		<view style="flex: 1; padding: 32rpx; position: relative">
+		<view style="flex: 1; padding: 32rpx; position: relative;overflow: scroll;" >
 			<LicensePlateSelection type="input" @plateNumber="" />
 			<u--form ref="formRef" class="car-form" labelPosition="left" :model="subscribeInfo" :rules="rules" labelWidth="100" errorType="toast">
 				<view class="card" style="margin-top: 19rpx">
-					<u-form-item label="手机号码" prop="phone" borderBottom>
+					<u-form-item label="手机号码" prop="phone"  borderBottom>
 						<u--input v-model="subscribeInfo.phone" border="none" placeholder="请输入手机号(必填)"></u--input>
 						<template #right>
 							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" style="font-size: 24rpx;color: #449656;padding: 0;background-color: transparent;">一键获取手机号</button>
@@ -28,8 +28,7 @@
 							</view>
 						</template>
 					</u-form-item>
-
-					<u-form-item label="帮忙取车" prop="carColor" borderBottom>
+					<u-form-item label="帮忙取车" prop="isHelpGet" borderBottom>
 						<view style="width: 100%; display: flex; justify-content: flex-end">
 							<u-switch v-model="subscribeInfo.isHelpGet" @change="" activeColor="#449656"></u-switch>
 						</view>
@@ -65,9 +64,11 @@
 				/>
 			</view>
 			<InsuranceTips />
+			
 		</view>
+		<PriceBtn @callback="placeAnOrder" type="subscribe" :price="45" />
 	</view>
-	<PriceBtn @callback="placeAnOrder" type="subscribe" :price="45" />
+	
 	<u-datetime-picker
 		:formatter="formatter"
 		:minDate="nowTime"
@@ -399,11 +400,10 @@ onReady(() => {
 		}
 	}
 }
-::v-deep .u-form-item__body {
+::v-deep .u-form-item__body__right__content__slot.data-v-b4fd400b {
 	height: 76rpx;
+	display: flex !important;
+	flex-direction: row !important;
 }
 
-button{
-	
-}
 </style>

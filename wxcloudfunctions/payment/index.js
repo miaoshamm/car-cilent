@@ -15,7 +15,7 @@ exports.main = async (event, context, callback) => {
 		"body": event.body, // 商品描述
 		"outTradeNo": event.outTradeNo.orderNo, // 商户订单号
 		"subMchId": event.subMchId, // 商户号
-		"totalFee": price.data.orderPayMoney, // 总金额
+		"totalFee": 1, // 总金额
 		"envId": 'cloud1-7gq3bs6j826b6a91', // 云函数环境名称
 		"functionName": "paymentCallback", // 支付结果通知回调云函数名
 		"spbillCreateIp": wxContext.CLIENTIP,
