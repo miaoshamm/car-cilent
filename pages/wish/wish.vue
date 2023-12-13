@@ -4,12 +4,12 @@
 		<view class="wrapper wrapper-t">
 			<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
 			<view class="car-info">
-				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="90"
+				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="80"
 					errorType="toast">
 					<view class="box">
 						<u-form-item label="手机号码" prop="phone" borderBottom>
 							<u--input v-model="info.phone" border="none" placeholder="请输入手机号(必填)"></u--input>
-							<button class="get-phone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取手机号</button>
+							<button class="get-phone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">一键获取手机号</button>
 						</u-form-item>
 						<u-form-item label="预约姓名" prop="userName" borderBottom>
 							<u--input v-model="info.userName" border="none" placeholder="请输入预约姓名"></u--input>
@@ -150,6 +150,12 @@
 						icon: "error"
 					})
 				}
+				if (!info.value.washService.length) {
+					return uni.showToast({
+						title: "请选择维保服务",
+						icon: "error"
+					})
+				}
 				const arr = []
 				info.value.carTypeName = info.value.carTypeName[0]
 				info.value.washService.forEach(item => {
@@ -214,7 +220,7 @@
 			const result = await getCarServices()
 			if (result.code == 200) {
 				serviceList.value = result.data
-				if (result.data) {
+				if (serviceId.value) {
 					result.data.forEach(item => {
 						if (item.id == serviceId.value) {
 							info.value.washService = [item]
@@ -243,7 +249,7 @@
 
 	// 选择车型
 	const checkModel = (item) => {
-		info.value.carTypeName = item.value;
+		info.value.carTypeName = item.value[0];
 		modelShow.value = false;
 	};
 
@@ -304,5 +310,9 @@
 
 	.add-service {
 		width: 100%;
+	}
+	
+	.get-phone{
+		font-size: 24rpx;
 	}
 </style>

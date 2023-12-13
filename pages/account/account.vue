@@ -25,8 +25,8 @@
         <view v-if="status === 'user'">
           <UserMenu pageUrl="/pages/evaluate_list/evaluate_list">我的评价</UserMenu>
           <UserMenu pageUrl="/pages/invoice_list/invoice_list">查看发票</UserMenu>
-          <UserMenu pageUrl="/pages/privacy_policy/privacy_policy">隐私政策</UserMenu>
-          <UserMenu pageUrl="/pages/terms_of_service/terms_of_service">服务条款</UserMenu>
+          <UserMenu pageUrl="/pages/service_rules/service_rules?type=PRIVACY">隐私政策</UserMenu>
+          <UserMenu pageUrl="/pages/service_rules/service_rules?type=SERVE">服务条款</UserMenu>
           <UserMenu>在线客服</UserMenu>
           <UserMenu :onClick="openRoleModal">切换角色</UserMenu>
         </view>
