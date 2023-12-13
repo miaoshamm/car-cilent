@@ -2,7 +2,7 @@
 	<view style="min-height: 100vh; background: #f6f7f8; display: flex; flex-direction: column" class="wrapper-p">
 		<u-navbar :autoBack="true" title="预约代客泊车" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
 		<view style="flex: 1; padding: 32rpx; position: relative;overflow: scroll;" >
-			<LicensePlateSelection type="input" @plateNumber="" />
+			<LicensePlateSelection :licensePlate="subscribeInfo.licensePlate" type="input" @plateNumber="getPlateNumber" />
 			<u--form ref="formRef" class="car-form" labelPosition="left" :model="subscribeInfo" :rules="rules" labelWidth="100" errorType="toast">
 				<view class="card" style="margin-top: 19rpx">
 					<u-form-item label="手机号码" prop="phone"  borderBottom>
@@ -64,7 +64,6 @@
 				/>
 			</view>
 			<InsuranceTips />
-			
 		</view>
 		<PriceBtn @callback="placeAnOrder" type="subscribe" :price="45" />
 	</view>
@@ -117,7 +116,7 @@ const openMap = () => {
 const subscribeInfo = ref({
 	userName: '',
 	phone: '',
-	licensePlate: '粤B66666',
+	licensePlate: '',
 	location: { name: '获取位置' },
 	reservationTime: '',
 	carTypeName: [],
@@ -128,6 +127,12 @@ const subscribeInfo = ref({
 	isShowCarType: false
 });
 const carTypeColumns = reactive([brandsList]);
+
+// 获取车牌
+const getPlateNumber = (res) => {
+	subscribeInfo.value.licensePlate = res
+}
+
 const openChooseCarType = () => {
 	subscribeInfo.value.isShowCarType = true;
 };

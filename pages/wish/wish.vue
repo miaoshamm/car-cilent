@@ -4,12 +4,12 @@
 		<view class="wrapper wrapper-t">
 			<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
 			<view class="car-info">
-				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="90"
+				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="80"
 					errorType="toast">
 					<view class="box">
 						<u-form-item label="手机号码" prop="phone" borderBottom>
 							<u--input v-model="info.phone" border="none" placeholder="请输入手机号(必填)"></u--input>
-							<button class="get-phone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取手机号</button>
+							<button class="get-phone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">一键获取手机号</button>
 						</u-form-item>
 						<u-form-item label="预约姓名" prop="userName" borderBottom>
 							<u--input v-model="info.userName" border="none" placeholder="请输入预约姓名"></u--input>
@@ -304,5 +304,9 @@
 
 	.add-service {
 		width: 100%;
+	}
+	
+	.get-phone{
+		font-size: 24rpx;
 	}
 </style>

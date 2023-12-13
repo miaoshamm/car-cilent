@@ -53,31 +53,10 @@
       }
     },
     {
-      "path": "pages/privacy_policy/privacy_policy",
-      "style": {
-        "navigationBarTitleText": "隐私政策",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/terms_of_service/terms_of_service",
-      "style": {
-        "navigationBarTitleText": "服务条款",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
       "path": "pages/order_detail_parking/order_detail_parking",
       "style": {
         "navigationBarTitleText": "泊车订单详情",
         "navigationStyle": "custom",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/bill_rule/bill_rule",
-      "style": {
-        "navigationBarTitleText": "计费规则",
         "enablePullDownRefresh": false
       }
     },
@@ -165,6 +144,13 @@
     	{
     		"navigationBarTitleText" : "职工认证",
     		"enablePullDownRefresh" : false
+    	}
+    },
+    {
+    	"path" : "pages/service_rules/service_rules",
+    	"style" : 
+    	{
+    		"navigationStyle": "custom"
     	}
     }
   ],

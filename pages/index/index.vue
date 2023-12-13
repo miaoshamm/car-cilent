@@ -31,7 +31,7 @@
 			<view class="subscribe" v-for="item in subscribeList" :key="item.id">
 				<view class="sub-le">
 					<text class="sub-le-title">预约车辆：{{item.carNo}}</text>
-					<text class="sub-le-small">预约泊车时间：2023 年 11 月 22 日 00:00</text>
+					<text class="sub-le-small">预约泊车时间：{{item.reservationTime}}</text>
 				</view>
 				<text class="sub-detail" @click="goDetail('order_detail_parking',item.orderNo)">查看详情</text>
 			</view>
@@ -66,11 +66,11 @@
 						</u-grid-item>
 					</u-grid>
 				</view>
-				<swiper>
+				<swiper v-show="evaluate.length">
 					<swiper-item v-for="item in evaluate" :key="item.id">
 						<view class="review">
 							<view class="review-title">
-								<up-avatar :size="32" src="http://run.czjscktd.com/help-thing/lkr.jpg"></up-avatar>
+								<up-avatar :size="32" :src="item.avatarUrl"></up-avatar>
 								<text>{{item.userName}}</text>
 							</view>
 							<view class="review-content">
