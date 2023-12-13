@@ -150,6 +150,12 @@
 						icon: "error"
 					})
 				}
+				if (!info.value.washService.length) {
+					return uni.showToast({
+						title: "请选择维保服务",
+						icon: "error"
+					})
+				}
 				const arr = []
 				info.value.carTypeName = info.value.carTypeName[0]
 				info.value.washService.forEach(item => {
@@ -214,7 +220,7 @@
 			const result = await getCarServices()
 			if (result.code == 200) {
 				serviceList.value = result.data
-				if (result.data) {
+				if (serviceId.value) {
 					result.data.forEach(item => {
 						if (item.id == serviceId.value) {
 							info.value.washService = [item]
@@ -243,7 +249,7 @@
 
 	// 选择车型
 	const checkModel = (item) => {
-		info.value.carTypeName = item.value;
+		info.value.carTypeName = item.value[0];
 		modelShow.value = false;
 	};
 

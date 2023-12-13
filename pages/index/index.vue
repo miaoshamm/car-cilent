@@ -179,6 +179,7 @@ import {
   putUserInfo,
   getReservationOrder,
 } from "@/api";
+import { info } from "sass";
 let banner = ref([]);
 let notice = ref([]);
 let driver = ref([]);
@@ -293,7 +294,11 @@ const goService = (url) => {
   });
 };
 
-const bannerClick = () => {};
+const bannerClick = (index) => {
+	// uni.navigateTo({
+	// 	url:banner.value[index].bannerJumpLink
+	// })
+};
 
 // 跳转到详情
 const goDetail = (type, id) => {
