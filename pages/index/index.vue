@@ -179,7 +179,6 @@ import {
   putUserInfo,
   getReservationOrder,
 } from "@/api";
-import { info } from "sass";
 let banner = ref([]);
 let notice = ref([]);
 let driver = ref([]);
