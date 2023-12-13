@@ -5,9 +5,9 @@ export const request = ({url,method,data}) => {
 	let lastUrl = ''
 	let header = {}
 	
-	// uni.showLoading({
-	// 	title:'加载中...'
-	// })
+	uni.showLoading({
+		title:'加载中...'
+	})
 	
 	if(uni.getStorageSync("accessToken")){
 		header = {
