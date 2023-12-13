@@ -176,7 +176,6 @@ const getInfo = async () => {
     // 获取用户编号
     const userNo = uni.getStorageSync("userInfo") ? JSON.parse(uni.getStorageSync("userInfo")).userNo : "";
     const reservationList = await getReservationOrder(userNo);
-
     if (bannerList.code == 200) {
       banner.value = bannerList.data;
     }

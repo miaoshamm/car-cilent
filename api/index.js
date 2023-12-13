@@ -94,14 +94,14 @@ export const putCarRecordInfo = (data) => {
 }
 
 // 职工服务人员查询打卡
-export const getServicer = (userNo) => {
+export const getServicerPunch = (userNo) => {
 	return request({
-		url:`/servicer/findOrderByCustom/${userNo}`,
+		url:`/servicer/finPunchByCustom/${userNo}`,
 		method:"GET"
 	})
 }
 
-// 职工服务人员查询打卡
+// 职工服务人员查询服务订单
 export const getOrderByServicer = (servicerId) => {
 	return request({
 		url:`/servicer/findOrderByServicer?servicerId=${servicerId}`,
