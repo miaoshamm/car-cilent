@@ -151,12 +151,11 @@ const placeOrder = async () => {
 			userId: userInfo.id,
 			orderType: subscribeInfo.serviceType
 		});
-		console.log(orderInfo);
 		wx.cloud.callFunction({
 			name: 'payment',
 			data: {
 				outTradeNo: orderInfo.data,
-				body: subscribeInfo.servicerInfo.label + '-城市服务接送患者',
+				body: subscribeInfo.serviceType + '-城市服务接送患者',
 				subMchId: '1643049307',
 				functionName: 'paymentCallback'
 			},

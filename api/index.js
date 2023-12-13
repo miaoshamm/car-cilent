@@ -252,6 +252,14 @@ export const getUserEvaluate = () => {
 	})
 }
 
+// 获取用户评价订单信息
+export const getUserOrderEvaluate = () => {
+	return request({
+		url:`/userEvaluate/findOrderEvaluate`,
+		method:"GET"
+	})
+}
+
 // 根据用户id获取车辆信息
 export const getUserCar = (id) => {
 	return request({

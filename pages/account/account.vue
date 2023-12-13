@@ -57,7 +57,7 @@
 
 <script setup>
 import { ref ,computed} from "vue";
-import { getPhone, putUserInfo } from "../../api/index.js";
+import { getPhone, putUserInfo,validateRole } from "../../api/index.js";
 import UserMenu from "../../components/user_menu/user_menu.vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
 const isShowRoleModal = ref(false);
@@ -85,6 +85,7 @@ const roleModalConfirm = async () => {
     switchServicer();
     return;
   }
+	console.log('123456');
   const info = await validateRole({
     secretKey: key.value,
     userNo: userInfo.value.userNo,
