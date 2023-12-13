@@ -13,7 +13,7 @@
 		<view class="main">
 			<u-notice-bar direction="column" bgColor="#F6F7F8" icon="/static/images/index/notice.svg" :text="notice"></u-notice-bar>
 			<view class="swiper">
-				<u-swiper keyName="bannerImageUrl" indicator indicatorMode="line" circular :list="banner" @click="bannerClick"></u-swiper>
+				<u-swiper keyName="bannerImageUrl" indicator indicatorMode="line" circular :list="banner" @click="bannerClick" height="306rpx"></u-swiper>
 			</view>
 			<view class="grid">
 				<u-grid :border="false" col="5">
@@ -227,6 +227,9 @@ onLoad(() => {
 				uni.setStorageSync('accessToken', result.data.token);
 				const userInfo = await getUserInfo();
 				uni.setStorageSync('userInfo', JSON.stringify(userInfo.data));
+				if(userInfo.data.servicerId){
+					uni.setStorageSync('userKey',true)
+				}
 				getInfo();
 			}
 		}

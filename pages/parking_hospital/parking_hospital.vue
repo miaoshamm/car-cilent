@@ -1,14 +1,16 @@
 <template>
 	<view style="min-height: 100vh; background: #f6f7f8; display: flex; flex-direction: column" class="wrapper-p">
 		<u-navbar :autoBack="true" title="预约代客泊车" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
-		<view style="flex: 1; padding: 32rpx; position: relative;overflow: scroll;" >
+		<view style="flex: 1; padding: 32rpx; position: relative; overflow: scroll">
 			<LicensePlateSelection type="input" @plateNumber="" />
 			<u--form ref="formRef" class="car-form" labelPosition="left" :model="subscribeInfo" :rules="rules" labelWidth="100" errorType="toast">
 				<view class="card" style="margin-top: 19rpx">
-					<u-form-item label="手机号码" prop="phone"  borderBottom>
+					<u-form-item label="手机号码" prop="phone" borderBottom>
 						<u--input v-model="subscribeInfo.phone" border="none" placeholder="请输入手机号(必填)"></u--input>
 						<template #right>
-							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" style="font-size: 24rpx;color: #449656;padding: 0;background-color: transparent;">一键获取手机号</button>
+							<button open-type="getPhoneNumber" @getphonenumber="getPhoneNumber" style="font-size: 24rpx; color: #449656; padding: 0; background-color: transparent">
+								一键获取手机号
+							</button>
 						</template>
 					</u-form-item>
 					<u-form-item label="预约姓名" prop="userName" borderBottom>
@@ -64,11 +66,10 @@
 				/>
 			</view>
 			<InsuranceTips />
-			
 		</view>
 		<PriceBtn @callback="placeAnOrder" type="subscribe" :price="45" />
 	</view>
-	
+
 	<u-datetime-picker
 		:formatter="formatter"
 		:minDate="nowTime"
@@ -117,7 +118,7 @@ const openMap = () => {
 const subscribeInfo = ref({
 	userName: '',
 	phone: '',
-	licensePlate: '粤B66666',
+	licensePlate: '',
 	location: { name: '获取位置' },
 	reservationTime: '',
 	carTypeName: [],
@@ -150,24 +151,7 @@ const placeAnOrder = async () => {
 			});
 			return;
 		}
-		if (res && locationType === 'DEFAULT') {
-			const orderInfo = await reservationParkOrder({
-				userId: userInfo.id,
-				addressType: locationType,
-				userName: subscribeInfo.value.userName,
-				phone: subscribeInfo.value.phone,
-				orderType: subscribeInfo.value.isHelpGet ? 'HELP_SAVE_AND_RETRIEVE' : 'HELP_SAVE_ASK_OF',
-				reservationTime: dayjs(subscribeInfo.value.reservationTime).format('YYYY-MM-DD HH:mm:ss'),
-				carTypeName: subscribeInfo.value.carTypeName.toString(),
-				carColor: subscribeInfo.value.carColor,
-				servicerId: subscribeInfo.value.servoicerInfo.id,
-				carNo: subscribeInfo.value.licensePlate
-			});
-			
-		 	orderInfo.data.orderNo && uni.navigateTo({
-				url: `/pages/order_detail_parking/order_detail_parking?order_no=${orderInfo.data.orderNo}`
-			});
-		} else if (res && locationType === 'OPTIONAL') {
+		if (res) {
 			const orderInfo = await reservationParkOrder({
 				userId: userInfo.id,
 				addressType: locationType,
@@ -179,13 +163,14 @@ const placeAnOrder = async () => {
 				carColor: subscribeInfo.value.carColor,
 				servicerId: subscribeInfo.value.servoicerInfo.id,
 				carNo: subscribeInfo.value.licensePlate,
-				address: subscribeInfo.value.location.address,
-				latitude: subscribeInfo.value.location.latitude,
-				longitude:subscribeInfo.value.location.longitude
+				address: locationType === 'OPTIONAL' && subscribeInfo.value.location.address,
+				latitude: locationType === 'OPTIONAL' && subscribeInfo.value.location.latitude,
+				longitude: locationType === 'OPTIONAL' && subscribeInfo.value.location.longitude
 			});
-			orderInfo.data.orderNo && uni.navigateTo({
-				url: `/pages/order_detail_parking/order_detail_parking?order_no=${orderInfo.data.orderNo}`
-			});
+			orderInfo.data.orderNo &&
+				uni.navigateTo({
+					url: `/pages/order_detail_parking/order_detail_parking?order_no=${orderInfo.data.orderNo}`
+				});
 		}
 	});
 };
@@ -259,12 +244,12 @@ const rules = {
 			message: '请填写手机号'
 		},
 		{
-					pattern: /^1\d{10}$/g,
-					transform(value) {
-						return String(value);
-					},
-					message: '请输入正确的手机号'
-				}
+			pattern: /^1\d{10}$/g,
+			transform(value) {
+				return String(value);
+			},
+			message: '请输入正确的手机号'
+		}
 	],
 	userName: [
 		{
@@ -405,5 +390,4 @@ onReady(() => {
 	display: flex !important;
 	flex-direction: row !important;
 }
-
 </style>

@@ -53,19 +53,9 @@
 				</view>
 			</view>
 			<view style="margin-top: 7rpx" class="card">
-				<view class="card_line">
-					<view class="card_line_title">泊车服务费</view>
-					<view class="card_line_content">+50</view>
-				</view>
-				<view class="size_box" v-if="orderInfo?.paymentRecordVos.discount"></view>
-				<view class="card_line" v-if="orderInfo?.paymentRecordVos.discount">
-					<view class="card_line_title">首单折扣费</view>
-					<view class="card_line_content">+{{orderInfo?.paymentRecordVos?.discountMoney}}</view>
-				</view>
-				<view class="size_box" v-if="orderInfo?.paymentRecordVos.parkTime"></view>
-				<view class="card_line" v-if="orderInfo?.paymentRecordVos.parkTime">
-					<view class="card_line_title">停车费用</view>
-					<view class="card_line_content">+40</view>
+				<view class="card_line" v-for='item in orderInfo?.paymentRecordVos'>
+					<view class="card_line_title">{{item.serviceName}}</view>
+					<view class="card_line_content">+{{item.service_price}}</view>
 				</view>
 				<view class="size_box"></view>
 				<view class="card_line">

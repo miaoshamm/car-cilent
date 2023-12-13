@@ -3,6 +3,9 @@
 		<u-navbar  title="我的订单" :left-icon="false" titleStyle="font-size:36rpx"  placeholder safeAreaInsetTop></u-navbar>
 		<view style="flex: 1;">
 			<OrderCard v-for='info in orderList' :orderInfo='info' />
+			<view style="color:#449656 ; text-align: center;" v-if="orderList.length === 0">
+				暂无订单信息
+			</view>
 		</view>
     <Tabbar :value="1" />
   </view>
