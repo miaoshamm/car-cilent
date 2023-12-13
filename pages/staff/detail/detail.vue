@@ -4,15 +4,15 @@
 		<view class="title" v-show="info.status === 'PROCESS'">正在审核中...</view>
 		<view class="title" v-show="info.status === 'NOTPASS'">信息有误，请修改后重新上传</view>
 		<view class="title" v-show="info.status === 'PASS'">职工认证信息</view>
-		<License :licensePlate="info.carNo" type="input" />
+		<License :licensePlate="info.carNo" type="input" @plateNumber="getPlateNumber"/>
 		<view class="car-info">
-			<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="90">
+			<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="80">
 				<view class="box">
 					<u-form-item class="phone-info" label="手机号码" prop="workerPhone" borderBottom>
 						<u--input :disabled="disInput" disabledColor="#fff" v-model="info.workerPhone" border="none"
 							placeholder="请输入手机号(必填)"></u--input>
 						<button v-show="!info.status" class="get-phone" open-type="getPhoneNumber"
-							@getphonenumber="getPhoneNumber">获取手机号</button>
+							@getphonenumber="getPhoneNumber">一键获取手机号</button>
 					</u-form-item>
 					<u-form-item label="用户姓名" prop="userName" borderBottom>
 						<u--input :disabled="disInput" disabledColor="#fff" v-model="info.userName" border="none"
@@ -40,12 +40,12 @@
 					<u-form-item label="工作证" borderBottom>
 						<view class="box-img">
 							<view class="box-img-info" @click="uploadInfo('cardFrontUrl')">
-								<image :src="info.cardFrontUrl ? info.cardFrontUrl : '../../static/images/common/card-photo1.png'">
+								<image :src="info.cardFrontUrl ? info.cardFrontUrl : '/static/images/common/card-photo1.png'">
 								</image>
 								<text>正面照</text>
 							</view>
 							<view class="box-img-info" @click="uploadInfo('cardBackUrl')">
-								<image :src="info.cardBackUrl ? info.cardBackUrl : '../../static/images/common/card-photo2.png'">
+								<image :src="info.cardBackUrl ? info.cardBackUrl : '/static/images/common/card-photo2.png'">
 								</image>
 								<text>反面照</text>
 							</view>
@@ -56,7 +56,7 @@
 					<u-form-item label="行驶证" borderBottom>
 						<view class="box-img">
 							<view class="box-img-info" @click="uploadInfo('licenseUrl')">
-								<image :src="info.licenseUrl ? info.licenseUrl : '../../static/images/common/card-photo1.png'">
+								<image :src="info.licenseUrl ? info.licenseUrl : '/static/images/common/card-photo1.png'">
 								</image>
 								<text>行驶证</text>
 							</view>
@@ -148,6 +148,12 @@
 	const disInput = computed(() => {
 		return info.value.status === 'PROCESS'
 	})
+	
+	// 获取车牌
+	const getPlateNumber = (res) => {
+		if(info.value.status === 'PASS') return
+		info.value.carNo = res
+	}
 
 	// 弹窗显示
 	const showModel = () => {
@@ -242,5 +248,6 @@
 
 	.get-phone {
 		color: $bgColor;
+		font-size: 24rpx;
 	}
 </style>

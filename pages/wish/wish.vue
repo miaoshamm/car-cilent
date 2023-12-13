@@ -4,7 +4,8 @@
 		<view class="wrapper wrapper-t">
 			<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
 			<view class="car-info">
-				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="90">
+				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="90"
+					errorType="toast">
 					<view class="box">
 						<u-form-item label="手机号码" prop="phone" borderBottom>
 							<u--input v-model="info.phone" border="none" placeholder="请输入手机号(必填)"></u--input>
@@ -24,7 +25,7 @@
 							</template>
 						</u-form-item>
 						<u-form-item label="车辆型号" prop="carTypeName" borderBottom @click="modelShow = true">
-							<u--input disabled v-model="info.carTypeName" disabledColor="#ffffff" placeholder="请选择车辆型号"
+							<u--input disabled v-model="info.carTypeName" disabledColor="#ffffff" placeholder="请选择车辆型号(必填)"
 								border="none"></u--input>
 							<template #right>
 								<u-icon name="arrow-right"></u-icon>
@@ -108,21 +109,30 @@
 	const serviceId = ref(0)
 	// 规则
 	const rules = {
-		"phone": {
-			validator: (rule, value, callback) => {
-				return uni.$u.test.mobile(value);
+		phone: [{
+				required: true,
+				message: '请填写手机号'
 			},
-			message: '手机号码不正确',
-			// 触发器可以同时用blur和change
-			trigger: ['change', 'blur'],
+			{
+				pattern: /^1\d{10}$/g,
+				transform(value) {
+					return String(value);
+				},
+				message: '请输入正确的手机号'
+			}
+		],
+		carTypeName:{
+			required: true,
+			type:"string",
+			message: '请输入车型'
 		}
 	}
-	
+
 	// 获取手机号
 	const getPhoneNumber = async (res) => {
 		try {
 			const result = await getPhone(res.target.code)
-			if(result.code == 200){
+			if (result.code == 200) {
 				info.value.phone = result.data
 			}
 		} catch (e) {
@@ -134,10 +144,10 @@
 	const createOrder = (res) => {
 		if (res === 'success') {
 			uForm.value.validate().then(async res => {
-				if(!info.value.carNo){
+				if (!info.value.carNo) {
 					return uni.showToast({
-						title:"请输入车牌号",
-						icon:"error"
+						title: "请输入车牌号",
+						icon: "error"
 					})
 				}
 				const arr = []
@@ -150,9 +160,31 @@
 				info.value.userId = JSON.parse(uni.getStorageSync("userInfo")).id
 				const result = await reservationPreserveOrder(info.value)
 				if (result.code == 200) {
-					uni.navigateTo({
-						url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
-					})
+					wx.cloud.callFunction({
+						name: 'payment',
+						data: {
+							outTradeNo: result.data,
+							body: '城市服务维保',
+							subMchId: '1643049307',
+							functionName: 'paymentCallback'
+						},
+						success: (res) => {
+							const payment = res.result.payment;
+							wx.requestPayment({
+								...payment,
+								success(res) {
+									uni.navigateTo({
+										url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
+									});
+									console.log('pay success', res);
+								},
+								fail(err) {
+									console.error('pay fail', err);
+								}
+							});
+						},
+						fail: console.error
+					});
 				}
 			})
 		} else {
@@ -182,13 +214,13 @@
 			const result = await getCarServices()
 			if (result.code == 200) {
 				serviceList.value = result.data
-				if(serviceId.value){
+				if (result.data) {
 					result.data.forEach(item => {
-						if(item.id == serviceId.value){
+						if (item.id == serviceId.value) {
 							info.value.washService = [item]
 						}
 					})
-				}else{
+				} else {
 					info.value.washService = [result.data[0] ?? null]
 				}
 				info.value.total = info.value.washService.reduce((total, item) => {
@@ -264,12 +296,13 @@
 
 <style lang="scss" scoped>
 	.box {
-		::v-deep .u-form-item__body__right__content__slot.data-v-b4fd400b{
+		::v-deep .u-form-item__body__right__content__slot.data-v-b4fd400b {
 			display: flex !important;
 			flex-direction: row !important;
 		}
 	}
-	.add-service{
+
+	.add-service {
 		width: 100%;
 	}
 </style>

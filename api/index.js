@@ -1,5 +1,13 @@
 import {request} from "@/utils/request.js"
 
+// 获取预约成功订单
+export const getReservationOrder = (userNo) => {
+	return request({
+		url:`/userOrder/findReservationOrder?userNo=${userNo}`,
+		method:"GET"
+	})
+}
+
 // 职工修改认证
 export const updateCertification = (data) => {
 	return request({

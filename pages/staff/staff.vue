@@ -2,7 +2,7 @@
 	<view class="wrapper">
 		<view class="card-auth">
 			<view class="service">
-				<image src="/static/images/wish/service.png" mode=""></image>
+				<image :src="userInfo.avatarUrl" mode=""></image>
 				<view class="text">
 					<text class="name">{{userInfo.nickName}}</text>
 					<text class="normal">已认证职工身份</text>
@@ -30,16 +30,36 @@
 <script setup>
 	import { ref } from 'vue';
 	import {onLoad} from "@dcloudio/uni-app"
+	import {getEmployeeCertification} from "@/api"
 	const userInfo = ref("")
-	onLoad(() => {
-		userInfo.value = JSON.stringify(uni.getStorageSync("userInfo"))
-	})
+	
+	// 获取职工认证状态
+	const getCertification = async () => {
+		try {
+			const result = await getEmployeeCertification(userInfo.value.userNo)
+			if (result.code == 200) {
+				if(!result.data.status){
+					uni.reLaunch({
+						url:'/pages/staff/detail/detail'
+					})
+				}
+			}
+		} catch (e) {
+		}
+	}
+	
 	// 查看信息
 	const showInfo = () => {
 		uni.navigateTo({
 			url:"/pages/staff/detail/detail"
 		})
 	};
+	
+	onLoad(() => {
+		userInfo.value = JSON.parse(uni.getStorageSync("userInfo"))
+		getCertification()
+	})
+
 </script>
 
 <style lang="scss" scoped>
