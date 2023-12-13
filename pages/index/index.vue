@@ -49,11 +49,11 @@
 			</view>
 			<view class="driver">
 				<view class="cell-title">
-					<u-cell :border="false" :isLink="true" title="精选司机" value="立即泊车"></u-cell>
+					<u-cell @click="goDetail('parking_hospital',null)" :border="false" :isLink="true" title="精选司机" value="立即泊车"></u-cell>
 				</view>
 				<view class="grid">
 					<u-grid :border="false" col="3">
-						<u-grid-item v-for="(listItem, listIndex) in driver" :key="listIndex">
+						<u-grid-item v-for="(listItem, listIndex) in driver" :key="listIndex" @click="goDetail('parking_hospital',listItem.id)">
 							<image :src="listItem.userAvatar" mode=""></image>
 							<text class="grid-driver">{{ listItem.userName }}</text>
 							<text class="grid-driver-small">驾龄：{{ listItem.drivingAge }}年</text>
@@ -72,9 +72,9 @@
 			</view>
 			<view class="maintenance">
 				<view class="cell-title">
-					<u-cell :border="false" :isLink="true" title="精选维保服务" va lue="立即保养"></u-cell>
+					<u-cell @click="goDetail('wish',null)" :border="false" :isLink="true" title="精选维保服务" va lue="立即保养"></u-cell>
 				</view>
-				<view class="maintenance-box" v-for="item in carServiceList" :key="item.id">
+				<view class="maintenance-box" v-for="item in carServiceList" :key="item.id" @click="goDetail('wish',item.id)">
 					<image :src="item.serviceImageUrl" mode=""></image>
 					<view class="tenance-box-ri">
 						<text class="title">{{ item.serviceName }}</text>
@@ -140,7 +140,6 @@ let model = ref({
 const getPhoneNumber = async (e) => {
 	if (e.detail.code) {
 		const info = await getPhone(e.detail.code);
-		console.log(info);
 		const userInfo = JSON.parse(uni.getStorageSync('userInfo'))
 		userInfo.phone = info.data;
 		const putInfo = await putUserInfo(userInfo);
@@ -202,6 +201,17 @@ const goService = (url) => {
 
 const bannerClick = () => {};
 
+// 跳转到维保
+const goDetail = (type,id) => {
+	let url = `/pages/${type}/${type}`
+	if(id){
+		url = `/pages/${type}/${type}?id=${id}`
+	}
+	uni.navigateTo({
+		url
+	})
+}
+
 // 重定向
 onLoad(() => {
 	const hideIndexModal = uni.getStorageSync('hideIndexModal');
@@ -227,6 +237,8 @@ onLoad(() => {
 		});
 	}
 });
+
+
 </script>
 
 <style lang="scss" scoped>

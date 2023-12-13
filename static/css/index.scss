@@ -95,13 +95,6 @@
 	padding-bottom: 140rpx;
 }
 
-.price{
-	font-size:40rpx;
-	color: $price;
-	font-weight: 700;
-	padding: 0 0 24rpx;
-}
-
 .box{
 	@extend %box;
 }
@@ -119,6 +112,12 @@
 	}
 	::v-deep .u-textarea.data-v-31706dd7{
 		padding: 0;
+	}
+	.price{
+		font-size:40rpx;
+		color: $price;
+		font-weight: 700;
+		padding: 0 0 24rpx;
 	}
 }
 

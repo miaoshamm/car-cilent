@@ -4,10 +4,10 @@
 		<view class="wrapper wrapper-t">
 			<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
 			<view class="car-info">
-				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="100">
+				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="90">
 					<view class="box">
 						<u-form-item label="手机号码" prop="phone" borderBottom>
-							<u--input v-model="info.phone" border="none" placeholder="请输入手机号"></u--input>
+							<u--input v-model="info.phone" border="none" placeholder="请输入手机号(必填)"></u--input>
 							<button class="get-phone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">获取手机号</button>
 						</u-form-item>
 						<u-form-item label="预约姓名" prop="userName" borderBottom>
@@ -35,10 +35,10 @@
 						</u-form-item>
 						<u-form-item borderBottom v-for="item in info.washService" :key="item.id" @click="goService">
 							<view class="service">
-								<image :src="item.serviceImageUrl" mode=""></image>
+								<image :src="item?.serviceImageUrl" mode=""></image>
 								<view class="text">
-									<text class="name">{{item.serviceName}}</text>
-									<text class="price">¥ {{item.servicePrice.toFixed(2)}}</text>
+									<text class="name">{{item?.serviceName}}</text>
+									<text class="price">¥ {{item?.servicePrice}}</text>
 								</view>
 							</view>
 							<template #right>
@@ -105,6 +105,7 @@
 	const modelShow = ref(false);
 	const serviceShow = ref(false);
 	const uForm = ref(null);
+	const serviceId = ref(0)
 	// 规则
 	const rules = {
 		"phone": {
@@ -133,6 +134,12 @@
 	const createOrder = (res) => {
 		if (res === 'success') {
 			uForm.value.validate().then(async res => {
+				if(!info.value.carNo){
+					return uni.showToast({
+						title:"请输入车牌号",
+						icon:"error"
+					})
+				}
 				const arr = []
 				info.value.carTypeName = info.value.carTypeName[0]
 				info.value.washService.forEach(item => {
@@ -175,7 +182,15 @@
 			const result = await getCarServices()
 			if (result.code == 200) {
 				serviceList.value = result.data
-				info.value.washService = [result.data[0] ?? null]
+				if(serviceId.value){
+					result.data.forEach(item => {
+						if(item.id == serviceId.value){
+							info.value.washService = [item]
+						}
+					})
+				}else{
+					info.value.washService = [result.data[0] ?? null]
+				}
 				info.value.total = info.value.washService.reduce((total, item) => {
 					return item.servicePrice + total
 				}, 0)
@@ -240,7 +255,8 @@
 		datetimePickerRef.value.setFormatter(formatter);
 	});
 
-	onLoad(() => {
+	onLoad((options) => {
+		serviceId.value = options.id
 		allService()
 		modelColumns.value.push(models)
 	})

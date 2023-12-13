@@ -158,6 +158,14 @@
     		"navigationBarTitleText" : "订单提成",
     		"enablePullDownRefresh" : false
     	}
+    },
+    {
+    	"path" : "pages/staff/detail/detail",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "职工认证",
+    		"enablePullDownRefresh" : false
+    	}
     }
   ],
   "globalStyle": {

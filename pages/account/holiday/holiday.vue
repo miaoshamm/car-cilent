@@ -20,7 +20,11 @@
 					</template>
 				</u-form-item>
 				<u-form-item label="请假事由" prop="absentReason">
-					<u--textarea v-model="info.absentReason" border="none" placeholder="请输入请假事由" autoHeight></u--textarea>
+					<u--input disabled v-model="info.absentReason" disabledColor="#ffffff" placeholder="请输入请假事由"
+						border="none"></u--input>
+						<template #right>
+							<u-icon name="arrow-right" color="#fff"></u-icon>
+						</template>
 				</u-form-item>
 			</u--form>
 		</view>
@@ -95,8 +99,8 @@
 		try {
 			const result = await getAbsent(userNo.value)
 			if (result.code == 200) {
-				if (result.data.length) {
-					info.value = result.data[0]
+				if (result.data) {
+					info.value = result.data
 				}
 			}
 		} catch (e) {
