@@ -24,16 +24,16 @@
 								color: punchList[0].punchStatus === 'TIMEOUT' ? '#BA431B' : '#449656'
 							}"
 						>
-							{{ punchList[0].punchTime }}
+							{{ punchList[0]?.punchTime }}
 						</text>
 					</view>
 				</view>
-				<view @click="() => clockIn('punchIn')">
+				<view>
 					<image v-if="punchList[0].punchTime" src="../../static/images/servicer/success.png" mode="widthFix" style="width: 100rpx"></image>
-					<image v-else src="../../static/images/servicer/clockIn.png" mode="widthFix" style="width: 100rpx"></image>
+					<image v-else @click="() => clockIn('punchIn')" src="../../static/images/servicer/clockIn.png" mode="widthFix" style="width: 100rpx"></image>
 				</view>
 			</view>
-			<view class="clockInCard">
+			<view class="clockInCard" v-if="punchList[0].punchTime || isTimeGreater()">
 				<view class="left">
 					<view style="display: flex; flex-direction: column">
 						<text style="font-size: 36rpx">下班打卡</text>
@@ -41,7 +41,7 @@
 					</view>
 					<view>
 						<text v-if="punchList[1].punchTime" style="font-size: 32rpx; color: #7787a2">{{ punchList[1].punchStatus === 'TIMEOUT' ? '超出打卡时间' : '打卡成功' }}</text>
-						<text v-else style="font-size: 32rpx; color: #7787a2">请按时打卡</text>
+						<text v-else :style="{fontSize: '32rpx', color:isTimeGreater()? '#7787a2' : '#BA431B'}">{{isTimeGreater()?'请按时打卡':'未到打卡时间'}}</text>
 						<text
 							v-if="punchList[1].punchTime"
 							:style="{
@@ -56,12 +56,15 @@
 						</text>
 					</view>
 				</view>
-				<view @click="() => clockIn('punchOut')">
+				<view>
 					<image v-if="punchList[1].punchTime" src="../../static/images/servicer/success.png" mode="widthFix" style="width: 100rpx"></image>
-					<image v-else src="../../static/images/servicer/clockIn.png" mode="widthFix" style="width: 100rpx"></image>
+					<image v-else @click="() => clockIn('punchOut')" :src="isTimeGreater() ? '../../static/images/servicer/clockIn.png' : '../../static/images/servicer/clockIn-no.png'" mode="widthFix"  :style="{width: '100rpx'}"></image>
 				</view>
 			</view>
 			<view style="padding: 16rpx">
+				<view v-if="orderList.length === 0" style="text-align: center;color: #449656;">
+					暂无订单
+				</view>
 				<servicerOrderCard v-for="item in orderList" :order_info="item" />
 			</view>
 		</view>
@@ -84,6 +87,13 @@ const clockIn = async (type) => {
 	if (type === 'punchIn') {
 		info = await getPunchIn(userInfo.userNo);
 	} else {
+		if (!isTimeGreater()) {
+			uni.showToast({
+				icon: 'none',
+				title: '请在规定时间内打卡'
+			});
+			return;
+		}
 		info = await getPunchOut(userInfo.userNo);
 	}
 	if (info.code === '200') {
@@ -107,6 +117,15 @@ const findPunchInfo = async () => {
 const findServiceOrderList = async () => {
 	const list = await getOrderByServicer(userInfo.userNo);
 	orderList.value = list.data;
+};
+const isTimeGreater = () => {
+	const currentTime = new Date();
+	const targetTime = new Date();
+	targetTime.setHours(19);
+	targetTime.setMinutes(30);
+	targetTime.setSeconds(0);
+
+	return currentTime > targetTime;
 };
 onShow(async () => {
 	findPunchInfo();

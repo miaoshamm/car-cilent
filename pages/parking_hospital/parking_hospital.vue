@@ -64,7 +64,7 @@
               disabled
               v-model="subscribeInfo.reservationTime"
               disabledColor="#ffffff"
-              placeholder="请选择预约时间"
+              placeholder="请选择预约时间(必填)"
               border="none"
             ></u--input>
             <template #right>
@@ -125,23 +125,20 @@
           </u-form-item>
         </view>
       </u--form>
-      <view style="padding: 0 32rpx; background-color: white; border-radius: 16rpx">
-        <ChooseEmployee
-          servicerType="VALET"
-          :isShow="isSHowChooseDriver"
-          :open="
-            () => {
-              isSHowChooseDriver = true;
-            }
-          "
-          :close="
-            () => {
-              isSHowChooseDriver = false;
-            }
-          "
-          @change="servicerChange"
-        />
-      </view>
+     <view class="card" style="margin-top: 16rpx" @click="goChooseParking">
+       <view class="card_line" style="height: 144rpx">
+         <view style="display: flex; height: 96rpx">
+     			<view style="width: 96rpx;height: 96rpx;">
+     				<up-image :src="subscribeInfo?.servoicerInfo?.drivingUrl"   width="96rpx" height="96rpx"  shape="circle"></up-image>
+     			</view>
+           <view style="display: flex; flex-direction: column; margin-left: 16rpx">
+             <text style="font-size: 32rpx">{{subscribeInfo?.servoicerInfo?.userName}}</text>
+             <text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 {{subscribeInfo?.servoicerInfo?.drivingAge}}年</text>
+           </view>
+         </view>
+         <u-icon name="arrow-right" size="32rpx" color="rgba(0, 0, 0, 0.4)"></u-icon>
+       </view>
+     </view>
       <InsuranceTips />
     </view>
     <PriceBtn @callback="placeAnOrder" type="subscribe" :price="45" />
@@ -174,7 +171,7 @@ import { onLoad, onShow, onUnload } from "@dcloudio/uni-app";
 import { ref, reactive } from "vue";
 import dayjs from "dayjs";
 import { onReady } from "@dcloudio/uni-app";
-import { reservationParkOrder, getPhone } from "../../api/index.js";
+import { reservationParkOrder, getPhone,getServicerByType } from "../../api/index.js";
 import brandsList from "../../static/json/brands.json";
 import PriceBtn from "@/components/price_btn/price_btn.vue";
 const chooseLocation = requirePlugin("chooseLocation");
@@ -192,6 +189,13 @@ const openMap = () => {
     url: "plugin://chooseLocation/index?key=" + key + "&referer=" + referer,
   });
 };
+
+const goChooseParking=()=>{
+	uni.navigateTo({
+		url:'/pages/choose_parking/choose_parking'
+	})
+}
+
 const subscribeInfo = ref({
   userName: "",
   phone: "",
@@ -214,9 +218,6 @@ const getPlateNumber = (res) => {
 
 const openChooseCarType = () => {
   subscribeInfo.value.isShowCarType = true;
-};
-const servicerChange = (value) => {
-  subscribeInfo.value.servoicerInfo = value;
 };
 const placeAnOrder = async () => {
   formRef.value.validate().then(async (res) => {
@@ -250,10 +251,11 @@ const placeAnOrder = async () => {
         carColor: subscribeInfo.value.carColor,
         servicerId: subscribeInfo.value.servoicerInfo.id,
         carNo: subscribeInfo.value.licensePlate,
-        address: locationType === "OPTIONAL" && subscribeInfo.value.location.address,
-        latitude: locationType === "OPTIONAL" && subscribeInfo.value.location.latitude,
-        longitude: locationType === "OPTIONAL" && subscribeInfo.value.location.longitude,
+        address: locationType === "OPTIONAL" ? subscribeInfo.value.location.address : '',
+        latitude: locationType === "OPTIONAL"? subscribeInfo.value.location.latitude : '',
+        longitude: locationType === "OPTIONAL" ? subscribeInfo.value.location.longitude : '',
       });
+			console.log(orderInfo);
       orderInfo.data.orderNo &&
         uni.navigateTo({
           url: `/pages/order_detail_parking/order_detail_parking?order_no=${orderInfo.data.orderNo}`,
@@ -286,6 +288,15 @@ const licensePlateChange = (number) => {
 const timeChange = () => {
   subscribeInfo.value.timeShow = true;
 };
+const getPrkingList =async ()=>{
+	if(!subscribeInfo.value.servoicerInfo.id){
+		const list = await  getServicerByType('VALET')
+		subscribeInfo.value.servoicerInfo = list.data[0]
+	}else{
+		const info = getApp().globalData.parkingDriverInfo;
+		subscribeInfo.value.servoicerInfo = info;
+	}
+} 
 
 //格式化时间戳
 const formatTime = (value) => {
@@ -345,7 +356,8 @@ const rules = {
   ],
   reservationTime: [
     {
-      required: false,
+      required: true,
+      message: "请选择预约时间",
     },
   ],
   isHelpGet: [
@@ -370,6 +382,7 @@ onLoad(() => {
 });
 
 onShow(async () => {
+	getPrkingList();
   const location = chooseLocation.getLocation();
   if (location) {
     const locationLength = await uni.request({

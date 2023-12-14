@@ -1,174 +1,232 @@
 <template>
-	<u-modal @confirm="closeModel" confirmColor="#449656" :show="model.show" :title="model.title">
-		<view v-html="model.content"></view>
-		<template #confirmButton>
-			<button @getphonenumber="getPhoneNumber" style="background-color: transparent; width: 100%; color: #449656"
-				open-type="getPhoneNumber">确认</button>
-		</template>
-	</u-modal>
-	<view style="min-height: 100vh; background: #f6f7f8">
-		<!-- 顶部导航 -->
-		<view class="nav">
-			<text class="nav-title">城市生活</text>
-		</view>
-		<view class="main">
-			<u-notice-bar direction="column" bgColor="#F6F7F8" icon="/static/images/index/notice.svg"
-				:text="notice"></u-notice-bar>
-			<view class="swiper">
-				<u-swiper keyName="bannerImageUrl" indicator indicatorMode="line" circular :list="banner" @click="bannerClick"
-					height="306rpx"></u-swiper>
-			</view>
-			<view class="grid">
-				<u-grid :border="false" col="5">
-					<u-grid-item v-for="(listItem, listIndex) in list" :key="listIndex" @click="goService(listItem.url)">
-						<u-icon :name="listItem.name" :size="48"></u-icon>
-						<text class="grid-text">{{ listItem.title }}</text>
-						<text class="grid-text-small"
-							:style="{ opacity: listItem.small != '洗车服务' ? 1 : 0 }">{{ listItem.small }}</text>
-					</u-grid-item>
-				</u-grid>
-			</view>
-			<view class="subscribe" v-for="item in subscribeList" :key="item.id">
-				<view class="sub-le">
-					<text class="sub-le-title">预约车辆：{{ item.carNo }}</text>
-					<text class="sub-le-small">预约泊车时间：{{reservationTime(item.reservationTime)}}</text>
-				</view>
-				<text class="sub-detail" @click="goDetail('order_detail_parking', item.orderNo)">查看详情</text>
-			</view>
-			<view class="supermarket">
-				<image class="super-bg" src="../../static/images/index/card-bg.png" mode=""></image>
-				<view class="super-box">
-					<view class="super-title">线上生活超市</view>
-					<view class="super-content">
-						<view class="super-content-le">
-							<image src="/static/images/index/supermarket.png" mode=""></image>
-						</view>
-						<view class="super-content-ri">
-							<view class="super-cotent-title">司美全网最低价</view>
-							<view class="super-cotent-small">夏天来了，肉肉藏不住</view>
-							<u-button :disabled="true" text="即将上线" shape="circle" color="#449656"></u-button>
-						</view>
-					</view>
-				</view>
-			</view>
-			<view class="driver">
-				<view class="cell-title">
-					<u-cell @click="goDetail('parking_hospital', null)" :border="false" :isLink="true" title="精选司机"
-						value="立即泊车"></u-cell>
-				</view>
-				<view class="grid">
-					<u-grid :border="false" col="3">
-						<u-grid-item v-for="(listItem, listIndex) in driver" :key="listIndex"
-							@click="goDetail('parking_hospital', listItem.id)">
-							<image :src="listItem.userAvatar" mode=""></image>
-							<text class="grid-driver">{{ listItem.userName }}</text>
-							<text class="grid-driver-small">驾龄：{{ listItem.drivingAge }}年</text>
-						</u-grid-item>
-					</u-grid>
-				</view>
-				<swiper v-show="evaluate.length">
-					<swiper-item v-for="item in evaluate" :key="item.id">
-						<view class="review">
-							<view class="review-title">
-								<up-avatar :size="32" :src="item.avatarUrl"></up-avatar>
-								<text>{{ item.userName }}</text>
-							</view>
-							<view class="review-content">
-								{{ item.evaluateContent }}
-							</view>
-						</view>
-					</swiper-item>
-				</swiper>
-			</view>
-			<view class="maintenance">
-				<view class="cell-title">
-					<u-cell @click="goDetail('wish', null)" :border="false" :isLink="true" title="精选维保服务" va lue="立即保养"></u-cell>
-				</view>
-				<view class="maintenance-box" v-for="item in carServiceList" :key="item.id" @click="goDetail('wish', item.id)">
-					<image :src="item.serviceImageUrl" mode=""></image>
-					<view class="tenance-box-ri">
-						<text class="title">{{ item.serviceName }}</text>
-						<up-text :lines="2" size="13" color="#666" :text="item.serviceDescription"></up-text>
-						<text class="price">¥{{ item.servicePrice }}</text>
-					</view>
-				</view>
-			</view>
-		</view>
-		<Tabbar :value="0" />
-	</view>
+  <u-modal
+    @confirm="closeModel"
+    confirmColor="#449656"
+    :show="model.show"
+    :title="model.title"
+  >
+    <view v-html="model.content"></view>
+    <template #confirmButton>
+      <button
+        @getphonenumber="getPhoneNumber"
+        style="background-color: transparent; width: 100%; color: #449656"
+        open-type="getPhoneNumber"
+      >
+        确认
+      </button>
+    </template>
+  </u-modal>
+  <view style="min-height: 100vh; background: #f6f7f8">
+    <!-- 顶部导航 -->
+    <view class="nav">
+      <text class="nav-title">城市生活</text>
+    </view>
+    <view class="main">
+      <u-notice-bar
+        direction="column"
+        bgColor="#F6F7F8"
+        icon="/static/images/index/notice.svg"
+        :text="notice"
+      ></u-notice-bar>
+      <view class="swiper">
+        <u-swiper
+          keyName="bannerImageUrl"
+          indicator
+          indicatorMode="line"
+          circular
+          :list="banner"
+          @click="bannerClick"
+          height="306rpx"
+        ></u-swiper>
+      </view>
+      <view class="grid">
+        <u-grid :border="false" col="5">
+          <u-grid-item
+            v-for="(listItem, listIndex) in list"
+            :key="listIndex"
+            @click="goService(listItem.url)"
+          >
+            <u-icon :name="listItem.name" :size="48"></u-icon>
+            <text class="grid-text">{{ listItem.title }}</text>
+            <text
+              class="grid-text-small"
+              :style="{ opacity: listItem.small != '洗车服务' ? 1 : 0 }"
+              >{{ listItem.small }}</text
+            >
+          </u-grid-item>
+        </u-grid>
+      </view>
+      <view class="subscribe" v-for="item in subscribeList" :key="item.id">
+        <view class="sub-le">
+          <text class="sub-le-title">预约车辆：{{ item.carNo }}</text>
+          <text class="sub-le-small"
+            >预约泊车时间：{{
+              dayjs(item.reservationTime).format("YYYY年MM月DD日 HH:mm:ss")
+            }}</text
+          >
+        </view>
+        <text class="sub-detail" @click="goDetail('order_detail_parking', item.orderNo)"
+          >查看详情</text
+        >
+      </view>
+      <view class="supermarket">
+        <image
+          class="super-bg"
+          src="../../static/images/index/card-bg.png"
+          mode=""
+        ></image>
+        <view class="super-box">
+          <view class="super-title">线上生活超市</view>
+          <view class="super-content">
+            <view class="super-content-le">
+              <image src="/static/images/index/supermarket.png" mode=""></image>
+            </view>
+            <view class="super-content-ri">
+              <view class="super-cotent-title">司美全网最低价</view>
+              <view class="super-cotent-small">夏天来了，肉肉藏不住</view>
+              <u-button
+                :disabled="true"
+                text="即将上线"
+                shape="circle"
+                color="#449656"
+              ></u-button>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="driver">
+        <view class="cell-title">
+          <u-cell
+            @click="goDetail('parking_hospital', null)"
+            :border="false"
+            :isLink="true"
+            title="精选司机"
+            value="立即泊车"
+          ></u-cell>
+        </view>
+        <view class="grid">
+          <u-grid :border="false" col="3">
+            <u-grid-item
+              v-for="(listItem, listIndex) in driver"
+              :key="listIndex"
+              @click="goDetail('parking_hospital', listItem.id)"
+            >
+              <image :src="listItem.userAvatar" mode=""></image>
+              <text class="grid-driver">{{ listItem.userName }}</text>
+              <text class="grid-driver-small">驾龄：{{ listItem.drivingAge }}年</text>
+            </u-grid-item>
+          </u-grid>
+        </view>
+        <swiper>
+          <swiper-item v-for="item in evaluate" :key="item.id">
+            <view class="review">
+              <view class="review-title">
+                <up-avatar :size="32" :src="item.avatarUrl"></up-avatar>
+                <text>{{ item.userName }}</text>
+              </view>
+              <view class="review-content">
+                {{ item.evaluateContent }}
+              </view>
+            </view>
+          </swiper-item>
+        </swiper>
+      </view>
+      <view class="maintenance">
+        <view class="cell-title">
+          <u-cell
+            @click="goDetail('wish', null)"
+            :border="false"
+            :isLink="true"
+            title="精选维保服务"
+            va
+            lue="立即保养"
+          ></u-cell>
+        </view>
+        <view
+          class="maintenance-box"
+          v-for="item in carServiceList"
+          :key="item.id"
+          @click="goDetail('wish', item.id)"
+        >
+          <image :src="item.serviceImageUrl" mode=""></image>
+          <view class="tenance-box-ri">
+            <text class="title">{{ item.serviceName }}</text>
+            <up-text
+              :lines="2"
+              size="13"
+              color="#666"
+              :text="item.serviceDescription"
+            ></up-text>
+            <text class="price">¥{{ item.servicePrice }}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <Tabbar :value="0" />
+  </view>
 </template>
 
 <script setup>
-	import {
-		ref,
-		computed
-	} from "vue";
-	import Tabbar from "@/components/tabbar/tabbar.vue";
-	import dayjs from 'dayjs'
-	import {
-		onLoad
-	} from "@dcloudio/uni-app";
-	import {
-		getBanner,
-		getNotice,
-		getServicerByType,
-		getUserEvaluate,
-		getCarServices,
-		login,
-		getUserAgreement,
-		getUserInfo,
-		getPhone,
-		putUserInfo,
-		getReservationOrder,
-		getEmployeeCertification
-	} from "@/api";
-	let banner = ref([]);
-	let notice = ref([]);
-	let driver = ref([]);
-	let evaluate = ref([]);
-	let carServiceList = ref([]);
-	let subscribeList = ref([]);
-	let list = ref([{
-			name: "/static/images/index/grid1.png",
-			title: "代客泊车",
-			small: "中山六院",
-			url: `/pages/parking_hospital/parking_hospital?locationType=DEFAULT`,
-		},
-		{
-			name: "/static/images/index/grid2.png",
-			title: "代客泊车",
-			small: "临江大道",
-			url: "/pages/parking_hospital/parking_hospital?locationType=OPTIONAL",
-		},
-		{
-			name: "/static/images/index/grid3.png",
-			title: "洗车服务",
-			small: "临江大道",
-			url: "/pages/wish/wish",
-		},
-		{
-			name: "/static/images/index/grid4.png",
-			title: "患者接送",
-			small: "中山六院",
-			url: "/pages/pick_up/pick_up",
-		},
-		{
-			name: "/static/images/index/grid5.png",
-			title: "职工泊车",
-			small: "中山六院",
-			url: "/pages/staff/staff",
-		},
-	]);
-	let model = ref({
-		show: true,
-		title: "协议声明",
-		content: "",
-	});
-
-	// 预约泊车时间
-	const reservationTime = computed(() => (time) => {
-		return time ? dayjs(time).format('YYYY年MM月DD日 HH:mm:ss') : ""
-	})
+import { ref } from "vue";
+import Tabbar from "@/components/tabbar/tabbar.vue";
+import dayjs from "dayjs";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+import {
+  getBanner,
+  getNotice,
+  getServicerByType,
+  getUserEvaluate,
+  getCarServices,
+  login,
+  getUserAgreement,
+  getUserInfo,
+  getPhone,
+  putUserInfo,
+  getReservationOrder,
+} from "@/api";
+let banner = ref([]);
+let notice = ref([]);
+let driver = ref([]);
+let evaluate = ref([]);
+let carServiceList = ref([]);
+let subscribeList = ref([]);
+let list = ref([
+  {
+    name: "/static/images/index/grid1.png",
+    title: "代客泊车",
+    small: "中山六院",
+    url: `/pages/parking_hospital/parking_hospital?locationType=DEFAULT`,
+  },
+  {
+    name: "/static/images/index/grid2.png",
+    title: "代客泊车",
+    small: "临江大道",
+    url: "/pages/parking_hospital/parking_hospital?locationType=OPTIONAL",
+  },
+  {
+    name: "/static/images/index/grid3.png",
+    title: "洗车服务",
+    small: "临江大道",
+    url: "/pages/wish/wish",
+  },
+  {
+    name: "/static/images/index/grid4.png",
+    title: "患者接送",
+    small: "中山六院",
+    url: "/pages/pick_up/pick_up",
+  },
+  {
+    name: "/static/images/index/grid5.png",
+    title: "职工泊车",
+    small: "中山六院",
+    url: "/pages/staff/staff",
+  },
+]);
+let model = ref({
+  show: true,
+  title: "协议声明",
+  content: "",
+});
 
 	const getPhoneNumber = async (e) => {
 		if (e.detail.code) {
@@ -182,41 +240,45 @@
 		uni.setStorageSync("hideIndexModal", true);
 	};
 
-	// 获取数据
-	const getInfo = async () => {
-		try {
-			const bannerList = await getBanner();
-			const noticeList = await getNotice();
-			const servicer = await getServicerByType("VALET");
-			const userEvaluate = await getUserEvaluate();
-			const carService = await getCarServices();
-			// 获取用户编号
-			const userNo = uni.getStorageSync("userInfo") ? JSON.parse(uni.getStorageSync("userInfo")).userNo : "";
-			const reservationList = await getReservationOrder(userNo);
-			if (bannerList.code == 200) {
-				banner.value = bannerList.data;
-			}
-			if (noticeList.code == 200) {
-				const arr = [];
-				noticeList.data.forEach((item) => {
-					arr.push(item.noticeContent);
-				});
-				notice.value = arr;
-			}
-			if (servicer.code == 200) {
-				driver.value = servicer.data;
-			}
-			if (userEvaluate.code == 200) {
-				evaluate.value = userEvaluate.data;
-			}
-			if (carService.code == 200) {
-				carServiceList.value = carService.data;
-			}
-			if (reservationList.code == 200) {
-				subscribeList.value = reservationList.data;
-			}
-		} catch (e) {}
-	};
+// 获取数据
+const getInfo = async () => {
+  try {
+    const bannerList = await getBanner();
+    const noticeList = await getNotice();
+    const servicer = await getServicerByType("VALET");
+    const userEvaluate = await getUserEvaluate();
+    const carService = await getCarServices();
+    // 获取用户编号
+    const userNo = uni.getStorageSync("userInfo")
+      ? JSON.parse(uni.getStorageSync("userInfo")).userNo
+      : "";
+    const reservationList = await getReservationOrder(userNo);
+    if (bannerList.code == 200) {
+      banner.value = bannerList.data;
+    }
+    if (noticeList.code == 200) {
+      const arr = [];
+      noticeList.data.forEach((item) => {
+        arr.push(item.noticeContent);
+      });
+      notice.value = arr;
+    }
+    if (servicer.code == 200) {
+      driver.value = servicer.data;
+    }
+    if (userEvaluate.code == 200) {
+      evaluate.value = userEvaluate.data;
+    }
+    if (carService.code == 200) {
+      carServiceList.value = carService.data;
+    }
+    if (reservationList.code == 200) {
+      subscribeList.value = reservationList.data;
+    }
+  } catch (e) {
+    //TODO handle the exception
+  }
+};
 
 	const getAgreement = async () => {
 		try {
@@ -253,47 +315,55 @@
 		// })
 	};
 
-	// 跳转到详情
-	const goDetail = (type, id) => {
-		let url = `/pages/${type}/${type}`;
-		if (id) {
-			url = `/pages/${type}/${type}?id=${id}`;
-			if (type === "parking_hospital") {
-				url = `/pages/${type}/${type}?serviceId=${id}`;
-			}
-			if (type === "order_detail_parking") {
-				url = `/pages/${type}/${type}?order_no=${id}`;
-			}
+// 跳转到详情
+const goDetail = (type, id) => {
+	let url = `/pages/${type}/${type}`;
+	if (id) {
+		url = `/pages/${type}/${type}?id=${id}`;
+		if (type === 'parking_hospital') {
+			url = `/pages/${type}/${type}?serviceId=${id}`;
 		}
-		uni.navigateTo({
-			url,
-		});
-	};
+		if (type === 'order_detail_parking') {
+			url = `/pages/${type}/${type}?order_no=${id}`;
+		}
+	}
+	uni.navigateTo({
+		url
+	});
+};
+const getDriverAndOrders = async (userInfo)=>{
+	const reservationList = await getReservationOrder(userInfo.userNo);
+	const servicer = await getServicerByType('VALET');
+	driver.value = servicer.data;
+	subscribeList.value = reservationList.data;
+}
 
-	// 重定向
-	onLoad(() => {
-		uni.login({
-			success: async (res) => {
-				const result = await login({
-					authCode: res.code,
-				});
-				if (result.code == 200) {
-					uni.setStorageSync("accessToken", result.data.token);
-					const userInfo = await getUserInfo();
-					uni.setStorageSync("userInfo", JSON.stringify(userInfo.data));
-					if (userInfo.data.servicerId) {
-						uni.setStorageSync('userKey', true)
-					}
-					getInfo();
-				}
-			},
-		});
-		const hideIndexModal = uni.getStorageSync("hideIndexModal");
-		if (hideIndexModal) {
-			model.value.show = false;
-		} else {
-			getAgreement();
-		}
+
+// 重定向
+
+onLoad(() => {
+  uni.login({
+    success: async (res) => {
+      const result = await login({
+        authCode: res.code,
+      });
+      if (result.code == 200) {
+        uni.setStorageSync("accessToken", result.data.token);
+        const userInfo = await getUserInfo();
+        uni.setStorageSync("userInfo", JSON.stringify(userInfo.data));
+        if (userInfo.data.servicerId) {
+          uni.setStorageSync("userKey", true);
+        }
+        getInfo();
+      }
+    },
+  });
+  const hideIndexModal = uni.getStorageSync("hideIndexModal");
+  if (hideIndexModal) {
+    model.value.show = false;
+  } else {
+    getAgreement();
+  }
 
 		if (uni.getStorageSync("userStatus") === "servicer") {
 			return uni.switchTab({

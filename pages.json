@@ -94,7 +94,7 @@
       "path": "pages/servicer_orders/servicer_orders",
       "style": {
         "navigationBarTitleText": "城市生活",
-				"navigationStyle": "custom",
+        "navigationStyle": "custom",
         "enablePullDownRefresh": false
       }
     },
@@ -107,59 +107,68 @@
       }
     },
     {
-    	"path" : "pages/map/map",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "地图",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/map/map",
+      "style": {
+        "navigationBarTitleText": "地图",
+        "enablePullDownRefresh": false
+      }
     },
     {
-    	"path" : "pages/account/company/company",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "公司简介",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/account/company/company",
+      "style": {
+        "navigationBarTitleText": "公司简介",
+        "enablePullDownRefresh": false
+      }
     },
     {
-    	"path" : "pages/account/holiday/holiday",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "请假休假",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/account/holiday/holiday",
+      "style": {
+        "navigationBarTitleText": "请假休假",
+        "enablePullDownRefresh": false
+      }
     },
     {
-    	"path" : "pages/account/royalty/royalty",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "订单提成",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/account/royalty/royalty",
+      "style": {
+        "navigationBarTitleText": "订单提成",
+        "enablePullDownRefresh": false
+      }
     },
     {
-    	"path" : "pages/staff/detail/detail",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "职工认证",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/staff/detail/detail",
+      "style": {
+        "navigationBarTitleText": "职工认证",
+        "enablePullDownRefresh": false
+      }
     },
     {
-    	"path" : "pages/service_rules/service_rules",
-    	"style" : 
-    	{
-    		"navigationStyle": "custom"
-    	}
+      "path": "pages/service_rules/service_rules",
+      "style": {
+        "navigationStyle": "custom"
+      }
     },
     {
-    	"path" : "pages/wish/service/service",
-    	"style" : 
-    	{
-    		"navigationBarTitleText" : "预约维保",
-    		"enablePullDownRefresh" : false
-    	}
+      "path": "pages/input_vehicle/input_vehicle",
+      "style": {
+        "navigationBarTitleText": "录入车辆信息",
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/choose_parking/choose_parking",
+      "style": {
+        "navigationBarTitleText": "选择司机",
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/wish/service/service",
+      "style": {
+        "navigationBarTitleText": "预约维保",
+        "enablePullDownRefresh": false
+      }
     }
   ],
   "globalStyle": {

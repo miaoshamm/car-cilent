@@ -4,9 +4,9 @@
       <text class="card-title" v-show="type === 'input'">输入车牌</text>
       <text class="card-title" v-show="type === 'subscribe'">预约车辆</text>
       <text class="card-title" v-show="type === 'info'">车牌号码</text>
-      <view class="card-le-btn" v-show="type === 'subscribe'">
-        <text>联系客服</text>
-        <text @click="cancel">取消预约</text>
+      <view class="card-le-btn">
+        <button open-type="contact" style="font-size: 24rpx;margin-right: 16rpx;">联系客服</button>
+        <text  v-show="type === 'subscribe'" @click="cancel">取消预约</text>
       </view>
     </view>
     <view class="input">
@@ -91,7 +91,9 @@ const check = () => {
       font-weight: bold;
     }
     .card-le-btn {
-      font-size: 20rpx;
+      font-size: 24rpx;
+			display: flex;
+			align-items: center;
       text {
         text-decoration: underline;
         &:nth-child(1) {
