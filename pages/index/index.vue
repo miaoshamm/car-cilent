@@ -104,7 +104,6 @@ let driver = ref([]);
 let evaluate = ref([]);
 let carServiceList = ref([]);
 let subscribeList = ref([]);
-const userInfo = uni.getStorageSync('userInfo') ?  JSON.parse(uni.getStorageSync('userInfo')) : {};
 let list = ref([
 	{
 		name: '/static/images/index/grid1.png',
@@ -144,6 +143,7 @@ let model = ref({
 });
 
 const getPhoneNumber = async (e) => {
+	const userInfo =JSON.parse( uni.getStorageSync('userInfo'))
 	if (e.detail.code) {
 		const info = await getPhone(e.detail.code);
 		userInfo.phone = info.data;
@@ -216,7 +216,7 @@ const goDetail = (type, id) => {
 	if (id) {
 		url = `/pages/${type}/${type}?id=${id}`;
 		if (type === 'parking_hospital') {
-			url = `/pages/${type}/${type}?serviceId=${id}`;
+			url = `/pages/${type}/${type}?serviceId=${id}&locationType=DEFAULT`;
 		}
 		if (type === 'order_detail_parking') {
 			url = `/pages/${type}/${type}?order_no=${id}`;
@@ -226,7 +226,8 @@ const goDetail = (type, id) => {
 		url
 	});
 };
-const getDriverAndOrders = async (userInfo)=>{
+const getDriverAndOrders = async ()=>{
+	const userInfo =JSON.parse(uni.getStorageSync('userInfo')) 
 	const reservationList = await getReservationOrder(userInfo.userNo);
 	const servicer = await getServicerByType('VALET');
 	driver.value = servicer.data;
@@ -235,7 +236,8 @@ const getDriverAndOrders = async (userInfo)=>{
 
 
 onShow(async () => {
-	getDriverAndOrders(userInfo);
+	
+	getDriverAndOrders();
 });
 
 onLoad(() => {
@@ -251,7 +253,7 @@ onLoad(() => {
 				if (userInfo.data.servicerId) {
 					uni.setStorageSync('userKey', true);
 				}
-				getDriverAndOrders(userInfo.data);
+				getDriverAndOrders();
 				getInfo();
 			}
 		}

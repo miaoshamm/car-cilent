@@ -38,9 +38,21 @@
 						</u-form-item>
 					</view>
 				</u--form>
-				<view style="background-color: white; padding: 0 32rpx; border-radius: 16rpx">
-					<ChooseEmploy :isShow="isShowServiceList" :open="openServiceList" :close="serviceListClose" servicerType="TRANSFER" @change="serviceInfoChange"></ChooseEmploy>
+				<view class="card" style="margin-top: 16rpx" @click="goChooseParking">
+					<view class="card_line" style="height: 144rpx">
+						<view style="display: flex; height: 96rpx">
+							<view style="width: 96rpx; height: 96rpx">
+								<up-image :src="subscribeInfo?.servoicerInfo?.drivingUrl" width="96rpx" height="96rpx" shape="circle"></up-image>
+							</view>
+							<view style="display: flex; flex-direction: column; margin-left: 16rpx">
+								<text style="font-size: 32rpx">{{ subscribeInfo?.servoicerInfo?.userName }}</text>
+								<text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 {{ subscribeInfo?.servoicerInfo?.drivingAge }}年</text>
+							</view>
+						</view>
+						<u-icon name="arrow-right" size="32rpx" color="rgba(0, 0, 0, 0.4)"></u-icon>
+					</view>
 				</view>
+
 				<InsuranceTips />
 			</view>
 		</view>
@@ -66,12 +78,11 @@
 </template>
 
 <script setup>
-import { reservationTravelOrder, getTypePrice, getPhone } from '../../api/index.js';
+import { reservationTravelOrder, getTypePrice, getPhone, getServicerByType } from '../../api/index.js';
 import { ref, reactive } from 'vue';
 import dayjs from 'dayjs';
 import { onLoad, onShow, onUnload } from '@dcloudio/uni-app';
 import InsuranceTips from '../../components/insurance_tips/insurance_tips.vue';
-import ChooseEmploy from '../../components/choose_employee/choose_employee.vue';
 import PriceBtn from '../../components/price_btn/price_btn.vue';
 const chooseLocation = requirePlugin('chooseLocation');
 const key = 'GZABZ-OGULD-YPK4O-HWK6T-4B6KV-NBFJX'; //使用在腾讯位置服务申请的key
@@ -106,6 +117,12 @@ const getPhoneNumber = async (e) => {
 		subscribeInfo.phone = info.data;
 	}
 };
+const goChooseParking = () => {
+	getApp().globalData.pickUpDriverInfo = subscribeInfo.servicerInfo;
+	uni.navigateTo({
+		url: '/pages/choose_parking/choose_parking?servicerType=TRANSFER'
+	});
+};
 const serviceTypeChange = async (e) => {
 	const priceInfo = await getTypePrice(e.value[0].id);
 	subscribeInfo.price = priceInfo.data.price;
@@ -119,6 +136,15 @@ const openServiceList = () => {
 const serviceListClose = () => {
 	isShowServiceList.value = false;
 };
+const getPickUpList = async () => {
+	if (!subscribeInfo.servoicerInfo?.id) {
+		const list = await getServicerByType('TRANSFER');
+		subscribeInfo.servoicerInfo = list.data[0];
+	} else {
+		const info = getApp().globalData.pickUpDriverInfo;
+		subscribeInfo.servoicerInfo = info;
+	}
+};
 const leftClick = () => {
 	if (isShowServiceList.value) {
 		isShowServiceList.value = false;
@@ -126,9 +152,7 @@ const leftClick = () => {
 		uni.navigateBack();
 	}
 };
-const serviceInfoChange = (value) => {
-	subscribeInfo.servicerInfo = value;
-};
+
 const placeOrder = async () => {
 	if (!subscribeInfo.location.address) {
 		uni.showToast({
@@ -164,7 +188,7 @@ const placeOrder = async () => {
 				wx.requestPayment({
 					...payment,
 					success(res) {
-						uni.navigateTo({
+						uni.redirectTo({
 							url: `/pages/order_detail_pick_up/order_detail_pick_up?order_no=${orderInfo.data.orderNo}`
 						});
 						console.log('pay success', res);
@@ -183,6 +207,7 @@ onLoad(() => {
 	subscribeInfo.phone = userInfo.phone;
 });
 onShow(async () => {
+	getPickUpList();
 	const location = chooseLocation.getLocation();
 	if (location) {
 		const locationLength = await uni.request({
@@ -208,7 +233,7 @@ onUnload(() => {
 });
 //格式化时间戳
 const formatTime = (value) => {
-	const time = dayjs(value).format('MM月DD日 hh:mm');
+	const time = dayjs(value).format('MM月DD日 HH:mm');
 	if (time === 'Invalid Date') {
 		return value;
 	} else {

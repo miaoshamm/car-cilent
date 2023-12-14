@@ -1,7 +1,8 @@
 <template></template>
 <script setup>
 const globalData = {
-	parkingDriverInfo:{}
+	parkingDriverInfo: {},
+	pickUpDriverInfo: {}
 };
 </script>
 

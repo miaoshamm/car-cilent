@@ -3,11 +3,11 @@
 		<u-navbar title="订单详情" @leftClick="leftClick" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
 		<view v-if="!isInvoice" :style="{ flex: 1, padding: '32rpx', position: 'relative', overflow: 'auto' }">
 			<text style="color: #449656; font-size: 36rpx; font-weight: bold">{{ orderStatus[orderInfo?.status] }}</text>
-			<view style="height: 172rpx;" @click="goWish">
-				<image src="../../static/images/order/img_home_banner.png" mode="widthFix" style="width: 100%;"></image>
+			<view style="height: 172rpx" @click="goWish">
+				<image src="../../static/images/order/img_home_banner.png" mode="widthFix" style="width: 100%"></image>
 			</view>
 			<view style="margin-top: 19rpx">
-				<LicensePlateSelection type='subscribe' :licensePlate="orderInfo?.orderExtraVo?.carNo" />
+				<LicensePlateSelection type="subscribe" :licensePlate="orderInfo?.orderExtraVo?.carNo" />
 			</view>
 			<view style="margin-top: 7rpx" class="card">
 				<view class="card_line" v-if="isServicer">
@@ -92,7 +92,7 @@
 					<view class="card_line_content" style="margin-left: 32rpx">{{ dayjs(orderInfo?.createdTime).format('YYYY-MM-DD HH:mm:ss') }}</view>
 				</view>
 			</view>
-			<view class="menu" v-if="!isServicer"> 
+			<view class="menu" v-if="!isServicer">
 				<UserMenu title="开发票" description="立即开票" :onClick="openInvoice" />
 			</view>
 			<view class="menu" v-if="!isServicer">
@@ -175,11 +175,11 @@ const leftClick = () => {
 		uni.navigateBack();
 	}
 };
-const goWish=()=>{
+const goWish = () => {
 	uni.navigateTo({
-		url:'/pages/wish/wish'
-	})
-}
+		url: '/pages/wish/wish'
+	});
+};
 const startOff = () => {
 	uni.showModal({
 		title: '确定出发吗？',
@@ -210,7 +210,6 @@ const callUp = (phone) => {
 		phoneNumber: phone
 	});
 };
-
 </script>
 
 <style lang="scss">

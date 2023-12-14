@@ -27,27 +27,36 @@
 import { getServicerByType } from '../../api/index.js';
 import { onShow } from '@dcloudio/uni-app';
 import { ref } from 'vue';
-
+const {servicerType} = defineProps(['servicerType'])
 const list = ref([]);
 const selectId = ref();
 
 const change = (info) => {
 	selectId.value = info.id;
-	getApp().globalData.parkingDriverInfo = info;
+	if(servicerType ==='VALET' ){
+		getApp().globalData.parkingDriverInfo = info;
+	}else if( servicerType === 'TRANSFER'){
+		getApp().globalData.pickUpDriverInfo = info;
+	}
 };
 const back=()=>{
 	uni.navigateBack()
 }
 onShow(async () => {
-	const info = getApp().globalData.parkingDriverInfo;
-	getServicerByType('VALET').then((res) => {
+	let info;
+	if(servicerType === 'VALET'){
+		info = getApp().globalData.parkingDriverInfo;
+	}else if(servicerType === 'TRANSFER'){
+		info = getApp().globalData.pickUpDriverInfo;
+	}
+	console.log(info);
+	getServicerByType(servicerType).then((res) => {
 		list.value = res.data;
 		if(!info.id){
 			selectId.value = res.data[0].id;
 		}else{
 			selectId.value =  info.id;
 		}
-		
 	});
 });
 
