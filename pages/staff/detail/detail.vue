@@ -6,7 +6,7 @@
 		<view class="title" v-show="info.status === 'PASS'">职工认证信息</view>
 		<License :licensePlate="info.carNo" type="input" @plateNumber="getPlateNumber"/>
 		<view class="car-info">
-			<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="80">
+			<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="80" errorType="toast">
 				<view class="box">
 					<u-form-item class="phone-info" label="手机号码" prop="workerPhone" borderBottom>
 						<u--input :disabled="disInput" disabledColor="#fff" v-model="info.workerPhone" border="none"
@@ -84,7 +84,7 @@
 	import License from "@/components/license_plate_selection/license_plate_selection.vue";
 	import {
 		onReady,
-		onUnload
+		onLoad
 	} from "@dcloudio/uni-app"
 	import models from "@/static/json/brands.json"
 	import {
@@ -186,10 +186,8 @@
 	const upload = async () => {
 		uForm.value.validate().then(async res => {
 			try {
-				info.value.carNo = "粤B66666"
-				info.value.carTypeName = info.value.carTypeName[0]
+				const carType = typeof info.value.carTypeName
 				info.value.userNo = JSON.parse(uni.getStorageSync("userInfo")).userNo
-
 				let result
 				// 判断状态
 				if (info.value.status === 'NOTPASS') {
@@ -209,7 +207,7 @@
 
 	// 选择车型
 	const checkModel = (item) => {
-		info.value.carTypeName = item.value;
+		info.value.carTypeName = item.value[0];
 		modelShow.value = false;
 	};
 
@@ -221,13 +219,12 @@
 			const result = await getEmployeeCertification(userNo)
 			if (result.code == 200) {
 				info.value = result.data
-				info.value.carColor = result.data.userCarVo.carColor
-				info.value.carNo = result.data.userCarVo.carNo
-				info.value.carTypeName = result.data.userCarVo.carTypeName
+				info.value.carColor = result.data.userCarVo?.carColor
+				info.value.carNo = result.data.userCarVo?.carNo
+				info.value.carTypeName = result.data.userCarVo?.carTypeName
 				info.value.workerPhone = userInfo ? JSON.parse(userInfo).phone : ""
 			}
 		} catch (e) {
-			//TODO handle the exception
 		}
 	}
 

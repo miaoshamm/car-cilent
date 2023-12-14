@@ -1,7 +1,7 @@
 <template>
-	<view class="wrapper-p wrapper-t">
+	<view class="wrapper-p">
 		<u-checkbox-group v-model="checkboxValue" iconPlacement="right" @change="checkboxChange">
-			<view :style="{flex:1,background:checkboxValue.indexOf(item.id) != -1 ? '#EAFAEA' : '' }" v-for="item in props.list" :key="item.id">
+			<view :style="{flex:1,background:checkboxValue.indexOf(item.id) != -1 ? '#EAFAEA' : '' }" v-for="item in serviceList" :key="item.id">
 				<view class="check-box">
 					<view class="service">
 						<image :src="item.serviceImageUrl" mode=""></image>
@@ -31,25 +31,27 @@
 	import {
 		ref,
 		defineProps,
-		defineEmits
+		defineEmits,
 	} from "vue";
 	import {
 		onLoad
 	} from "@dcloudio/uni-app";
+	import {getCarServices} from "@/api"
 	
 	let checkboxValue = ref("")
 	let mutexValue = ref(null)
+	const serviceList = ref([])
 	const props = defineProps(['list']);
-	const emit = defineEmits(['confirm','show']);
+	const emit = defineEmits(['confirm']);
 	const infoList = ref([])
 	
 	// 确认选择
 	const confirm = () => {
-		const result = props.list.filter(item => {
+		const result = serviceList.value.filter(item => {
 			return checkboxValue.value.indexOf(item.id) != -1
 		})
-		emit('confirm',result)
-		emit('show',false)
+		uni.navigateBack()
+		uni.setStorageSync("wishService",JSON.stringify(result))
 	}
 	
 	// 改变选项时
@@ -57,12 +59,26 @@
 		checkboxValue.value = check
 		mutexValue.value = ""
 		// 拿到当前选中的选项的互斥项目
-		props.list.forEach(item => {
+		serviceList.value.forEach(item => {
 			if(check.indexOf(item.id) != -1){
 				mutexValue.value += item.mutexService
 			}
 		})
 	};
+
+	// 获取所有服务
+	const allService = async () => {
+		try {
+			const result = await getCarServices()
+			if (result.code == 200) {
+				serviceList.value = result.data
+			}
+		} catch (e) {}
+	}
+	
+	onLoad(() => {
+		allService()
+	})
 </script>
 
 <style lang="scss" scoped>

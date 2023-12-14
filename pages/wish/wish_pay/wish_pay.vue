@@ -32,7 +32,7 @@
 			</view>
 			<view class="box-info">
 				<text>维保时间</text>
-				<text>{{reservationTime}}</text>
+				<text>{{info.reservationTime}}</text>
 			</view>
 		</view>
 		<view class="box">
@@ -71,7 +71,7 @@
 			</view>
 			<view class="box-info">
 				<text>订单时间</text>
-				<text>2023-11-22 12:22:00</text>
+				<text>{{info.createdTime}}</text>
 			</view>
 		</view>
 		<view class="box" v-show="info.status === 'COMPLETE'">
@@ -136,14 +136,16 @@
 		try {
 			const result = await getOrderPaymentRecord(orderNo)
 			if (result.code == 200) {
+				// 格式化数据
 				info.value = result.data
+				info.value.reservationTime = reservationTime(result.data.reservationTime)
+				info.value.createdTime = reservationTime(result.data.createdTime)
 				// 计算实付款
 				if (result.data.carServicesVos.length) {
 					total.value = result.data.carServicesVos.reduce((total, item) => total + item.servicePrice, 0)
 				}
 			}
 		} catch (e) {
-			//TODO handle the exception
 		}
 	}
 	
@@ -153,11 +155,9 @@
 		getInfo(options.order_no)
 	})
 	
-	// 计算属性-----------------------
-	const reservationTime = computed(() => {
-		const time = result.data.reservationTime
-		return time ? dayjs(result.data.reservationTime).format("YYYY-MM-DD HH:mm") : ""
-	})
+	const reservationTime = (time) => {
+		return time ? dayjs(time).format("YYYY-MM-DD HH:mm") : ""
+	}
 </script>
 
 <style lang="less" scoped>

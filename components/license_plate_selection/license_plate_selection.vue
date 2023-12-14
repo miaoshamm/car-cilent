@@ -1,5 +1,5 @@
 <template>
-  <view class="card">
+  <view class="card" @click="check">
     <view class="card-le">
       <text class="card-title" v-show="type === 'input'">输入车牌</text>
       <text class="card-title" v-show="type === 'subscribe'">预约车辆</text>
@@ -9,7 +9,7 @@
         <text  v-show="type === 'subscribe'" @click="cancel">取消预约</text>
       </view>
     </view>
-    <view class="input" @click="check">
+    <view class="input">
       <view class="input_card">{{ licensePlate[0] }}</view>
       <view class="input_card">{{ licensePlate[1] }}</view>
       ·
