@@ -63,7 +63,7 @@
                 "desc" : "你的位置信息将用于小程序定位"
             }
         },
-				"cloudfunctionRoot":"./wxcloudfunctions/"
+        "cloudfunctionRoot" : "./wxcloudfunctions/"
     },
     "mp-alipay" : {
         "usingComponents" : true

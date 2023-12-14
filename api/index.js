@@ -102,9 +102,9 @@ export const getServicerPunch = (userNo) => {
 }
 
 // 职工服务人员查询服务订单
-export const getOrderByServicer = (servicerId) => {
+export const getOrderByServicer = (userNo) => {
 	return request({
-		url:`/servicer/findOrderByServicer?servicerId=${servicerId}`,
+		url:`/servicer/findOrderByServicer?userNo=${userNo}`,
 		method:"GET"
 	})
 }

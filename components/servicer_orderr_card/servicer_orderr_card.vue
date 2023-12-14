@@ -2,14 +2,12 @@
 	<view class="card" @click="goDetail">
 		<view class="top">
 			<view style="display: flex;align-items: center;">
-				<image src="../../static/images/index/grid1.png" mode="widthFix" style="width: 64rpx;"></image>
-				<text style="font-size: 32rpx;color: rgba(0, 0, 0, 0.9);margin-left: 16rpx;">代客泊车</text>
+				<image :src="orderTypes[order_info?.orderType].icon" mode="widthFix" style="width: 64rpx;"></image>
+				<text style="font-size: 32rpx;color: rgba(0, 0, 0, 0.9);margin-left: 16rpx;">{{orderTypes[order_info?.orderType].big_type}}</text>
 			</view>
-			<text :style="{'font-size':'32rpx','color': props.type === 'royalty' ? '#3D3D3D' : '#43974C'}">
+			<text :style="{'font-size':'32rpx','color': type === 'royalty' ? '#3D3D3D' : '#43974C'}">
 				{{
-					props.type === 'royalty' ? 
-					"服务完成" : 
-					"等待付款"
+					orderStatus[order_info?.status]
 				}}
 			</text>
 		</view>
@@ -20,7 +18,7 @@
 					服务方式:
 				</view>
 				<view class="info_content">
-					简洗
+					{{orderTypes[order_info?.orderType].small_type}}
 				</view>
 			</view>
 			<view style="margin-top: 16rpx;">
@@ -28,7 +26,7 @@
 					服务时间:
 				</view>
 				<view class="info_content">
-					2034 / 10 / 17 16:41
+					{{dayjs(order_info?.reservationTime).format('YYYY-MM-DD HH:mm:ss')}}
 				</view>
 			</view>
 			<view style="margin-top: 16rpx;display: flex;">
@@ -37,7 +35,7 @@
 						客户姓名:
 					</view>
 					<view class="info_content">
-						张三
+						{{order_info?.orderExtraVo?.reservationName}}
 					</view>
 				</view>
 				<view style="flex: 1;">
@@ -45,7 +43,7 @@
 						客户电话:
 					</view>
 					<view class="info_content">
-						15170616041
+						{{order_info?.orderExtraVo?.reservationPhone}}
 					</view>
 				</view>
 			</view>
@@ -55,11 +53,13 @@
 
 <script setup>
 	import {defineProps} from "vue"
-	const props = defineProps(["type"])
+	import dayjs from 'dayjs'
+	import { orderTypes,orderStatus} from '../../static/js/types.js'
+	const {type,order_info} = defineProps(["type",'order_info'])
 	
 	const goDetail=()=>{
 		uni.navigateTo({
-			url:'/pages/order_detail_parking/order_detail_parking'
+			url:`/pages/order_detail_parking/order_detail_parking?order_no=${order_info?.orderExtraVo?.orderNo}`
 		})
 	}
 </script>

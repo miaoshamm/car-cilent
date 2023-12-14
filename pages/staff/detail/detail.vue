@@ -94,8 +94,7 @@
 		updateCertification
 	} from "@/api"
 	import {
-		wxUploadFile,
-		getSTSAuthorization
+		wxUploadFile
 	} from "@/utils/cos.js"
 
 	const uForm = ref(null);

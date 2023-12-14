@@ -12,7 +12,7 @@
 						<text style="font-size: 32rpx; color: #7787a2; margin-top: 8rpx">7:30</text>
 					</view>
 					<view>
-						<text v-if="punchList[0].punchTime" style="font-size: 32rpx; color: #7787a2">{{ isTimeLess('7:30', dayjs(punchList[0].punchTime).format('HH:mm')) ? '打卡成功' : '超出打卡时间' }}</text>
+						<text v-if="punchList[0].punchTime" style="font-size: 32rpx; color: #7787a2">{{ punchList[0].punchStatus === 'TIMEOUT' ? '超出打卡时间' : '打卡成功' }}</text>
 						<text v-else style="font-size: 32rpx; color: #7787a2">请按时打卡</text>
 						<text
 							v-if="punchList[0].punchTime"
@@ -21,26 +21,26 @@
 								color: '#7787A2',
 								marginTop: '8rpx',
 								marginLeft: '16rpx',
-								color: isTimeLess('7:30', dayjs(punchList[0].punchTime).format('HH:mm')) ? '##449656' : '#BA431B'
+								color: punchList[0].punchStatus === 'TIMEOUT' ? '#BA431B' : '#449656'
 							}"
 						>
-							{{punchList[0].punchTime && dayjs(punchList[0].punchTime).format('HH:mm') }}
+							{{ punchList[0].punchTime }}
 						</text>
 					</view>
 				</view>
-				<view @click="clockIn(punchIn)">
+				<view @click="() => clockIn('punchIn')">
 					<image v-if="punchList[0].punchTime" src="../../static/images/servicer/success.png" mode="widthFix" style="width: 100rpx"></image>
 					<image v-else src="../../static/images/servicer/clockIn.png" mode="widthFix" style="width: 100rpx"></image>
 				</view>
 			</view>
-			<view  class="clockInCard" v-if="punchList[0].punchStatus !== 'NOTCHECKED'">
+			<view class="clockInCard">
 				<view class="left">
 					<view style="display: flex; flex-direction: column">
 						<text style="font-size: 36rpx">下班打卡</text>
 						<text style="font-size: 32rpx; color: #7787a2; margin-top: 8rpx">19:00</text>
 					</view>
 					<view>
-						<text v-if="punchList[1].punchTime" style="font-size: 32rpx; color: #7787a2">{{ isTimeLess('19:00', dayjs(punchList[1].punchTime).format('HH:mm')) ? '打卡成功' : '超出打卡时间' }}</text>
+						<text v-if="punchList[1].punchTime" style="font-size: 32rpx; color: #7787a2">{{ punchList[1].punchStatus === 'TIMEOUT' ? '超出打卡时间' : '打卡成功' }}</text>
 						<text v-else style="font-size: 32rpx; color: #7787a2">请按时打卡</text>
 						<text
 							v-if="punchList[1].punchTime"
@@ -49,20 +49,20 @@
 								color: '#7787A2',
 								marginTop: '8rpx',
 								marginLeft: '16rpx',
-								color: isTimeLess('19:00', dayjs(punchList[1].punchTime).format('HH:mm')) ? '##449656' : '#BA431B'
+								color: punchList[1].punchStatus === 'TIMEOUT' ? '#BA431B' : '#449656'
 							}"
 						>
-							{{ dayjs(punchList[1].punchTime).format('HH:mm') }}
+							{{ punchList[1].punchTime }}
 						</text>
 					</view>
 				</view>
-				<view @click="clockIn(punchOut)">
+				<view @click="() => clockIn('punchOut')">
 					<image v-if="punchList[1].punchTime" src="../../static/images/servicer/success.png" mode="widthFix" style="width: 100rpx"></image>
 					<image v-else src="../../static/images/servicer/clockIn.png" mode="widthFix" style="width: 100rpx"></image>
 				</view>
 			</view>
 			<view style="padding: 16rpx">
-				<servicerOrderCard v-for="item in orderList" />
+				<servicerOrderCard v-for="item in orderList" :order_info="item" />
 			</view>
 		</view>
 		<Tabbar :value="0" />
@@ -72,41 +72,42 @@
 <script setup>
 import { ref } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
-import { getServicerPunch,getPunchIn,getPunchOut,getOrderByServicer } from '../../api/index.js';
+import { getServicerPunch, getPunchIn, getPunchOut, getOrderByServicer } from '../../api/index.js';
 import dayjs from 'dayjs';
 import Tabbar from '@/components/tabbar/tabbar.vue';
 import servicerOrderCard from '../../components/servicer_orderr_card/servicer_orderr_card.vue';
 const userInfo = JSON.parse(uni.getStorageSync('userInfo'));
 const punchList = ref();
-const orderList = ref([])
-const clockIn =async (type)=>{
-	if(type==='punchIn'){
-		const info = await getPunchIn(userInfo.userNo)
-		console.log(info);
-	}else{
-		await getPunchOut(userInfo.userNo)
-		console.log(info);
+const orderList = ref([]);
+const clockIn = async (type) => {
+	let info;
+	if (type === 'punchIn') {
+		info = await getPunchIn(userInfo.userNo);
+	} else {
+		info = await getPunchOut(userInfo.userNo);
 	}
-}
-function isTimeLess(timeStr1, timeStr2) {
-	let timeTimestamp1 = new Date(timeStr1).getTime();
-	let timeTimestamp2 = new Date(timeStr2).getTime();
-	return timeTimestamp1 < timeTimestamp2;
-}
-const findPunchInfo = async ()=>{
+	if (info.code === '200') {
+		findPunchInfo();
+		uni.showToast({
+			icon: 'none',
+			title: '打卡成功'
+		});
+	} else {
+		uni.showToast({
+			icon: 'none',
+			title: '打卡失败'
+		});
+	}
+};
+
+const findPunchInfo = async () => {
 	const punchInfo = await getServicerPunch(userInfo.userNo);
-	console.log(punchInfo.data);
 	punchList.value = punchInfo.data;
-}
-const findServiceOrderList = async ()=>{
-	let arr = [];
-	const idList = userInfo.servicerId.split(',')
-	for(let i=0; i < idList.length ;i++){
-		const list = await getOrderByServicer(idList[i]);
-		arr.push(list.data);
-	}
-	orderList.value = arr;
-}
+};
+const findServiceOrderList = async () => {
+	const list = await getOrderByServicer(userInfo.userNo);
+	orderList.value = list.data;
+};
 onShow(async () => {
 	findPunchInfo();
 	findServiceOrderList();

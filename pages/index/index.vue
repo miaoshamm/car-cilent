@@ -1,19 +1,8 @@
 <template>
-  <u-modal
-    @confirm="closeModel"
-    confirmColor="#449656"
-    :show="model.show"
-    :title="model.title"
-  >
+  <u-modal @confirm="closeModel" confirmColor="#449656" :show="model.show" :title="model.title">
     <view v-html="model.content"></view>
     <template #confirmButton>
-      <button
-        @getphonenumber="getPhoneNumber"
-        style="background-color: transparent; width: 100%; color: #449656"
-        open-type="getPhoneNumber"
-      >
-        确认
-      </button>
+      <button @getphonenumber="getPhoneNumber" style="background-color: transparent; width: 100%; color: #449656" open-type="getPhoneNumber">确认</button>
     </template>
   </u-modal>
   <view style="min-height: 100vh; background: #f6f7f8">
@@ -22,55 +11,28 @@
       <text class="nav-title">城市生活</text>
     </view>
     <view class="main">
-      <u-notice-bar
-        direction="column"
-        bgColor="#F6F7F8"
-        icon="/static/images/index/notice.svg"
-        :text="notice"
-      ></u-notice-bar>
+      <u-notice-bar direction="column" bgColor="#F6F7F8" icon="/static/images/index/notice.svg" :text="notice"></u-notice-bar>
       <view class="swiper">
-        <u-swiper
-          keyName="bannerImageUrl"
-          indicator
-          indicatorMode="line"
-          circular
-          :list="banner"
-          @click="bannerClick"
-          height="306rpx"
-        ></u-swiper>
+        <u-swiper keyName="bannerImageUrl" indicator indicatorMode="line" circular :list="banner" @click="bannerClick" height="306rpx"></u-swiper>
       </view>
       <view class="grid">
         <u-grid :border="false" col="5">
-          <u-grid-item
-            v-for="(listItem, listIndex) in list"
-            :key="listIndex"
-            @click="goService(listItem.url)"
-          >
+          <u-grid-item v-for="(listItem, listIndex) in list" :key="listIndex" @click="goService(listItem.url)">
             <u-icon :name="listItem.name" :size="48"></u-icon>
             <text class="grid-text">{{ listItem.title }}</text>
-            <text
-              class="grid-text-small"
-              :style="{ opacity: listItem.small != '洗车服务' ? 1 : 0 }"
-              >{{ listItem.small }}</text
-            >
+            <text class="grid-text-small" :style="{ opacity: listItem.small != '洗车服务' ? 1 : 0 }">{{ listItem.small }}</text>
           </u-grid-item>
         </u-grid>
       </view>
       <view class="subscribe" v-for="item in subscribeList" :key="item.id">
         <view class="sub-le">
           <text class="sub-le-title">预约车辆：{{ item.carNo }}</text>
-          <text class="sub-le-small">预约泊车时间：2023 年 11 月 22 日 00:00</text>
+          <text class="sub-le-small">预约泊车时间：{{dayjs(item.reservationTime).format('YYYY年MM月DD日 HH:mm:ss')}}</text>
         </view>
-        <text class="sub-detail" @click="goDetail('order_detail_parking', item.orderNo)"
-          >查看详情</text
-        >
+        <text class="sub-detail" @click="goDetail('order_detail_parking', item.orderNo)">查看详情</text>
       </view>
       <view class="supermarket">
-        <image
-          class="super-bg"
-          src="../../static/images/index/card-bg.png"
-          mode=""
-        ></image>
+        <image class="super-bg" src="../../static/images/index/card-bg.png" mode=""></image>
         <view class="super-box">
           <view class="super-title">线上生活超市</view>
           <view class="super-content">
@@ -80,33 +42,18 @@
             <view class="super-content-ri">
               <view class="super-cotent-title">司美全网最低价</view>
               <view class="super-cotent-small">夏天来了，肉肉藏不住</view>
-              <u-button
-                :disabled="true"
-                text="即将上线"
-                shape="circle"
-                color="#449656"
-              ></u-button>
+              <u-button :disabled="true" text="即将上线" shape="circle" color="#449656"></u-button>
             </view>
           </view>
         </view>
       </view>
       <view class="driver">
         <view class="cell-title">
-          <u-cell
-            @click="goDetail('parking_hospital', null)"
-            :border="false"
-            :isLink="true"
-            title="精选司机"
-            value="立即泊车"
-          ></u-cell>
+          <u-cell @click="goDetail('parking_hospital', null)" :border="false" :isLink="true" title="精选司机" value="立即泊车"></u-cell>
         </view>
         <view class="grid">
           <u-grid :border="false" col="3">
-            <u-grid-item
-              v-for="(listItem, listIndex) in driver"
-              :key="listIndex"
-              @click="goDetail('parking_hospital', listItem.id)"
-            >
+            <u-grid-item v-for="(listItem, listIndex) in driver" :key="listIndex" @click="goDetail('parking_hospital', listItem.id)">
               <image :src="listItem.userAvatar" mode=""></image>
               <text class="grid-driver">{{ listItem.userName }}</text>
               <text class="grid-driver-small">驾龄：{{ listItem.drivingAge }}年</text>
@@ -129,30 +76,13 @@
       </view>
       <view class="maintenance">
         <view class="cell-title">
-          <u-cell
-            @click="goDetail('wish', null)"
-            :border="false"
-            :isLink="true"
-            title="精选维保服务"
-            va
-            lue="立即保养"
-          ></u-cell>
+          <u-cell @click="goDetail('wish', null)" :border="false" :isLink="true" title="精选维保服务" va lue="立即保养"></u-cell>
         </view>
-        <view
-          class="maintenance-box"
-          v-for="item in carServiceList"
-          :key="item.id"
-          @click="goDetail('wish', item.id)"
-        >
+        <view class="maintenance-box" v-for="item in carServiceList" :key="item.id" @click="goDetail('wish', item.id)">
           <image :src="item.serviceImageUrl" mode=""></image>
           <view class="tenance-box-ri">
             <text class="title">{{ item.serviceName }}</text>
-            <up-text
-              :lines="2"
-              size="13"
-              color="#666"
-              :text="item.serviceDescription"
-            ></up-text>
+            <up-text :lines="2" size="13" color="#666" :text="item.serviceDescription"></up-text>
             <text class="price">¥{{ item.servicePrice }}</text>
           </view>
         </view>
@@ -165,6 +95,7 @@
 <script setup>
 import { ref } from "vue";
 import Tabbar from "@/components/tabbar/tabbar.vue";
+import dayjs from 'dayjs'
 import { onLoad } from "@dcloudio/uni-app";
 import {
   getBanner,
@@ -228,7 +159,7 @@ const getPhoneNumber = async (e) => {
     const info = await getPhone(e.detail.code);
     const userInfo = JSON.parse(uni.getStorageSync("userInfo"));
     userInfo.phone = info.data;
-    const putInfo = await putUserInfo(userInfo);
+    await putUserInfo(userInfo);
     uni.setStorageSync("userInfo", JSON.stringify(userInfo));
   }
   model.value.show = false;
@@ -244,9 +175,7 @@ const getInfo = async () => {
     const userEvaluate = await getUserEvaluate();
     const carService = await getCarServices();
     // 获取用户编号
-    const userNo = uni.getStorageSync("userInfo")
-      ? JSON.parse(uni.getStorageSync("userInfo")).userNo
-      : "";
+    const userNo = uni.getStorageSync("userInfo") ? JSON.parse(uni.getStorageSync("userInfo")).userNo : "";
     const reservationList = await getReservationOrder(userNo);
     if (bannerList.code == 200) {
       banner.value = bannerList.data;
@@ -293,9 +222,9 @@ const goService = (url) => {
 };
 
 const bannerClick = (index) => {
-	// uni.navigateTo({
-	// 	url:banner.value[index].bannerJumpLink
-	// })
+  // uni.navigateTo({
+  // 	url:banner.value[index].bannerJumpLink
+  // })
 };
 
 // 跳转到详情
@@ -307,7 +236,7 @@ const goDetail = (type, id) => {
       url = `/pages/${type}/${type}?serviceId=${id}`;
     }
     if (type === "order_detail_parking") {
-      url = `/pages/${type}/${type}?orderNo=${id}`;
+      url = `/pages/${type}/${type}?order_no=${id}`;
     }
   }
   uni.navigateTo({
@@ -316,13 +245,8 @@ const goDetail = (type, id) => {
 };
 
 // 重定向
+
 onLoad(() => {
-  const hideIndexModal = uni.getStorageSync("hideIndexModal");
-  if (hideIndexModal) {
-    model.value.show = false;
-  } else {
-    getAgreement();
-  }
   uni.login({
     success: async (res) => {
       const result = await login({
@@ -332,10 +256,20 @@ onLoad(() => {
         uni.setStorageSync("accessToken", result.data.token);
         const userInfo = await getUserInfo();
         uni.setStorageSync("userInfo", JSON.stringify(userInfo.data));
+        if(userInfo.data.servicerId){
+					uni.setStorageSync('userKey',true)
+				}
         getInfo();
       }
     },
   });
+  const hideIndexModal = uni.getStorageSync("hideIndexModal");
+  if (hideIndexModal) {
+    model.value.show = false;
+  } else {
+    getAgreement();
+  }
+
   if (uni.getStorageSync("userStatus") === "servicer") {
     return uni.switchTab({
       url: "/pages/servicer_orders/servicer_orders",
