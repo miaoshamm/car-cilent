@@ -149,7 +149,8 @@
 	
 	// 生命周期-----------------------
 	onLoad((options) => {
-		getInfo(options.orderNo)
+		console.log(options);
+		getInfo(options.order_no)
 	})
 	
 	// 计算属性-----------------------

@@ -165,6 +165,7 @@
 				info.value.orderType = "PRESERVE"
 				info.value.userId = JSON.parse(uni.getStorageSync("userInfo")).id
 				const result = await reservationPreserveOrder(info.value)
+				console.log(result.data);
 				if (result.code == 200) {
 					wx.cloud.callFunction({
 						name: 'payment',
@@ -179,6 +180,7 @@
 							wx.requestPayment({
 								...payment,
 								success(res) {
+									
 									uni.navigateTo({
 										url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
 									});

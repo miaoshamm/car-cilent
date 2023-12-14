@@ -37,6 +37,7 @@ export const orderTypes = {
   }
 };
 export  const orderStatus = {
+	RECEIVED_TO_USER:'预约成功，等待交接',
   RESERVATION: "预约成功",
   RECEIVED: "已接单",
   ARRIVED: "已到达",
