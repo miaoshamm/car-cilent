@@ -95,6 +95,34 @@
 	padding-bottom: 140rpx;
 }
 
+// 赠送服务
+.gift {
+	width: 100%;
+
+	.title {
+		font-size: 28rpx;
+		margin: 8rpx 0 0;
+		padding: 0 32rpx;
+		color: #000;
+		font-weight: normal;
+	}
+
+	.service {
+		padding: 24rpx 32rpx;
+		border-bottom: 1px solid #e7e7e7;
+		width: 100%;
+
+		image {
+			width: 48rpx;
+			height: 48rpx;
+		}
+
+		.name {
+			font-size: 32rpx;
+		}
+	}
+}
+
 .box{
 	@extend %box;
 }

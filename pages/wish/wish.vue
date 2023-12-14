@@ -1,40 +1,40 @@
 <template>
 	<u-navbar @leftClick="leftClick" safeAreaInsetTop title="预约车辆维保"></u-navbar>
-	<view v-show="!serviceShow">
-		<view class="wrapper wrapper-t">
-			<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
-			<view class="car-info">
-				<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="80"
-					errorType="toast">
-					<view class="box">
-						<u-form-item label="手机号码" prop="phone" borderBottom>
-							<u--input v-model="info.phone" border="none" placeholder="请输入手机号(必填)"></u--input>
-							<button class="get-phone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">一键获取手机号</button>
-						</u-form-item>
-						<u-form-item label="预约姓名" prop="userName" borderBottom>
-							<u--input v-model="info.userName" border="none" placeholder="请输入预约姓名"></u--input>
-						</u-form-item>
-						<u-form-item label="车辆颜色" prop="carColor" borderBottom>
-							<u--input v-model="info.carColor" border="none" placeholder="请输入车辆颜色"></u--input>
-						</u-form-item>
-						<u-form-item label="维保时间" prop="reservationTime" borderBottom @click="timeShow = true">
-							<u--input disabled v-model="info.reservationTime" disabledColor="#ffffff" placeholder="请选择维保时间"
-								border="none"></u--input>
-							<template #right>
-								<u-icon name="arrow-right"></u-icon>
-							</template>
-						</u-form-item>
-						<u-form-item label="车辆型号" prop="carTypeName" borderBottom @click="modelShow = true">
-							<u--input disabled v-model="info.carTypeName" disabledColor="#ffffff" placeholder="请选择车辆型号(必填)"
-								border="none"></u--input>
-							<template #right>
-								<u-icon name="arrow-right"></u-icon>
-							</template>
-						</u-form-item>
-						<u-form-item label="预约服务" borderBottom>
-							<u--input disabled disabledColor="#ffffff" border="none"></u--input>
-						</u-form-item>
-						<u-form-item borderBottom v-for="item in info.washService" :key="item.id" @click="goService">
+	<view class="wrapper wrapper-t wrapper-p">
+		<License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
+		<view class="car-info">
+			<u--form ref="uForm" class="car-form" labelPosition="left" :model="info" :rules="rules" labelWidth="80"
+				errorType="toast">
+				<view class="box">
+					<u-form-item label="手机号码" prop="phone" borderBottom>
+						<u--input v-model="info.phone" border="none" placeholder="请输入手机号(必填)"></u--input>
+						<button class="get-phone" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">一键获取手机号</button>
+					</u-form-item>
+					<u-form-item label="预约姓名" prop="userName" borderBottom>
+						<u--input v-model="info.userName" border="none" placeholder="请输入预约姓名"></u--input>
+					</u-form-item>
+					<u-form-item label="车辆颜色" prop="carColor" borderBottom>
+						<u--input v-model="info.carColor" border="none" placeholder="请输入车辆颜色"></u--input>
+					</u-form-item>
+					<u-form-item label="维保时间" prop="reservationTime" borderBottom @click="timeShow = true">
+						<u--input disabled v-model="info.reservationTime" disabledColor="#ffffff" placeholder="请选择维保时间"
+							border="none"></u--input>
+						<template #right>
+							<u-icon name="arrow-right"></u-icon>
+						</template>
+					</u-form-item>
+					<u-form-item label="车辆型号" prop="carTypeName" borderBottom @click="modelShow = true">
+						<u--input disabled v-model="info.carTypeName" disabledColor="#ffffff" placeholder="请选择车辆型号"
+							border="none"></u--input>
+						<template #right>
+							<u-icon name="arrow-right"></u-icon>
+						</template>
+					</u-form-item>
+					<u-form-item label="预约服务" borderBottom>
+						<u--input disabled disabledColor="#ffffff" border="none"></u--input>
+					</u-form-item>
+					<view v-for="item in info.washService" :key="item.id" @click="goService">
+						<u-form-item borderBottom>
 							<view class="service">
 								<image :src="item?.serviceImageUrl" mode=""></image>
 								<view class="text">
@@ -46,24 +46,30 @@
 								<u-icon name="arrow-right"></u-icon>
 							</template>
 						</u-form-item>
-						<u-form-item>
-							<view class="add-service">
-								<up-button @click="goService" customStyle="border:none;" color="#449656" iconColor="#449656"
-									:plain="true" :hairline="false" icon="plus" text="增添服务"></up-button>
+						<view class="gift" v-show="item.carDonateServiceVoList">
+							<view class="title">包含赠送项目</view>
+							<view class="service" v-for="item2 in item.carDonateServiceVoList">
+								<image :src="item2.serviceImageUrl" mode=""></image>
+								<text class="name">{{item.serviceName}}</text>
 							</view>
-						</u-form-item>
+						</view>
 					</view>
-				</u--form>
-			</view>
-			<Insurance type="wish" />
+					<u-form-item>
+						<view class="add-service">
+							<up-button @click="goService" customStyle="border:none;" color="#449656" iconColor="#449656" :plain="true"
+								:hairline="false" icon="plus" text="增添服务"></up-button>
+						</view>
+					</u-form-item>
+				</view>
+			</u--form>
 		</view>
-		<PriceBtn type="pay" :price="info.total" @callback="createOrder" />
-		<u-datetime-picker :formatter="formatter" :minDate="nowTime" @cancel="timeShow = false" @confirm="checkTime"
-			:show="timeShow" mode="datetime" confirmColor="#449656" ref="datetimePickerRef"></u-datetime-picker>
-		<u-picker confirmColor="#449656" @cancel="modelShow = false" @confirm="checkModel" :show="modelShow"
-			:columns="modelColumns"></u-picker>
+		<Insurance type="wish" />
 	</view>
-	<Service v-show="serviceShow" :list="serviceList" @confirm="serviceConfirm" @show="checkServiceShow" />
+	<PriceBtn type="pay" :price="info.total" @callback="createOrder" />
+	<u-datetime-picker :formatter="formatter" :minDate="nowTime" @cancel="timeShow = false" @confirm="checkTime"
+		:show="timeShow" mode="datetime" confirmColor="#449656" ref="datetimePickerRef"></u-datetime-picker>
+	<u-picker confirmColor="#449656" @cancel="modelShow = false" @confirm="checkModel" :show="modelShow"
+		:columns="modelColumns"></u-picker>
 </template>
 
 <script setup>
@@ -77,7 +83,8 @@
 	import dayjs from "dayjs";
 	import {
 		onReady,
-		onLoad
+		onLoad,
+		onShow
 	} from "@dcloudio/uni-app";
 	import {
 		getCarServices,
@@ -120,12 +127,7 @@
 				},
 				message: '请输入正确的手机号'
 			}
-		],
-		carTypeName:{
-			required: true,
-			type:"string",
-			message: '请输入车型'
-		}
+		]
 	}
 
 	// 获取手机号
@@ -135,15 +137,43 @@
 			if (result.code == 200) {
 				info.value.phone = result.data
 			}
-		} catch (e) {
-			//TODO handle the exception
-		}
+		} catch (e) {}
+	}
+
+	// 微信支付
+	const wxPay = (result) => {
+		wx.cloud.callFunction({
+			name: 'payment',
+			data: {
+				outTradeNo: result.data,
+				body: '城市服务维保',
+				subMchId: '1643049307',
+				functionName: 'paymentCallback'
+			},
+			success: (res) => {
+				const payment = res.result.payment;
+				wx.requestPayment({
+					...payment,
+					success(res) {
+						uni.navigateTo({
+							url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
+						});
+						console.log('pay success', res);
+					},
+					fail(err) {
+						console.error('pay fail', err);
+					}
+				});
+			},
+			fail: console.error
+		});
 	}
 
 	// 下单
 	const createOrder = (res) => {
 		if (res === 'success') {
 			uForm.value.validate().then(async res => {
+				info.value.carNo = "粤B88888"
 				if (!info.value.carNo) {
 					return uni.showToast({
 						title: "请输入车牌号",
@@ -157,40 +187,20 @@
 					})
 				}
 				const arr = []
-				info.value.carTypeName = info.value.carTypeName[0]
 				info.value.washService.forEach(item => {
 					arr.push(item.id)
 				})
-				info.value.washService = arr.join(',')
 				info.value.orderType = "PRESERVE"
 				info.value.userId = JSON.parse(uni.getStorageSync("userInfo")).id
-				const result = await reservationPreserveOrder(info.value)
+				const result = await reservationPreserveOrder({
+					...info.value,
+					washService: arr.join(',')
+				})
 				if (result.code == 200) {
-					wx.cloud.callFunction({
-						name: 'payment',
-						data: {
-							outTradeNo: result.data,
-							body: '城市服务维保',
-							subMchId: '1643049307',
-							functionName: 'paymentCallback'
-						},
-						success: (res) => {
-							const payment = res.result.payment;
-							wx.requestPayment({
-								...payment,
-								success(res) {
-									uni.navigateTo({
-										url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
-									});
-									console.log('pay success', res);
-								},
-								fail(err) {
-									console.error('pay fail', err);
-								}
-							});
-						},
-						fail: console.error
-					});
+					wxPay(result)
+					// uni.navigateTo({
+					// 	url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
+					// })
 				}
 			})
 		} else {
@@ -262,9 +272,11 @@
 		}
 	};
 
-	// 显示选项
+	// 跳转页面
 	const goService = () => {
-		serviceShow.value = true;
+		uni.navigateTo({
+			url:'/pages/wish/service/service'
+		})
 	};
 
 	// 格式化
@@ -292,11 +304,19 @@
 		// 微信小程序需要用此写法
 		datetimePickerRef.value.setFormatter(formatter);
 	});
+	
+	onShow(() => {
+		let list = uni.getStorageSync("wishService") ? JSON.parse(uni.getStorageSync("wishService")) : ""
+		serviceConfirm(list)
+	})
 
 	onLoad((options) => {
 		serviceId.value = options.id
 		allService()
 		modelColumns.value.push(models)
+		// 判断手机号
+		const userInfo = uni.getStorageSync("userInfo")
+		info.value.phone = userInfo ? JSON.parse(userInfo).phone : ""
 	})
 </script>
 
@@ -311,8 +331,8 @@
 	.add-service {
 		width: 100%;
 	}
-	
-	.get-phone{
+
+	.get-phone {
 		font-size: 24rpx;
 	}
 </style>

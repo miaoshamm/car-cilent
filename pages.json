@@ -152,6 +152,14 @@
     	{
     		"navigationStyle": "custom"
     	}
+    },
+    {
+    	"path" : "pages/wish/service/service",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "预约维保",
+    		"enablePullDownRefresh" : false
+    	}
     }
   ],
   "globalStyle": {

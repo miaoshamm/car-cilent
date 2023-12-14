@@ -17,7 +17,7 @@
 			<view class="dis-title">优惠服务</view>
 			<view class="grid">
 				<u-grid :border="false" col="5">
-					<u-grid-item>
+					<u-grid-item @click="goParking">
 						<u-icon name="/static/images/index/grid1.png" :size="48"></u-icon>
 						<text class="grid-text">代客泊车</text>
 						<text class="grid-text-small">中山六院</text>
@@ -33,19 +33,10 @@
 	import {getEmployeeCertification} from "@/api"
 	const userInfo = ref("")
 	
-	// 获取职工认证状态
-	const getCertification = async () => {
-		try {
-			const result = await getEmployeeCertification(userInfo.value.userNo)
-			if (result.code == 200) {
-				if(!result.data.status){
-					uni.reLaunch({
-						url:'/pages/staff/detail/detail'
-					})
-				}
-			}
-		} catch (e) {
-		}
+	const goParking = () => {
+		uni.navigateTo({
+			url:'/pages/parking_hospital/parking_hospital'
+		})
 	}
 	
 	// 查看信息
@@ -57,7 +48,6 @@
 	
 	onLoad(() => {
 		userInfo.value = JSON.parse(uni.getStorageSync("userInfo"))
-		getCertification()
 	})
 
 </script>
