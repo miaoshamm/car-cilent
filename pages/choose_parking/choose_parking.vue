@@ -2,14 +2,16 @@
 	<view class="page">
 		<u-navbar :autoBack="true" title="选择司机" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
 		<view class="main">
-			<view @click="change(info)" class="card_line" :style="{ backgroundColor: selectId === info.id && '#EAFAEA' }" v-for="(info, index) in list">
+			<view @click="change(info)" class="card_line" :style="{ backgroundColor: selectId === info.id && '#EAFAEA' }"
+				v-for="(info, index) in list">
 				<view style="display: flex; height: 96rpx">
 					<view style="width: 96rpx; height: 96rpx">
 						<up-image width="96rpx" height="96rpx" :src="info?.drivingUrl" shape="circle"></up-image>
 					</view>
 					<view style="display: flex; flex-direction: column; margin-left: 16rpx">
 						<text style="font-size: 32rpx">{{ info.userName }}</text>
-						<text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 - {{ info?.drivingAge }}年</text>
+						<text style="font-size: 28rpx; color: rgba(0, 0, 0, 0.4); margin-top: 8rpx">驾驶年龄 -
+							{{ info?.drivingAge }}年</text>
 					</view>
 				</view>
 				<label class="radio">
@@ -24,78 +26,89 @@
 </template>
 
 <script setup>
-import { getServicerByType } from '../../api/index.js';
-import { onShow } from '@dcloudio/uni-app';
-import { ref } from 'vue';
-const {servicerType} = defineProps(['servicerType'])
-const list = ref([]);
-const selectId = ref();
+	import {
+		getServicerByType
+	} from '../../api/index.js';
+	import {
+		onShow
+	} from '@dcloudio/uni-app';
+	import {
+		ref
+	} from 'vue';
+	const {
+		servicerType
+	} = defineProps(['servicerType'])
+	const list = ref([]);
+	const selectId = ref();
 
-const change = (info) => {
-	selectId.value = info.id;
-	if(servicerType ==='VALET' ){
-		getApp().globalData.parkingDriverInfo = info;
-	}else if( servicerType === 'TRANSFER'){
-		getApp().globalData.pickUpDriverInfo = info;
-	}
-};
-const back=()=>{
-	uni.navigateBack()
-}
-onShow(async () => {
-	let info;
-	if(servicerType === 'VALET'){
-		info = getApp().globalData.parkingDriverInfo;
-	}else if(servicerType === 'TRANSFER'){
-		info = getApp().globalData.pickUpDriverInfo;
-	}
-	console.log(info);
-	getServicerByType(servicerType).then((res) => {
-		list.value = res.data;
-		if(!info.id){
-			selectId.value = res.data[0].id;
-		}else{
-			selectId.value =  info.id;
+	const change = (info) => {
+		selectId.value = info.id;
+		if (servicerType === 'VALET') {
+			getApp().globalData.parkingDriverInfo = info;
+		} else if (servicerType === 'TRANSFER') {
+			getApp().globalData.pickUpDriverInfo = info;
 		}
-	});
-});
+	};
+	const back = () => {
+		uni.navigateBack()
+	}
+	onShow(async () => {
+		let info = {};
+		if (servicerType === 'VALET') {
+			info = getApp().globalData.parkingDriverInfo;
+		} else if (servicerType === 'TRANSFER') {
+			info = getApp().globalData.pickUpDriverInfo;
+		}
+		const res = await getServicerByType(servicerType);
+		list.value = res.data
+		if (info.id) {
+			selectId.value = info.id;
+		} else {
+			selectId.value = res.data[0].id
 
+		}
+
+	});
 </script>
 
 <style lang="scss" scoped>
-.page {
-	height: 100vh;
-	display: flex;
-	flex-direction: column;
-	background-color: #f6f7f8;
-	.main {
-		flex: 1;
-		.card_line {
-			display: flex;
-			align-items: center;
-			height: 144rpx;
-			justify-content: space-between;
-			padding: 0 32rpx;
-			background-color: white;
-			border-bottom: 1rpx solid #e7e7e7;
+	.page {
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		background-color: #f6f7f8;
+
+		.main {
+			flex: 1;
+
+			.card_line {
+				display: flex;
+				align-items: center;
+				height: 144rpx;
+				justify-content: space-between;
+				padding: 0 32rpx;
+				background-color: white;
+				border-bottom: 1rpx solid #e7e7e7;
+			}
+
 		}
 
-	}
-	.chooseButton {
-		height: 128rpx;
-		padding: 20rpx 32rpx;
-		background-color: white;
-		box-shadow: 0px 6px 30px 5px rgba(0, 0, 0, 0.05), 0px 16px 24px 2px rgba(0, 0, 0, 0.04), 0px 8px 10px -5px rgba(0, 0, 0, 0.08);
-		box-sizing: border-box;
-		button {
-			background-color: $bgColor;
-			height: 100%;
-			color: white;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 32rpx;
+		.chooseButton {
+			height: 128rpx;
+			padding: 20rpx 32rpx;
+			background-color: white;
+			box-shadow: 0px 6px 30px 5px rgba(0, 0, 0, 0.05), 0px 16px 24px 2px rgba(0, 0, 0, 0.04), 0px 8px 10px -5px rgba(0, 0, 0, 0.08);
+			box-sizing: border-box;
+
+			button {
+				background-color: $bgColor;
+				height: 100%;
+				color: white;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 32rpx;
+			}
 		}
 	}
-}
 </style>
