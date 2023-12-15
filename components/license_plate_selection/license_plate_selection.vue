@@ -1,7 +1,7 @@
 <template>
-  <view class="card" @click="check">
+  <view class="card">
     <view class="card-le">
-      <text class="card-title" v-show="type === 'input'">输入车牌</text>
+      <text class="card-title" v-show="type === 'input'" @click="check">输入车牌</text>
       <text class="card-title" v-show="type === 'subscribe'">预约车辆</text>
       <text class="card-title" v-show="type === 'info'">车牌号码</text>
       <view class="card-le-btn">

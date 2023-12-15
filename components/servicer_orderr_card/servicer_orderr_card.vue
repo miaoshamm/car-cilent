@@ -59,6 +59,11 @@
 	const {type,order_info} = defineProps(["type",'order_info'])
 	
 	const goDetail=()=>{
+		// 判断类型
+		uni.navigateTo({
+			url:'/pages/servicer_orders/maintenance/maintenance'
+		})
+		return
 		uni.navigateTo({
 			url:`/pages/order_detail_parking/order_detail_parking?order_no=${order_info?.orderExtraVo?.orderNo}&isServicer=true`
 		})

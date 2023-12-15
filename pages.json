@@ -71,8 +71,7 @@
     {
       "path": "pages/wish/wish_pay/wish_pay",
       "style": {
-        "navigationBarTitleText": "车辆维保服务",
-        "enablePullDownRefresh": false
+				"navigationStyle": "custom"
       }
     },
     {
@@ -104,13 +103,6 @@
         "navigationBarTitleText": "接送订单详情",
         "enablePullDownRefresh": false,
         "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/map/map",
-      "style": {
-        "navigationBarTitleText": "地图",
-        "enablePullDownRefresh": false
       }
     },
     {
@@ -169,6 +161,14 @@
         "navigationBarTitleText": "预约维保",
         "enablePullDownRefresh": false
       }
+    },
+    {
+    	"path" : "pages/servicer_orders/maintenance/maintenance",
+    	"style" : 
+    	{
+    		"navigationBarTitleText" : "选择维保地点",
+    		"enablePullDownRefresh" : false
+    	}
     }
   ],
   "globalStyle": {
