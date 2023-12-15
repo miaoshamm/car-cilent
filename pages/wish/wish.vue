@@ -144,7 +144,7 @@ import License from "@/components/license_plate_selection/license_plate_selectio
 import Insurance from "@/components/insurance_tips/insurance_tips.vue";
 import PriceBtn from "@/components/price_btn/price_btn.vue";
 import dayjs from "dayjs";
-import { onReady, onLoad, onShow,onUnload } from "@dcloudio/uni-app";
+import { onReady, onLoad, onShow, onUnload } from "@dcloudio/uni-app";
 import { getCarServices, reservationPreserveOrder, getPhone } from "@/api";
 import models from "@/static/json/brands.json";
 
@@ -253,9 +253,9 @@ const createOrder = (res) => {
       });
       if (result.code == 200) {
         // wxPay(result);
-				uni.navigateTo({
-					url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
-				})
+        uni.navigateTo({
+          url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`,
+        });
       }
     });
   } else {
@@ -355,7 +355,7 @@ onShow(() => {
   let list = uni.getStorageSync("wishService")
     ? JSON.parse(uni.getStorageSync("wishService"))
     : "";
-	if(list) serviceConfirm(list);
+  if (list) serviceConfirm(list);
 });
 
 onLoad((options) => {
@@ -369,10 +369,10 @@ onLoad((options) => {
 
 // 清除
 onUnload(() => {
-	if(uni.getStorageSync("wishService")){
-		uni.removeStorageSync('wishService')
-	}
-})
+  if (uni.getStorageSync("wishService")) {
+    uni.removeStorageSync("wishService");
+  }
+});
 </script>
 
 <style lang="scss" scoped>
