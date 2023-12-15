@@ -1,7 +1,8 @@
 <template>
 	<view class="wrapper-p">
 		<u-radio-group v-model="checkboxValue" iconPlacement="right" @change="checkboxChange">
-			<view :style="{flex:1,background:checkboxValue.indexOf(item.id) != -1 ? '#EAFAEA' : '' }" v-for="item in serviceList" :key="item.id">
+			<view :style="{flex:1,background:checkboxValue == item.id ? '#EAFAEA' : '' }" v-for="item in serviceList"
+				:key="item.id">
 				<view class="check-box">
 					<view class="service">
 						<image :src="item.addressImageUrl" mode=""></image>
@@ -9,14 +10,15 @@
 							<text class="name">{{item.address}}</text>
 						</view>
 					</view>
-					<u-radio :name="item.id" shape="circle" activeColor="#449656" :disabled="mutexValue && mutexValue.indexOf(item.id) != -1"></u-radio>
+					<u-radio :name="item.id" shape="circle" activeColor="#449656"></u-radio>
 				</view>
 			</view>
 		</u-radio-group>
 		<view class="check-btn">
 			<u-button text="确认选择" color="#449656" @click="show = true"></u-button>
 		</view>
-		<u-modal :show="show" title="确定选择此地点吗？" @confirm="confirm"></u-modal>
+		<u-modal showCancelButton confirmColor="#449656" :show="show" title="确定选择此地点吗？" @confirm="confirm"
+			@cancel="show = false"></u-modal>
 	</view>
 </template>
 
@@ -27,30 +29,26 @@
 	import {
 		onLoad
 	} from "@dcloudio/uni-app";
-	import {getLocations} from "@/api"
-	
+	import {
+		getLocations
+	} from "@/api"
+
 	let checkboxValue = ref("")
 	let mutexValue = ref(null)
 	const serviceList = ref([])
 	const infoList = ref([])
 	const show = ref(false)
-	
+
 	// 确认选择
 	const confirm = () => {
-		
+		uni.redirectTo({
+			url: `/pages/wish/wish_pay/wish_pay?orderNo=123`
+		})
 	}
-	
+
 	// 改变选项时
 	const checkboxChange = (check) => {
-		console.log(check);
 		checkboxValue.value = check
-		mutexValue.value = ""
-		// 拿到当前选中的选项的互斥项目
-		serviceList.value.forEach(item => {
-			if(check.indexOf(item.id) != -1){
-				mutexValue.value += item.mutexService
-			}
-		})
 	};
 
 	// 获取所有服务
@@ -62,8 +60,8 @@
 			}
 		} catch (e) {}
 	}
-	
-	onLoad(() => {
+
+	onLoad((options) => {
 		allService()
 	})
 </script>

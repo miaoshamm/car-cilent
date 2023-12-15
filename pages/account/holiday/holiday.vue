@@ -20,7 +20,7 @@
 					</template>
 				</u-form-item>
 				<u-form-item label="请假事由" prop="absentReason">
-					<u--input disabled v-model="info.absentReason" disabledColor="#ffffff" placeholder="请输入请假事由"
+					<u--input :disabled="info.status" v-model="info.absentReason" disabledColor="#ffffff" placeholder="请输入请假事由"
 						border="none"></u--input>
 						<template #right>
 							<u-icon name="arrow-right" color="#fff"></u-icon>
@@ -84,15 +84,20 @@
 	}
 
 	// 监听值的变化
-	watch(info.value, (newVal) => {
+	watch(() => info.value,(v1,newVal)=>{
 		// 判断是否有值
-		const res = Object.keys(newVal).every(key => newVal[key])
+		const obj = {
+			absentReason:newVal.absentReason,
+			beginDate:newVal.beginDate,
+			endDate:newVal.endDate,
+		}
+		const res = Object.keys(obj).every(key => obj[key])
 		if (res) {
 			btnColor.value = "#449656"
 		} else {
 			btnColor.value = "#C5C5C5"
 		}
-	})
+	},{deep:true})
 
 	// 查看申请
 	const getApply = async () => {
@@ -104,7 +109,6 @@
 				}
 			}
 		} catch (e) {
-			//TODO handle the exception
 		}
 	}
 
@@ -118,7 +122,6 @@
 				getApply()
 			}
 		} catch (e) {
-			//TODO handle the exception
 		}
 	}
 

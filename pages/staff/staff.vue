@@ -28,28 +28,30 @@
 	</view>
 </template>
 <script setup>
-	import { ref } from 'vue';
-	import {onLoad} from "@dcloudio/uni-app"
-	import {getEmployeeCertification} from "@/api"
+	import {
+		ref
+	} from 'vue';
+	import {
+		onLoad
+	} from "@dcloudio/uni-app"
 	const userInfo = ref("")
-	
+
 	const goParking = () => {
 		uni.navigateTo({
-			url:'/pages/parking_hospital/parking_hospital'
+			url: '/pages/parking_hospital/parking_hospital'
 		})
 	}
-	
+
 	// 查看信息
 	const showInfo = () => {
 		uni.navigateTo({
-			url:"/pages/staff/detail/detail"
+			url: "/pages/staff/detail/detail"
 		})
 	};
-	
+
 	onLoad(() => {
 		userInfo.value = JSON.parse(uni.getStorageSync("userInfo"))
 	})
-
 </script>
 
 <style lang="scss" scoped>
