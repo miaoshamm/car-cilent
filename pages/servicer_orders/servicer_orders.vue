@@ -62,6 +62,7 @@
 				</view>
 			</view>
 			<view style="padding: 16rpx">
+				<navigator url="/pages/servicer_orders/maintenance/maintenance">维保</navigator>
 				<view v-if="orderList.length === 0" style="text-align: center;color: #449656;">
 					暂无订单
 				</view>

@@ -1,5 +1,13 @@
 import {request} from "@/utils/request.js"
 
+// 获取所有维保地点
+export const getLocations = (type) => {
+	return request({
+		url:`/geographicLocation/findAllGeographicLocation/${type}`,
+		method:"GET"
+	})
+}
+
 // 获取预约成功订单
 export const getReservationOrder = (userNo) => {
 	return request({

@@ -60,7 +60,7 @@
             </u-grid-item>
           </u-grid>
         </view>
-        <swiper>
+        <swiper v-show="evaluate.length">
           <swiper-item v-for="item in evaluate" :key="item.id">
             <view class="review">
               <view class="review-title">

@@ -1,5 +1,5 @@
 <template>
-  <u-navbar @leftClick="leftClick" safeAreaInsetTop title="预约车辆维保"></u-navbar>
+  <u-navbar :autoBack="true" safeAreaInsetTop title="预约车辆维保"></u-navbar>
   <view class="wrapper wrapper-t wrapper-p">
     <License type="input" :licensePlate="info.carNo" @plateNumber="getPlateNumber" />
     <view class="car-info">
@@ -143,9 +143,8 @@ import { ref } from "vue";
 import License from "@/components/license_plate_selection/license_plate_selection.vue";
 import Insurance from "@/components/insurance_tips/insurance_tips.vue";
 import PriceBtn from "@/components/price_btn/price_btn.vue";
-import Service from "@/components/service/service.vue";
 import dayjs from "dayjs";
-import { onReady, onLoad, onShow } from "@dcloudio/uni-app";
+import { onReady, onLoad, onShow,onUnload } from "@dcloudio/uni-app";
 import { getCarServices, reservationPreserveOrder, getPhone } from "@/api";
 import models from "@/static/json/brands.json";
 
@@ -228,9 +227,12 @@ const wxPay = (result) => {
 
 // 下单
 const createOrder = (res) => {
+	uni.navigateTo({
+		url: `/pages/wish/wish_pay/wish_pay?orderNo=20231213162454339933`
+	})
+	return
   if (res === "success") {
     uForm.value.validate().then(async (res) => {
-      info.value.carNo = "粤B88888";
       if (!info.value.carNo) {
         return uni.showToast({
           title: "请输入车牌号",
@@ -254,10 +256,10 @@ const createOrder = (res) => {
         washService: arr.join(","),
       });
       if (result.code == 200) {
-        wxPay(result);
-        // uni.navigateTo({
-        // 	url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
-        // })
+        // wxPay(result);
+				uni.navigateTo({
+					url: `/pages/wish/wish_pay/wish_pay?orderNo=${result.data.orderNo}`
+				})
       }
     });
   } else {
@@ -296,7 +298,7 @@ const allService = async () => {
       } else {
         info.value.washService = [result.data[0] ?? null];
       }
-      info.value.total = info.value.washService.reduce((total, item) => {
+      info.value.total = info.value.washService?.reduce((total, item) => {
         return item.servicePrice + total;
       }, 0);
     }
@@ -318,15 +320,6 @@ const checkTime = (time) => {
 const checkModel = (item) => {
   info.value.carTypeName = item.value[0];
   modelShow.value = false;
-};
-
-// 导航跳转
-const leftClick = () => {
-  if (serviceShow.value) {
-    serviceShow.value = false;
-  } else {
-    uni.navigateBack();
-  }
 };
 
 // 跳转页面
@@ -366,7 +359,7 @@ onShow(() => {
   let list = uni.getStorageSync("wishService")
     ? JSON.parse(uni.getStorageSync("wishService"))
     : "";
-  serviceConfirm(list);
+	if(list) serviceConfirm(list);
 });
 
 onLoad((options) => {
@@ -377,6 +370,13 @@ onLoad((options) => {
   const userInfo = uni.getStorageSync("userInfo");
   info.value.phone = userInfo ? JSON.parse(userInfo).phone : "";
 });
+
+// 清除
+onUnload(() => {
+	if(uni.getStorageSync("wishService")){
+		uni.removeStorageSync('wishService')
+	}
+})
 </script>
 
 <style lang="scss" scoped>

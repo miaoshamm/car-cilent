@@ -1,29 +1,22 @@
 <template>
 	<view class="wrapper-p">
-		<u-checkbox-group v-model="checkboxValue" iconPlacement="right" @change="checkboxChange">
+		<u-radio-group v-model="checkboxValue" iconPlacement="right" @change="checkboxChange">
 			<view :style="{flex:1,background:checkboxValue.indexOf(item.id) != -1 ? '#EAFAEA' : '' }" v-for="item in serviceList" :key="item.id">
 				<view class="check-box">
 					<view class="service">
-						<image :src="item.serviceImageUrl" mode=""></image>
+						<image :src="item.addressImageUrl" mode=""></image>
 						<view class="text">
-							<text class="name">{{item.serviceName}}</text>
-							<text class="price">¥ {{item.servicePrice.toFixed(2)}}</text>
+							<text class="name">{{item.address}}</text>
 						</view>
 					</view>
-					<u-checkbox :name="item.id" shape="circle" activeColor="#449656" :disabled="mutexValue && mutexValue.indexOf(item.id) != -1"></u-checkbox>
-				</view>
-				<view class="gift" v-show="item.carDonateServiceVoList">
-					<view class="title">包含赠送项目</view>
-					<view class="service" v-for="item2 in item.carDonateServiceVoList">
-						<image :src="item2.serviceImageUrl" mode=""></image>
-						<text class="name">{{item.serviceName}}</text>
-					</view>
+					<u-radio :name="item.id" shape="circle" activeColor="#449656" :disabled="mutexValue && mutexValue.indexOf(item.id) != -1"></u-radio>
 				</view>
 			</view>
-		</u-checkbox-group>
+		</u-radio-group>
 		<view class="check-btn">
-			<u-button text="确认选择" color="#449656" @click="confirm"></u-button>
+			<u-button text="确认选择" color="#449656" @click="show = true"></u-button>
 		</view>
+		<u-modal :show="show" title="确定选择此地点吗？" @confirm="confirm"></u-modal>
 	</view>
 </template>
 
@@ -34,24 +27,22 @@
 	import {
 		onLoad
 	} from "@dcloudio/uni-app";
-	import {getCarServices} from "@/api"
+	import {getLocations} from "@/api"
 	
 	let checkboxValue = ref("")
 	let mutexValue = ref(null)
 	const serviceList = ref([])
 	const infoList = ref([])
+	const show = ref(false)
 	
 	// 确认选择
 	const confirm = () => {
-		const result = serviceList.value.filter(item => {
-			return checkboxValue.value.indexOf(item.id) != -1
-		})
-		uni.navigateBack()
-		uni.setStorageSync("wishService",JSON.stringify(result))
+		
 	}
 	
 	// 改变选项时
 	const checkboxChange = (check) => {
+		console.log(check);
 		checkboxValue.value = check
 		mutexValue.value = ""
 		// 拿到当前选中的选项的互斥项目
@@ -65,7 +56,7 @@
 	// 获取所有服务
 	const allService = async () => {
 		try {
-			const result = await getCarServices()
+			const result = await getLocations('PRESERVE')
 			if (result.code == 200) {
 				serviceList.value = result.data
 			}

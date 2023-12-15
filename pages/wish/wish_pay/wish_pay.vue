@@ -1,5 +1,6 @@
 <template>
-	<view class="wrapper wrapper-p">
+	<u-navbar title="车辆维保服务" @leftClick="leftClick" safeAreaInsetTop></u-navbar>
+	<view class="wrapper wrapper-p wrapper-t">
 		<view class="title" v-show="!info.geographicLocationVo">请稍等，正在确定维保地点</view>
 		<view class="title" v-show="info.geographicLocationVo">请前往维保地点...</view>
 		<view class="title" v-show="info.status === 'COMPLETE'">维保服务结束，订单已完成</view>
@@ -9,8 +10,9 @@
 			<view class="box-info" @click="goMap">
 				<text>维保地点</text>
 				<view class="box-location">
-					<text>{{info.geographicLocationVo?.address ? info.geographicLocationVo?.address : "..."}}</text>
-					<image v-show="info.geographicLocationVo" src="../../../static/images/order/location.png" mode=""></image>
+					<up-text :lines="1"
+						:text="info.geographicLocationVo?.address ? info.geographicLocationVo?.address : '...'"></up-text>
+					<image v-show="info.geographicLocationVo" src="/static/images/order/location.png" mode=""></image>
 				</view>
 			</view>
 			<view class="box-info" style="flex-direction: column" v-if="info.geographicLocationVo?.addressImageUrl">
@@ -116,21 +118,34 @@
 	import Insurance from "@/components/insurance_tips/insurance_tips.vue";
 	import License from "@/components/license_plate_selection/license_plate_selection.vue";
 	import dayjs from "dayjs";
-	
+
 	// 属性--------------------
 	const info = ref({})
 	const total = ref("")
 
 	// 方法---------------------------
-	
-	// 跳转地点
-	const goMap = () => {
-		const {longitude,latitude} = info.value.geographicLocationVo
-		uni.navigateTo({
-			url: `/pages/map/map?longitude=${longitude}&latitude=${latitude}`
+	const leftClick = () => {
+		uni.redirectTo({
+			url:'/pages/index/index'
 		})
 	}
-	
+
+	// 跳转地点
+	const goMap = () => {
+		const {
+			longitude,
+			latitude,
+			address
+		} = info.value.geographicLocationVo
+		wx.openLocation({
+			latitude, //维度
+			longitude, //经度
+			name: address, //目的地定位名称
+			scale: 18, //缩放比例
+			address //导航详细地址
+		});
+	}
+
 	// 获取信息
 	const getInfo = async (orderNo) => {
 		try {
@@ -144,17 +159,25 @@
 				if (result.data.carServicesVos.length) {
 					total.value = result.data.carServicesVos.reduce((total, item) => total + item.servicePrice, 0)
 				}
+			}else{
+				uni.showToast({
+					icon:'error',
+					title:result.message,
+					success() {
+						uni.redirectTo({
+							url:'/pages/index/index'
+						})
+					}
+				})
 			}
-		} catch (e) {
-		}
+		} catch (e) {}
 	}
-	
+
 	// 生命周期-----------------------
 	onLoad((options) => {
-		console.log(options);
-		getInfo(options.order_no)
+		getInfo(options.orderNo)
 	})
-	
+
 	const reservationTime = (time) => {
 		return time ? dayjs(time).format("YYYY-MM-DD HH:mm") : ""
 	}
@@ -172,11 +195,16 @@
 			justify-content: space-between;
 			font-size: 28rpx;
 			padding: 28rpx 0;
-			
-			.box-location{
+
+			text:nth-of-type(1) {
+				width: 180rpx;
+			}
+
+			.box-location {
 				display: flex;
 				align-items: center;
-				image{
+
+				image {
 					width: 24rpx;
 					height: 28rpx;
 					margin: 0 0 0 12rpx;
