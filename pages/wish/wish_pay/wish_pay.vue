@@ -98,6 +98,7 @@
 	</view>
 	<view class="check-btn" v-show="info.geographicLocationVo">
 		<u-button plain text="查看维保地点" color="#449656" @click="goMap"></u-button>
+		<u-button v-show="uni.getStorageSync('userStatus') === 'servicer'" customStyle="margin: 0 0 0 20rpx;" text="车辆维保完成" color="#449656"></u-button>
 	</view>
 	<view class="check-btn" v-show="info.status === 'COMPLETE'">
 		<u-button text="返回首页" color="#449656"></u-button>
@@ -164,9 +165,7 @@
 					icon:'error',
 					title:result.message,
 					success() {
-						uni.redirectTo({
-							url:'/pages/index/index'
-						})
+						uni.navigateBack({delta:2})
 					}
 				})
 			}

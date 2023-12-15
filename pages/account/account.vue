@@ -27,7 +27,7 @@
 					<UserMenu pageUrl="/pages/invoice_list/invoice_list">查看发票</UserMenu>
 					<UserMenu pageUrl="/pages/service_rules/service_rules?type=PRIVACY">隐私政策</UserMenu>
 					<UserMenu pageUrl="/pages/service_rules/service_rules?type=SERVE">服务条款</UserMenu>
-					<UserMenu>在线客服</UserMenu>
+					<UserMenu type="contact">在线客服</UserMenu>
 					<UserMenu :onClick="openRoleModal">切换角色</UserMenu>
 				</view>
 				<view v-else>
@@ -66,8 +66,12 @@
 	import {
 		getPhone,
 		putUserInfo,
-		validateRole
+		validateRole,
+		getServiceById
 	} from "@/api";
+	import {
+		onShow
+	} from "@dcloudio/uni-app"
 	import UserMenu from "../../components/user_menu/user_menu.vue";
 	import Tabbar from "@/components/tabbar/tabbar.vue";
 	const isShowRoleModal = ref(false);
@@ -80,6 +84,8 @@
 	const index = status.value === "servicer" ? 1 : 2;
 	const userInfo = ref(JSON.parse(uni.getStorageSync("userInfo")));
 	const userKey = uni.getStorageSync('userKey')
+
+	// 手机号隐藏
 	const phone = computed(() => {
 		const number = userInfo.value.phone
 		return number.substr(0, 3) + "****" + number.substr(7);
@@ -150,6 +156,31 @@
 			url: "/pages/servicer_orders/servicer_orders",
 		});
 	};
+
+	// 根据服务人员id获取服务人员信息
+	const getServicer = async (id) => {
+		try {
+			const result = await getServiceById(id)
+			if (result.code == 200) {
+				userInfo.value.nickName = result.data.userName
+				userInfo.value.avatarUrl = result.data.userAvatar
+				userInfo.value.phone = result.data.servicerPhone
+			}
+		} catch (e) {
+			uni.showToast({
+				title: e.message,
+				icon: 'error'
+			})
+		}
+	}
+
+	onShow(() => {
+		// 判断身份
+		if (uni.getStorageSync('userStatus') === 'servicer') {
+			const servicerId = JSON.parse(uni.getStorageSync("userInfo")).servicerId
+			getServicer(servicerId)
+		}
+	})
 </script>
 
 <style lang="less" scoped>

@@ -9,14 +9,14 @@
 							<text class="name">{{item.address}}</text>
 						</view>
 					</view>
-					<u-radio :name="item.id" shape="circle" activeColor="#449656" :disabled="mutexValue && mutexValue.indexOf(item.id) != -1"></u-radio>
+					<u-radio :name="item.id" shape="circle" activeColor="#449656"></u-radio>
 				</view>
 			</view>
 		</u-radio-group>
 		<view class="check-btn">
 			<u-button text="确认选择" color="#449656" @click="show = true"></u-button>
 		</view>
-		<u-modal :show="show" title="确定选择此地点吗？" @confirm="confirm"></u-modal>
+		<u-modal showCancelButton confirmColor="#449656" :show="show" title="确定选择此地点吗？" @confirm="confirm" @cancel="show = false"></u-modal>
 	</view>
 </template>
 
@@ -42,15 +42,7 @@
 	
 	// 改变选项时
 	const checkboxChange = (check) => {
-		console.log(check);
 		checkboxValue.value = check
-		mutexValue.value = ""
-		// 拿到当前选中的选项的互斥项目
-		serviceList.value.forEach(item => {
-			if(check.indexOf(item.id) != -1){
-				mutexValue.value += item.mutexService
-			}
-		})
 	};
 
 	// 获取所有服务

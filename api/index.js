@@ -1,5 +1,13 @@
 import {request} from "@/utils/request.js"
 
+// 根据服务人员id查询服务人员信息
+export const getServiceById = (servicerId) => {
+	return request({
+		url:`/servicer/findServiceById/${servicerId}`,
+		method:"POST"
+	})
+}
+
 // 获取所有维保地点
 export const getLocations = (type) => {
 	return request({
