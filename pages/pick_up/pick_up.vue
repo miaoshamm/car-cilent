@@ -149,7 +149,7 @@
 	const getPickUpList = async () => {
 		const info = getApp().globalData.pickUpDriverInfo;
 		if (info) {
-			subscribeInfo.servoicerInfo = info;
+			subscribeInfo.servicerInfo = info;
 		} else {
 			const list = await getServicerByType('TRANSFER');
 			subscribeInfo.servoicerInfo = list.data[0];

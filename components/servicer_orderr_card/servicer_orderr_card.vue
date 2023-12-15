@@ -2,9 +2,11 @@
 	<view class="card" @click="goDetail">
 		<view class="top">
 			<view style="display: flex;align-items: center;">
-				<image v-if="order_info?.geographicLocationVo?.addressType === 'DEFAULT' " :src="orderTypes[order_info?.orderType].icon" mode="widthFix" style="width: 64rpx;"></image>
+				<image v-if="order_info?.geographicLocationVo?.addressType === 'DEFAULT' "
+					:src="orderTypes[order_info?.orderType].icon" mode="widthFix" style="width: 64rpx;"></image>
 				<image v-else src="../../static/images/index/grid2.png" mode="widthFix" style="width: 64rpx;"></image>
-				<text style="font-size: 32rpx;color: rgba(0, 0, 0, 0.9);margin-left: 16rpx;">{{orderTypes[order_info?.orderType].big_type}}{{order_info?.geographicLocationVo?.addressType === 'DEFAULT' ? '（中山六院）':'（临江大道）'}}</text>
+				<text
+					style="font-size: 32rpx;color: rgba(0, 0, 0, 0.9);margin-left: 16rpx;">{{orderTypes[order_info?.orderType].big_type}}{{order_info?.geographicLocationVo?.addressType === 'DEFAULT' ? '（中山六院）':'（临江大道）'}}</text>
 			</view>
 			<text :style="{'font-size':'32rpx','color': type === 'royalty' ? '#3D3D3D' : '#43974C'}">
 				{{
@@ -53,19 +55,23 @@
 </template>
 
 <script setup>
-	import {defineProps} from "vue"
+	import {
+		defineProps
+	} from "vue"
 	import dayjs from 'dayjs'
-	import { orderTypes,orderStatus} from '../../static/js/types.js'
-	const {type,order_info} = defineProps(["type",'order_info'])
-	
-	const goDetail=()=>{
-		// 判断类型
+	import {
+		orderTypes,
+		orderStatus
+	} from '../../static/js/types.js'
+	const {
+		type,
+		order_info
+	} = defineProps(["type", 'order_info'])
+
+	const goDetail = () => {
+
 		uni.navigateTo({
-			url:'/pages/servicer_orders/maintenance/maintenance'
-		})
-		return
-		uni.navigateTo({
-			url:`/pages/order_detail_parking/order_detail_parking?order_no=${order_info?.orderExtraVo?.orderNo}&isServicer=true`
+			url: `${orderTypes[order_info.orderType].url}?order_no=${order_info?.orderExtraVo?.orderNo}&isServicer=true`
 		})
 	}
 </script>
@@ -76,6 +82,7 @@
 		background-color: white;
 		border-radius: 16rpx;
 		margin-bottom: 16rpx;
+
 		.top {
 			height: 96rpx;
 			display: flex;

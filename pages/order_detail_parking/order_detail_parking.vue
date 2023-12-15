@@ -3,9 +3,9 @@
 		<u-navbar title="订单详情" @leftClick="leftClick" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
 		<view v-if="!isInvoice" :style="{ flex: 1, padding: '32rpx', position: 'relative', overflow: 'auto' }">
 			<text v-if="!isServicer"
-				style="color: #449656; font-size: 36rpx; font-weight: bold">{{ orderTypes[orderInfo?.orderType].userStatus[orderInfo.status] }}</text>
+				style="color: #449656; font-size: 36rpx; font-weight: bold">{{ orderTypes[orderInfo?.orderType]?.userStatus[orderInfo.status] }}</text>
 			<text v-else
-				style="color: #449656; font-size: 36rpx; font-weight: bold">{{ orderTypes[orderInfo?.orderType].serviceStatus[orderInfo.status] }}</text>
+				style="color: #449656; font-size: 36rpx; font-weight: bold">{{ orderTypes[orderInfo?.orderType]?.serviceStatus[orderInfo.status] }}</text>
 			<view style="height: 172rpx" @click="goWish">
 				<image src="../../static/images/order/img_home_banner.png" mode="widthFix" style="width: 100%"></image>
 			</view>
@@ -108,16 +108,16 @@
 				<UserMenu title="开发票" description="立即开票" :onClick="openInvoice" />
 			</view>
 			<view class="menu" v-if="!isServicer">
-				<UserMenu v-if="!myEvaluateContent.evaluateContent" title="评价服务" description="立即评价" :onClick="open" />
-				<view v-else style="border-radius: 16rpx;padding: 32rpx;">
+				<UserMenu v-if="!myEvaluateContent?.evaluateContent" title="评价服务" description="立即评价" :onClick="open" />
+				<!-- <view v-else style="border-radius: 16rpx;padding: 32rpx;">
 					<view style="font-size: 32rpx;">
 						我的评价
 					</view>
 					<view style="font-size: 28rpx;margin-top: 16rpx;">
-						{{myEvaluateContent.evaluateContent}}
+						{{myEvaluateContent?.evaluateContent}}
 					</view>
 
-				</view>
+				</view> -->
 			</view>
 			<InsuranceTips></InsuranceTips>
 		</view>
@@ -126,8 +126,47 @@
 		</view>
 		<view style="height: 128rpx; background-color: white; box-sizing: border-box; padding: 20rpx 32rpx"
 			v-if="isServicer">
-			<view v-if="orderInfo.status === 'RESERVATION'" class="head_title" @click="startOff">确认出发</view>
-			<view v-if="orderInfo.status === 'RECEIVED_TO_USER'" class="head_title" @click="inputPickUpRecord">录入接车信息</view>
+			<view v-if="orderInfo.status === 'RESERVATION'" @click="startOff">确认出发</view>
+			<view v-if="orderInfo.status === 'RECEIVED_TO_USER'" @click="inputPickRecord">录入接车信息</view>
+			<view v-if="orderInfo.status === 'PARK_PROCESS'" @click="inputParkingRecord">录入泊车信息</view>
+			<!-- <view v-if="orderInfo.status === 'PARK_COMPLETE'"  @click="inputParkingRecord">录入泊车信息</view> -->
+		</view>
+		<view style="height: 240rpx; background-color: white; box-sizing: border-box; padding: 20rpx 32rpx"
+			v-if="!isServicer">
+			<view v-if="orderInfo.status === 'RESERVATION'" style="display: flex;flex-direction: column;height: 100%;">
+				<view style="display: flex;justify-content: space-between;align-items: center;">
+					<view style="display: flex;flex-direction: column;">
+						<text style="font-size: 48rpx;color: #E34D59;">¥45</text>
+						<text style="color: #A6A6A6;">停车费：8元/小时</text>
+					</view>
+					<text style="text-decoration: underline;color: #E34D59;">费用明细</text>
+				</view>
+				<view style="display: flex;flex: 1;margin-top: 12rpx;">
+					<view @click="lookJoinLocation"
+						style="border-radius: 8rpx;border: 1rpx solid #449656;color: #449656;flex: 1;display: flex;align-items: center;justify-content: center;margin-right: 13rpx;font-size: 32rpx;">
+						查看交接车位置
+					</view>
+					<view @click="getToLocation"
+						style="border-radius: 8rpx;color: white;background-color: #449656;flex: 1;display: flex;align-items: center;justify-content: center;margin-left: 13rpx;font-size: 32rpx;">
+						到达取车位置
+					</view>
+				</view>
+			</view>
+			<view v-if="orderInfo.status === 'USER_ARRIVED'" style="display: flex;flex-direction: column;height: 100%;">
+				<view style="display: flex;justify-content: space-between;align-items: center;">
+					<view style="display: flex;flex-direction: column;">
+						<text style="font-size: 48rpx;color: #E34D59;">¥45</text>
+						<text style="color: #A6A6A6;">停车费：8元/小时</text>
+					</view>
+					<text style="text-decoration: underline;color: #E34D59;">费用明细</text>
+				</view>
+				<view style="display: flex;flex: 1;margin-top: 12rpx;">
+					<view @click="lookJoinDetail"
+						style="border-radius: 8rpx;border: 1rpx solid #449656;color: #449656;flex: 1;display: flex;align-items: center;justify-content: center;margin-right: 13rpx;font-size: 32rpx;">
+						查看交接车详情
+					</view>
+				</view>
+			</view>
 		</view>
 	</view>
 
@@ -163,7 +202,8 @@
 		getOrderPaymentRecord,
 		ServicerDestination,
 		UserEvaluateOrder,
-		getOrderEvaluaContent
+		getOrderEvaluaContent,
+		UserGetToLocation
 	} from '../../api/index.js';
 	import {
 		onShow
@@ -208,6 +248,36 @@
 			url: '/pages/wish/wish'
 		});
 	};
+	//客户到达客户地址
+	const getToLocation = async () => {
+		const userInfo = JSON.parse(uni.getStorageSync('userInfo'))
+		const info = await UserGetToLocation(userInfo.userNo, orderInfo.value.orderNo)
+		console.log(info);
+		if (info.code === '200') {
+			getOrderDetail();
+		}
+
+	}
+	//查看交接车详情
+	const lookJoinDetail = () => {
+		uni.navigateTo({
+			url: `/pages/Join_detail/Join_detail?orderNo=${orderInfo.value.orderNo}`
+		})
+	}
+
+	//查看交接位置
+	const lookJoinLocation = () => {
+		lookLocation(orderInfo.value.geographicLocationVo)
+	}
+	const lookLocation = (location) => {
+		wx.openLocation({
+			latitude: location.latitude, //维度
+			longitude: location.longitude, //经度
+			name: location.name ?? location.addres, //目的地定位名称
+			scale: 18, //缩放比例
+			address: location.address //导航详细地址
+		});
+	}
 	const startOff = () => {
 		uni.showModal({
 			title: '确定出发吗？',
@@ -216,21 +286,21 @@
 				if (res.confirm) {
 					const location = await ServicerDestination(order_no, userInfo.userNo);
 					if (orderInfo.value.geographicLocationVo.addressType === 'OPTIONAL') {
-						wx.openLocation({
-							latitude: location.data.latitude, //维度
-							longitude: location.data.longitude, //经度
-							name: location.data.name ?? location.data.addres, //目的地定位名称
-							scale: 18, //缩放比例
-							address: location.data.address //导航详细地址
-						});
+						lookLocation(location.data)
 					}
 				}
 			}
 		});
 	};
-	const inputPickUpRecord = () => {
+	const inputPickRecord = () => {
 		uni.navigateTo({
 			url: `/pages/input_vehicle/input_vehicle?orderType=pickUp&orderNo=${order_no}`
+		})
+	}
+
+	const inputParkingRecord = () => {
+		uni.navigateTo({
+			url: `/pages/input_vehicle/input_vehicle?orderType=parking&orderNo=${order_no}`
 		})
 	}
 	const getOrderEvaluateContent = async () => {

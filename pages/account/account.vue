@@ -35,7 +35,7 @@
 					<UserMenu pageUrl='/pages/account/holiday/holiday'>请假休假</UserMenu>
 					<UserMenu :onClick="openSwtchUserModal">切换角色</UserMenu>
 					<UserMenu pageUrl='/pages/account/company/company'>公司简介</UserMenu>
-					<UserMenu :onClick="openRoleModal">增加角色</UserMenu>
+					<UserMenu :onClick="addRoleService">增加角色</UserMenu>
 				</view>
 			</view>
 		</view>
@@ -66,7 +66,8 @@
 	import {
 		getPhone,
 		putUserInfo,
-		validateRole
+		validateRole,
+		getUserInfo
 	} from "@/api";
 	import UserMenu from "../../components/user_menu/user_menu.vue";
 	import Tabbar from "@/components/tabbar/tabbar.vue";
@@ -90,6 +91,35 @@
 	const roleModalColse = () => {
 		userKey ? (isShowSwitchServiceModal.value = false) : (isShowRoleModal.value = false);
 	};
+	//增加服务人员
+	const addRoleService = () => {
+		const userInfo = JSON.parse(uni.getStorageSync('userInfo'))
+		uni.showModal({
+			title: "请输入密钥",
+			editable: true,
+			success: async (res) => {
+				if (res.confirm) {
+					const info = await validateRole({
+						secretKey: res.content,
+						userNo: userInfo.userNo,
+					});
+					if (info.code === '200') {
+						userInfo.servicerId = userInfo.servicerId + ',' + info.data.id
+						uni.setStorageSync('userinfo', JSON.stringify(userInfo))
+						uni.showToast({
+							icon: 'none',
+							title: '增加成功'
+						})
+					} else {
+						uni.showToast({
+							icon: 'none',
+							title: '密钥错误'
+						})
+					}
+				}
+			}
+		})
+	}
 	const roleModalConfirm = async () => {
 		if (userKey) {
 			switchServicer();

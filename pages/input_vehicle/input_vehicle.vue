@@ -3,7 +3,15 @@
 		<u-navbar title="录入车辆信息" :autoBack="true" titleStyle="font-size:36rpx" placeholder safeAreaInsetTop></u-navbar>
 		<view class="main">
 			<view class="upload">
-				<view class="upload_title">接车视频</view>
+				<view v-if="orderType === 'parking'" class="upload_title"
+					style="padding-bottom: 20rpx;border-bottom: 1rpx solid #E7E7E7;">泊车位置</view>
+				<view v-if="orderType === 'parking'"
+					style="height: 85rpx;display: flex;align-items: center;justify-content: space-between;">
+					<text @click="openMap">{{uploadList.location.address ? uploadList.location.address : '点击获取位置'}}</text>
+					<image src="../../static/images/order/location.png" mode="widthFix" style="width: 32rpx;"></image>
+				</view>
+				<view v-if="orderType === 'pickUp'" class="upload_title">接车视频</view>
+				<view v-if="orderType === 'parking'" class="upload_title">泊车视频</view>
 				<view class="upload_list">
 					<view v-if="uploadList.pickUpVideo" class="video">
 						<video :src="uploadList.pickUpVideo"></video>
@@ -14,7 +22,8 @@
 				</view>
 			</view>
 			<view class="upload">
-				<view class="upload_title">接车照片</view>
+				<view v-if="orderType == 'pickUp'" class="upload_title">接车照片</view>
+				<view v-if="orderType == 'parking'" class="upload_title">泊车照片</view>
 				<view class="upload_list">
 					<view class="pick_images" v-for="url in uploadList.pickUpimages">
 						<image :src="url" mode="widthFix"></image>
@@ -22,7 +31,7 @@
 					<view class="upload_box" @click="uploadImages"><u-icon name="plus" color="#999" size="28"></u-icon></view>
 				</view>
 			</view>
-			<view class="upload">
+			<view v-if="orderType === 'pickUp'" class="upload">
 				<view class="upload_title">接车单</view>
 				<view class="upload_list">
 					<view class="pick_images" v-if="uploadList.pickUpOrderImage">
@@ -59,18 +68,30 @@
 		wxUploadFile
 	} from '@/utils/cos.js';
 	import {
-		inputCarRecord
+		onShow
+	} from '@dcloudio/uni-app'
+	import {
+		inputCarRecord,
+		inputParkingRecord
 	} from '../../api/index.js'
 	const {
 		orderType,
 		orderNo
 	} = defineProps(['orderType', 'orderNo'])
-	console.log(orderType, orderNo);
+	const chooseLocation = requirePlugin('chooseLocation');
+	const key = 'GZABZ-OGULD-YPK4O-HWK6T-4B6KV-NBFJX'; //使用在腾讯位置服务申请的key
+	const referer = '城市生活'; //调用插件的app的名
 	const uploadList = ref({
 		pickUpVideo: '',
 		pickUpimages: [],
-		pickUpOrderImage: ''
+		pickUpOrderImage: '',
+		location: {},
 	});
+	const openMap = () => {
+		uni.navigateTo({
+			url: 'plugin://chooseLocation/index?key=' + key + '&referer=' + referer
+		});
+	};
 	const uploadVideo = async () => {
 		const res = await uni.chooseMedia();
 		if (res.type !== 'video') {
@@ -108,27 +129,40 @@
 		uploadList.value.pickUpOrderImage = result;
 	}
 	const submit = async () => {
-		if (uploadList.value.pickUpimages.length > 0 && uploadList.value.pickUpOrderImage && uploadList.value
-			.pickUpVideo) {
-			const info = await inputCarRecord({
+
+		let info;
+		if (orderType === 'pickUp') {
+			info = await inputCarRecord({
 				orderNo: orderNo,
 				receiveImages: uploadList.value.pickUpimages.join(','),
 				receiveUrl: uploadList.value.pickUpOrderImage,
 				receiveVideoUrl: uploadList.value.pickUpVideo
 			})
-			if (info.code === '200') {
-				uni.redirectTo({
-					url: '/pages/order_detail_parking/order_detail_parking'
-				})
-			}
-		} else {
-			uni.showToast({
-				icon: 'none',
-				title: '请录入完整信息'
+		}
+		if (orderType === 'parking') {
+			info = await inputParkingRecord({
+				orderNo: orderNo,
+				receiveImages: uploadList.value.pickUpimages.join(','),
+				receiveVideoUrl: uploadList.value.pickUpVideo,
+				addressType: 'OPTIONAL',
+				address: uploadList.value.location.address,
+				latitude: uploadList.value.location.latitude,
+				longitude: uploadList.value.location.longitude,
+			})
+		}
+		if (info.code === '200') {
+			uni.redirectTo({
+				url: '/pages/order_detail_parking/order_detail_parking'
 			})
 		}
 
 	}
+	onShow(async () => {
+		const location = chooseLocation.getLocation();
+		if (location) {
+			uploadList.value.location = location
+		}
+	});
 </script>
 
 <style lang="scss" scoped>
