@@ -8,7 +8,7 @@
 			type="subscribe" />
 		<view class="box">
 			<view class="box-info" @click="goMap">
-				<text>维保地点</text>
+				<text style="width: 180rpx;">维保地点</text>
 				<view class="box-location">
 					<up-text :lines="1"
 						:text="info.geographicLocationVo?.address ? info.geographicLocationVo?.address : '...'"></up-text>
@@ -76,7 +76,7 @@
 				<text>{{info.createdTime}}</text>
 			</view>
 		</view>
-		<view class="box" v-show="info.status === 'COMPLETE'">
+		<view class="box" v-if="info.status === 'COMPLETE'">
 			<view class="box-info">
 				<text>开发票</text>
 				<view class="check">
@@ -85,7 +85,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="box" v-show="info.status === 'COMPLETE'">
+		<view class="box" v-if="info.status === 'COMPLETE'">
 			<view class="box-info">
 				<text>评价服务</text>
 				<view class="check">
@@ -98,7 +98,7 @@
 	</view>
 	<view class="check-btn" v-show="info.geographicLocationVo">
 		<u-button plain text="查看维保地点" color="#449656" @click="goMap"></u-button>
-		<u-button v-show="uni.getStorageSync('userStatus') === 'servicer'" customStyle="margin: 0 0 0 20rpx;" text="车辆维保完成" color="#449656"></u-button>
+		<u-button v-show="servicerShow" customStyle="margin: 0 0 0 20rpx;" text="车辆维保完成" color="#449656"></u-button>
 	</view>
 	<view class="check-btn" v-show="info.status === 'COMPLETE'">
 		<u-button text="返回首页" color="#449656"></u-button>
@@ -123,11 +123,12 @@
 	// 属性--------------------
 	const info = ref({})
 	const total = ref("")
+	const servicerShow = ref(false)
 
 	// 方法---------------------------
 	const leftClick = () => {
 		uni.redirectTo({
-			url:'/pages/index/index'
+			url: '/pages/index/index'
 		})
 	}
 
@@ -156,17 +157,20 @@
 				info.value = result.data
 				info.value.reservationTime = reservationTime(result.data.reservationTime)
 				info.value.createdTime = reservationTime(result.data.createdTime)
+				// 判断图片
+				if (info.geographicLocationVo) {
+					if (info.geographicLocationVo.addressImageUrl) {
+						info.geographicLocationVo.addressImageUrl = info.geographicLocationVo.addressImageUrl.split(',')
+					}
+				}
 				// 计算实付款
 				if (result.data.carServicesVos.length) {
 					total.value = result.data.carServicesVos.reduce((total, item) => total + item.servicePrice, 0)
 				}
-			}else{
+			} else {
 				uni.showToast({
-					icon:'error',
-					title:result.message,
-					success() {
-						uni.navigateBack({delta:2})
-					}
+					icon: 'error',
+					title: result.message
 				})
 			}
 		} catch (e) {}
@@ -175,6 +179,10 @@
 	// 生命周期-----------------------
 	onLoad((options) => {
 		getInfo(options.orderNo)
+		// 判断角色
+		if (uni.getStorageSync('userStatus') === 'servicer') {
+			servicerShow.value = true
+		}
 	})
 
 	const reservationTime = (time) => {
@@ -194,10 +202,6 @@
 			justify-content: space-between;
 			font-size: 28rpx;
 			padding: 28rpx 0;
-
-			text:nth-of-type(1) {
-				width: 180rpx;
-			}
 
 			.box-location {
 				display: flex;
